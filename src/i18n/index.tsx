@@ -71,6 +71,10 @@ export type Copy = {
   toolsPageH1: string;
   toolsPageCopy: string;
   allCategory: string;
+  favoritesCategory: string;
+  noFavoritesYet: string;
+  pinToFavorites: string;
+  removeFromFavorites: string;
   filterCountSuffix: string;
   noToolsMatch: string;
   clearSearch: string;
@@ -232,6 +236,10 @@ const english: Copy = {
   toolsPageH1: 'Smart tools for swift work.',
   toolsPageCopy: 'Handcrafted browser utilities designed to solve everyday image, document, text, and developer tasks instantly — 100% private, client-side, and ad-light.',
   allCategory: 'All Tools',
+  favoritesCategory: 'Favorites',
+  noFavoritesYet: 'No favorite tools pinned yet! Click the star icon (★) on any tool card to quickly access your most used tools here.',
+  pinToFavorites: 'Pin to favorites',
+  removeFromFavorites: 'Remove from favorites',
   filterCountSuffix: 'tools',
   noToolsMatch: 'No tools match',
   clearSearch: 'Clear search',
@@ -438,6 +446,10 @@ const bangla: Copy = {
   toolsPageH1: 'সহজ সমাধান, দ্রুত কাজের নিশ্চয়তা।',
   toolsPageCopy: 'ছবি, ডকুমেন্ট, টেক্সট এবং কোডিং সংক্রান্ত দৈনন্দিন কাজের জন্য তৈরি দ্রুত ও নিরাপদ ব্রাউজার টুলস — ১০০% ক্লায়েন্ট-সাইড এবং বিজ্ঞাপন-মুক্ত ভাব।',
   allCategory: 'সব টুলস',
+  favoritesCategory: 'পছন্দের টুলস',
+  noFavoritesYet: 'এখনো কোনো ফেভারিট টুল পিন করা হয়নি! যেকোনো টুল কার্ডের ওপরের স্টার (★) আইকনে ক্লিক করে আপনার প্রয়োজনীয় টুলগুলো এখানে সহজে পিন করে রাখুন।',
+  pinToFavorites: 'ফেভারিটে যোগ করুন',
+  removeFromFavorites: 'ফেভারিট থেকে সরান',
   filterCountSuffix: 'টি টুল',
   noToolsMatch: 'এমন কোনো টুল পাওয়া যায়নি',
   clearSearch: 'সার্চ রিসেট করুন',

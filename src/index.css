@@ -451,6 +451,132 @@ a { color: inherit; text-decoration: none; }
 .tool-content h2 { margin: 28px 0 12px; font: 600 23px var(--app-font-display); letter-spacing: -.04em; }
 .tool-content ol { padding-left: 20px; color: hsl(var(--muted-foreground)); font-size: 14px; line-height: 1.8; }
 .tool-content > p { color: hsl(var(--muted-foreground)); font-size: 14px; line-height: 1.7; }
+
+/* Tool Card Favorite Button */
+.tool-favorite-btn {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 5;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: hsl(var(--card) / .85);
+  backdrop-filter: blur(8px);
+  border: 1px solid hsl(var(--border));
+  color: hsl(var(--muted-foreground));
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all .2s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+.tool-favorite-btn:hover {
+  transform: scale(1.12);
+  color: #eab308;
+  border-color: #eab308;
+  background: hsl(var(--card));
+}
+.tool-favorite-btn.is-favorite {
+  color: #eab308;
+  border-color: #facc15;
+  background: #fef08a1f;
+  box-shadow: 0 0 12px rgba(234, 179, 8, 0.25);
+}
+
+/* Category Tab - Favorites Highlight */
+.category-tab.favorite-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.category-tab.favorite-tab.active {
+  border-color: #eab308;
+  color: #ca8a04;
+  background: #fef08a26;
+}
+.dark .category-tab.favorite-tab.active {
+  color: #facc15;
+}
+
+/* Responsive Tool Workspace Layout: Left side controls, Right side workspace/preview */
+.tool-two-column-layout {
+  display: grid;
+  grid-template-columns: 320px minmax(0, 1fr);
+  gap: 28px;
+  align-items: start;
+}
+@media (max-width: 960px) {
+  .tool-two-column-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Tool Points Sidebar */
+.tool-points-sidebar {
+  background: hsl(var(--card));
+  padding: 22px;
+  border-radius: 18px;
+  border: 1px solid hsl(var(--border));
+  position: sticky;
+  top: 86px;
+  max-height: calc(100vh - 110px);
+  overflow-y: auto;
+}
+.tool-point-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: hsl(var(--secondary) / .3);
+  margin-bottom: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: hsl(var(--foreground));
+  border: 1px solid hsl(var(--border) / .5);
+  transition: all 0.2s ease;
+}
+.tool-point-num {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: hsl(var(--primary));
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+
+/* Responsive Platform Pill Grid: 2 per line on mobile, 4 per line on desktop/laptop */
+.payload-pills-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-bottom: 20px;
+}
+@media (min-width: 768px) {
+  .payload-pills-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+  }
+}
+
+/* Subtle floating effect for platform pills */
+.platform-pill:hover {
+  transform: translateY(-3px) scale(1.02);
+  border-color: hsl(var(--primary) / .6);
+  box-shadow: 0 8px 20px -6px hsl(var(--primary) / .2);
+}
+.platform-pill:hover div {
+  transform: scale(1.1) rotate(4deg);
+}
+
 .tool-faq { padding: 13px 0; border-top: 1px solid hsl(var(--border)); color: hsl(var(--foreground)); }
 .tool-faq summary { cursor: pointer; font: 600 14px var(--app-font-display); }
 .tool-faq p { margin: 10px 0 0; color: hsl(var(--muted-foreground)); font-size: 13px; line-height: 1.6; }

@@ -20,6 +20,7 @@ import {
   Plus,
   Search,
   Settings2,
+  Star,
   Sun,
   X,
   Zap,
@@ -40,7 +41,16 @@ import { AdSlot } from '@/components/ads/AdSlot';
 import { AdSenseProvider } from '@/components/ads/AdSenseProvider';
 import { ErrorBoundary } from '@/components/error-boundary';
 import { ImageCompressor } from '@/components/tool/ImageCompressor';
+import { WordCounter } from '@/components/tool/WordCounter';
+import { JsonFormatter } from '@/components/tool/JsonFormatter';
+import { ColorPickerTool } from '@/components/tool/ColorPickerTool';
+import { JpgToPngConverter } from '@/components/tool/JpgToPngConverter';
+import { ImageResizer } from '@/components/tool/ImageResizer';
+import { PdfToTextTool } from '@/components/tool/PdfToTextTool';
+import { MergePdfTool } from '@/components/tool/MergePdfTool';
+import { PhotoQrCodeTool } from '@/components/tool/PhotoQrCodeTool';
 import { I18nProvider, useI18n, type Language } from '@/i18n';
+import { useFavoriteTools } from '@/lib/favorites';
 import { enableAnalytics, trackEvent, trackPageView } from '@/lib/analytics';
 import { adConfig } from '@/lib/ads/adConfig';
 
@@ -364,13 +374,36 @@ function Footer() {
 
 function ToolCard({ tool, index }: { tool: ToolDefinition; index: number }) {
   const { copy } = useI18n();
+  const { isFavorite, toggleFavorite } = useFavoriteTools();
   const Icon = tool.icon;
+  const isFav = isFavorite(tool.id);
+
+  const favButton = (
+    <button
+      type="button"
+      className={`tool-favorite-btn ${isFav ? 'active' : ''}`}
+      onClick={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        toggleFavorite(tool.id);
+        trackEvent('tool_favorite_toggle', { tool_id: tool.id, is_favorite: !isFav });
+      }}
+      title={isFav ? copy.removeFromFavorites : copy.pinToFavorites}
+      aria-label={isFav ? copy.removeFromFavorites : copy.pinToFavorites}
+    >
+      <Star size={16} fill={isFav ? 'currentColor' : 'none'} strokeWidth={isFav ? 1.5 : 2} />
+    </button>
+  );
+
   const content = (
     <>
       <div>
-        <span className="tool-icon" style={{ '--tool-color': tool.color } as CSSProperties}>
-          <Icon size={21} />
-        </span>
+        <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 8, marginBottom: 12 }}>
+          <span className="tool-icon" style={{ '--tool-color': tool.color, margin: 0 } as CSSProperties}>
+            <Icon size={21} />
+          </span>
+          {favButton}
+        </div>
         <h3>{tool.name}</h3>
         <p>{tool.description}</p>
       </div>
@@ -456,7 +489,7 @@ function Home({ consent }: { consent: ConsentChoice }) {
             <p>{copy.homeStartHereCopy}</p>
           </div>
           <div className="tool-grid">
-            {tools.slice(0, 3).map((tool, index) => (
+            {tools.map((tool, index) => (
               <ToolCard key={tool.id} tool={tool} index={index} />
             ))}
           </div>
@@ -542,36 +575,38 @@ function Home({ consent }: { consent: ConsentChoice }) {
         </div>
       </section>
 
-      <div className="container">
-        <div className="cta-band">
-          <div>
-            <span className="eyebrow">{copy.ctaBandEyebrow}</span>
-            <h2>{copy.ctaBandTitle}</h2>
-          </div>
-          <Link to="/tools" className="button">
-            {copy.browseAllTools} <MoveRight size={16} />
-          </Link>
-        </div>
+      {/* Ad Placement on Home Page */}
+      <div className="container" style={{ margin: '30px auto' }}>
+        <AdSlot enabled={true} slot={adConfig.homeSlot} label="Sponsored Ad" />
       </div>
     </main>
   );
 }
 
-function ToolsPage({ initialCategory = 'All' }: { initialCategory?: 'All' | ToolCategory }) {
+function ToolsPage({ initialCategory = 'All' }: { initialCategory?: 'All' | 'Favorites' | ToolCategory }) {
   const { copy } = useI18n();
+  const { favoriteIds } = useFavoriteTools();
   const [searchParams, setSearchParams] = useSearchParams();
-  const [category, setCategory] = useState<'All' | ToolCategory>(initialCategory);
+  const [category, setCategory] = useState<'All' | 'Favorites' | ToolCategory>(initialCategory);
   const query = searchParams.get('query') ?? '';
   const filtered = useMemo(
     () =>
-      tools.filter(
-        (tool) =>
-          (category === 'All' || tool.category === category) &&
-          `${tool.name} ${tool.description} ${tool.keywords.join(' ')}`.toLowerCase().includes(query.toLowerCase()),
-      ),
-    [category, query],
+      tools.filter((tool) => {
+        const matchesCategory =
+          category === 'All'
+            ? true
+            : category === 'Favorites'
+            ? favoriteIds.includes(tool.id)
+            : tool.category === category;
+        const matchesQuery = `${tool.name} ${tool.description} ${tool.keywords.join(' ')}`
+          .toLowerCase()
+          .includes(query.toLowerCase());
+        return matchesCategory && matchesQuery;
+      }),
+    [category, query, favoriteIds],
   );
   const setQuery = (value: string) => setSearchParams(value ? { query: value } : {});
+  const favoriteCount = favoriteIds.length;
 
   return (
     <main>
@@ -600,7 +635,48 @@ function ToolsPage({ initialCategory = 'All' }: { initialCategory?: 'All' | Tool
             </span>
           </div>
           <div className="category-tabs" role="tablist" aria-label="Tool categories">
-            {categoryList.map((item) => (
+            <button
+              className={`category-tab${category === 'All' ? ' active' : ''}`}
+              type="button"
+              role="tab"
+              aria-selected={category === 'All'}
+              onClick={() => {
+                setCategory('All');
+                trackEvent('category_open', { category: 'All' });
+              }}
+            >
+              {copy.allCategory}
+            </button>
+
+            <button
+              className={`category-tab${category === 'Favorites' ? ' active' : ''}`}
+              type="button"
+              role="tab"
+              aria-selected={category === 'Favorites'}
+              style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}
+              onClick={() => {
+                setCategory('Favorites');
+                trackEvent('category_open', { category: 'Favorites' });
+              }}
+            >
+              <Star size={13} fill={category === 'Favorites' ? 'currentColor' : 'none'} style={{ color: category === 'Favorites' ? 'currentColor' : '#f59e0b' }} />
+              <span>{copy.favoritesCategory}</span>
+              {favoriteCount > 0 && (
+                <span
+                  style={{
+                    background: category === 'Favorites' ? 'hsl(var(--primary-foreground) / .2)' : 'hsl(var(--secondary))',
+                    padding: '1px 6px',
+                    borderRadius: 999,
+                    fontSize: 11,
+                    fontWeight: 700,
+                  }}
+                >
+                  {favoriteCount}
+                </span>
+              )}
+            </button>
+
+            {categoryList.filter((item) => item !== 'All').map((item) => (
               <button
                 key={item}
                 className={`category-tab${category === item ? ' active' : ''}`}
@@ -612,13 +688,26 @@ function ToolsPage({ initialCategory = 'All' }: { initialCategory?: 'All' | Tool
                   trackEvent('category_open', { category: item });
                 }}
               >
-                {item === 'All' ? copy.allCategory : item}
+                {item}
               </button>
             ))}
           </div>
           <div className="tool-grid" style={{ marginTop: 25 }}>
             {filtered.length ? (
               filtered.map((tool, index) => <ToolCard key={tool.id} tool={tool} index={index} />)
+            ) : category === 'Favorites' ? (
+              <div className="empty-state" style={{ gridColumn: '1 / -1' }}>
+                <Star size={32} style={{ color: '#f59e0b', margin: '0 auto 8px' }} />
+                <h3 style={{ fontSize: 16, fontWeight: 700, margin: '4px 0' }}>{copy.favoritesCategory}</h3>
+                <p style={{ maxWidth: 420, margin: '0 auto 16px', color: 'hsl(var(--muted-foreground))' }}>{copy.noFavoritesYet}</p>
+                <button
+                  type="button"
+                  className="button button-primary"
+                  onClick={() => setCategory('All')}
+                >
+                  {copy.allCategory}
+                </button>
+              </div>
             ) : (
               <div className="empty-state" style={{ gridColumn: '1 / -1' }}>
                 <Search size={23} />
@@ -637,6 +726,10 @@ function ToolsPage({ initialCategory = 'All' }: { initialCategory?: 'All' | Tool
                 </button>
               </div>
             )}
+          </div>
+          {/* AdSense Placement in Tool Library */}
+          <div style={{ marginTop: 40 }}>
+            <AdSlot enabled={true} slot={adConfig.librarySlot} label="Sponsored Ad" />
           </div>
         </div>
       </section>
@@ -853,7 +946,33 @@ function ToolRoute() {
   const { toolSlug } = useParams();
   const tool = toolSlug ? getToolBySlug(toolSlug) : undefined;
   if (!tool) return <NotFound />;
-  return tool.status === 'live' && tool.slug === 'image-compressor' ? <ImageCompressor tool={tool} /> : <PlannedTool tool={tool} />;
+
+  if (tool.status === 'live') {
+    switch (tool.slug) {
+      case 'image-compressor':
+        return <ImageCompressor tool={tool} />;
+      case 'word-counter':
+        return <WordCounter tool={tool} />;
+      case 'json-formatter':
+        return <JsonFormatter tool={tool} />;
+      case 'color-picker':
+        return <ColorPickerTool tool={tool} />;
+      case 'jpg-to-png':
+        return <JpgToPngConverter tool={tool} />;
+      case 'image-resizer':
+        return <ImageResizer tool={tool} />;
+      case 'pdf-to-text':
+        return <PdfToTextTool tool={tool} />;
+      case 'merge-pdf':
+        return <MergePdfTool tool={tool} />;
+      case 'photo-qr-code':
+        return <PhotoQrCodeTool tool={tool} />;
+      default:
+        return <PlannedTool tool={tool} />;
+    }
+  }
+
+  return <PlannedTool tool={tool} />;
 }
 
 function CategoryPage() {
@@ -986,6 +1105,11 @@ function AppLayout() {
 function RouteAwareLayout() {
   const location = useLocation();
   usePageMeta(location.pathname);
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+  }, [location.pathname]);
+
   return (
     <ErrorBoundary resetKey={location.pathname} FallbackComponent={ErrorFallback}>
       <AppLayout />

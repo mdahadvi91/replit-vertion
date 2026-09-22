@@ -10,6 +10,7 @@ export type AnalyticsEventName =
   | 'search'
   | 'search_result_click'
   | 'category_open'
+  | 'tool_favorite_toggle'
   | 'related_tool_click'
   | 'theme_change'
   | 'language_change';

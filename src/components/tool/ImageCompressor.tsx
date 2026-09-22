@@ -15,6 +15,7 @@ import { Link } from 'react-router-dom';
 import { getRelatedTools, type ToolDefinition } from '@/data/tools';
 import { trackEvent } from '@/lib/analytics';
 import { ImageValidationError, validateImageFile } from '@/lib/image-validation';
+import { useI18n } from '@/i18n';
 import {
   compressImage,
   compressionProfiles,
@@ -30,9 +31,10 @@ function formatBytes(bytes: number) {
 }
 
 function ToolBreadcrumb({ tool }: { tool: ToolDefinition }) {
+  const { copy } = useI18n();
   return (
     <nav className="breadcrumb" aria-label="Breadcrumb">
-      <Link to="/tools">Tools</Link>
+      <Link to="/tools">{copy.tools}</Link>
       <span>/</span>
       <span>{tool.category}</span>
       <span>/</span>
@@ -42,6 +44,7 @@ function ToolBreadcrumb({ tool }: { tool: ToolDefinition }) {
 }
 
 function RelatedTools({ tool }: { tool: ToolDefinition }) {
+  const { copy } = useI18n();
   const related = getRelatedTools(tool);
   if (!related.length) return null;
 
@@ -49,8 +52,8 @@ function RelatedTools({ tool }: { tool: ToolDefinition }) {
     <section className="related-tools" aria-labelledby="related-tools-heading">
       <div className="section-heading">
         <div>
-          <span className="eyebrow">Keep going</span>
-          <h2 id="related-tools-heading">Related tools</h2>
+          <span className="eyebrow">{copy.exploreHeader}</span>
+          <h2 id="related-tools-heading">{copy.relatedToolsTitle}</h2>
         </div>
       </div>
       <div className="tool-grid">
@@ -79,7 +82,7 @@ function RelatedTools({ tool }: { tool: ToolDefinition }) {
                 <p>{candidate.description}</p>
               </div>
               <div className="tool-card-foot">
-                <span>{candidate.status === 'live' ? 'Live now' : 'Planned'}</span>
+                <span>{candidate.status === 'live' ? copy.liveNow : copy.planned}</span>
                 <ArrowRight size={16} />
               </div>
             </Link>
@@ -91,6 +94,7 @@ function RelatedTools({ tool }: { tool: ToolDefinition }) {
 }
 
 export function ImageCompressor({ tool }: { tool: ToolDefinition }) {
+  const { copy, language } = useI18n();
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const outputUrlRef = useRef('');
   const runIdRef = useRef(0);
@@ -196,15 +200,15 @@ export function ImageCompressor({ tool }: { tool: ToolDefinition }) {
       <div className="container">
         <ToolBreadcrumb tool={tool} />
         <Link to="/tools" className="back-link" data-testid="link-back-to-tools">
-          <ArrowLeft size={15} /> Back to Tools
+          <ArrowLeft size={15} /> {copy.backToTools}
         </Link>
         <div className="workspace-head">
           <div>
-            <span className="eyebrow">Images / Live tool</span>
+            <span className="eyebrow">{tool.category} / {copy.liveNow}</span>
             <h1>{tool.seo.h1}</h1>
             <p className="muted workspace-intro">{tool.content.intro}</p>
           </div>
-          <span className="mono muted workspace-badge">BROWSER-FIRST WORKSPACE</span>
+          <span className="mono muted workspace-badge">{copy.workspaceBadge}</span>
         </div>
 
         <div className="workspace-grid">
@@ -232,17 +236,27 @@ export function ImageCompressor({ tool }: { tool: ToolDefinition }) {
                   {status === 'success' ? <Check size={25} /> : status === 'processing' ? <Sparkles size={25} /> : <FileImage size={25} />}
                 </div>
                 <h2 id="compressor-workspace-heading" data-testid="text-compressor-file">
-                  {status === 'idle' || status === 'error' ? 'Drop an image here' : file?.name}
+                  {status === 'idle' || status === 'error' ? copy.dropAnImageHere : file?.name}
                 </h2>
                 <p id="compressor-help">
-                  {message || 'Or choose a file from your device. JPG, PNG and WebP up to 20 MB.'}
+                  {message || (language === 'bn' ? 'অথবা আপনার ডিভাইস থেকে ছবি নির্বাচন করুন। JPG, PNG এবং WebP (সর্বোচ্চ ২০ মেগাবাইট)।' : 'Or choose a file from your device. JPG, PNG and WebP up to 20 MB.')}
                 </p>
                 <div id="compressor-status" className={`tool-status status-${status}`} role="status" aria-live="polite" data-testid="status-compressor">
                   {status === 'processing' && <span className="status-spinner" aria-hidden="true" />}
                   {status === 'success' && <Check size={15} aria-hidden="true" />}
                   {status === 'error' && <X size={15} aria-hidden="true" />}
                   {status === 'ready' && <Upload size={15} aria-hidden="true" />}
-                  <span>{status === 'idle' ? 'No image selected' : status === 'ready' ? 'Image ready' : status === 'processing' ? 'Working locally' : status === 'success' ? 'Compression complete' : 'Action needed'}</span>
+                  <span>
+                    {status === 'idle'
+                      ? (language === 'bn' ? 'কোনো ছবি নির্বাচন করা হয়নি' : 'No image selected')
+                      : status === 'ready'
+                        ? (language === 'bn' ? 'ছবি প্রস্তুত' : 'Image ready')
+                        : status === 'processing'
+                          ? (language === 'bn' ? 'লোকাল প্রসেসিং চলছে' : 'Working locally')
+                          : status === 'success'
+                            ? (language === 'bn' ? 'কম্প্রেশন সম্পন্ন হয়েছে' : 'Compression complete')
+                            : (language === 'bn' ? 'পদক্ষেপ প্রয়োজন' : 'Action needed')}
+                  </span>
                 </div>
                 {status === 'success' && result ? (
                   <a
@@ -252,7 +266,7 @@ export function ImageCompressor({ tool }: { tool: ToolDefinition }) {
                     onClick={handleDownload}
                     data-testid="download-compressed-image"
                   >
-                    <Download size={16} /> Download {result.name}
+                    <Download size={16} /> {copy.downloadFile} {result.name}
                   </a>
                 ) : (
                   <button
@@ -262,7 +276,7 @@ export function ImageCompressor({ tool }: { tool: ToolDefinition }) {
                     onClick={() => fileInputRef.current?.click()}
                     data-testid="button-choose-image"
                   >
-                    <FileImage size={16} /> Choose an image
+                    <FileImage size={16} /> {copy.chooseImage}
                   </button>
                 )}
                 <input
@@ -287,21 +301,21 @@ export function ImageCompressor({ tool }: { tool: ToolDefinition }) {
                 onClick={reset}
                 data-testid="button-reset-image"
               >
-                <RotateCcw size={15} /> Reset workspace
+                <RotateCcw size={15} /> {copy.resetWorkspace}
               </button>
             )}
 
             <div className="tool-content">
-              <h2>How to use</h2>
+              <h2>{copy.howToUse}</h2>
               <ol>
                 {tool.content.howToUse.map((step) => (
                   <li key={step}>{step}</li>
                 ))}
               </ol>
-              <h2>Privacy and limitations</h2>
+              <h2>{copy.privacyAndLimitations}</h2>
               <p>{tool.content.privacy}</p>
               <p>{tool.content.limitations}</p>
-              <h2>Frequently asked questions</h2>
+              <h2>{copy.faqTitle}</h2>
               <div className="faq-list">
                 {tool.content.faq.map(({ question, answer }) => (
                   <details key={question} className="tool-faq">
@@ -314,13 +328,21 @@ export function ImageCompressor({ tool }: { tool: ToolDefinition }) {
           </section>
 
           <aside className="workspace-side">
-            <p className="side-label">Compression profile</p>
-            <div className="choice-list" role="radiogroup" aria-label="Compression profile">
+            <p className="side-label">{copy.compressionProfile}</p>
+            <div className="choice-list" role="radiogroup" aria-label={copy.compressionProfile}>
               {(Object.entries(compressionProfiles) as Array<[CompressionProfile, (typeof compressionProfiles)[CompressionProfile]]>).map(([value, profile]) => (
                 <label className={`choice${quality === value ? ' selected' : ''}`} key={value}>
                   <span>
-                    <strong>{profile.label}</strong>
-                    <small>{value === 'light' ? 'More detail' : value === 'balanced' ? 'Everyday use' : 'Smallest output'}</small>
+                    <strong>
+                      {language === 'bn'
+                        ? value === 'light' ? 'হালকা (বেশি ডিটেইল)' : value === 'balanced' ? 'ভারসাম্যপূর্ণ (প্রস্তাবিত)' : 'সর্বোচ্চ (ক্ষুদ্র সাইজ)'
+                        : profile.label}
+                    </strong>
+                    <small>
+                      {language === 'bn'
+                        ? value === 'light' ? 'সর্বোচ্চ কোয়ালিটি রক্ষা' : value === 'balanced' ? 'দৈনন্দিন ব্যবহারের জন্য' : 'সবচেয়ে কম ফাইল সাইজ'
+                        : value === 'light' ? 'More detail' : value === 'balanced' ? 'Everyday use' : 'Smallest output'}
+                    </small>
                   </span>
                   <input
                     type="radio"
@@ -334,7 +356,7 @@ export function ImageCompressor({ tool }: { tool: ToolDefinition }) {
               ))}
             </div>
             <p className="side-note">
-              <ShieldCheck size={14} aria-hidden="true" /> Your image stays in this browser. No account required.
+              <ShieldCheck size={14} aria-hidden="true" /> {copy.imageStaysLocal}
             </p>
             <button
               className="button button-primary process-button"
@@ -343,7 +365,7 @@ export function ImageCompressor({ tool }: { tool: ToolDefinition }) {
               onClick={processFile}
               data-testid="button-compress-image"
             >
-              <Sparkles size={15} /> {status === 'processing' ? 'Processing…' : 'Compress image'}
+              <Sparkles size={15} /> {status === 'processing' ? (language === 'bn' ? 'প্রসেসিং হচ্ছে…' : 'Processing…') : copy.compressImageButton}
             </button>
           </aside>
         </div>

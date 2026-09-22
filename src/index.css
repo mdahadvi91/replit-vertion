@@ -227,6 +227,102 @@ a { color: inherit; text-decoration: none; }
 .category-tab:hover, .category-tab.active { border-color: hsl(var(--primary)); color: hsl(var(--primary)); background: hsl(var(--primary) / .09); }
 .empty-state { padding: 65px 20px; border: 1px dashed hsl(var(--border)); border-radius: 16px; text-align: center; color: hsl(var(--muted-foreground)); }
 
+/* Fixed / Floating All Tools quick button */
+.fixed-nav-wrap {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 45;
+  display: flex;
+  align-items: center;
+}
+.fixed-tools-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 20px;
+  border-radius: 9999px;
+  background: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+  font: 600 13px var(--app-font-sans);
+  letter-spacing: .02em;
+  box-shadow: 0 10px 25px hsl(171 68% 20% / .35), 0 3px 8px hsl(0 0% 0% / .14);
+  border: 1px solid hsl(var(--primary-foreground) / .18);
+  backdrop-filter: blur(14px);
+  transition: transform .22s cubic-bezier(.2,.8,.2,1), box-shadow .22s ease, background .2s ease;
+  cursor: pointer;
+  text-decoration: none;
+}
+.fixed-tools-btn:hover {
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 14px 32px hsl(171 68% 20% / .45), 0 4px 10px hsl(0 0% 0% / .2);
+  background: hsl(var(--primary) / .95);
+  color: hsl(var(--primary-foreground));
+}
+.fixed-tools-btn:active {
+  transform: translateY(0) scale(.98);
+}
+.dark .fixed-tools-btn {
+  box-shadow: 0 10px 25px hsl(0 0% 0% / .5), 0 2px 8px hsl(166 64% 48% / .25);
+  border-color: hsl(166 64% 48% / .3);
+}
+
+/* Contact methods cards */
+.contact-methods {
+  display: grid;
+  gap: 12px;
+  margin: 22px 0 10px;
+}
+.contact-method-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  border: 1px solid hsl(var(--border));
+  border-radius: 12px;
+  background: hsl(var(--card));
+  text-decoration: none;
+  color: inherit;
+  transition: border-color .2s ease, transform .2s ease, background .2s ease;
+}
+.contact-method-card:hover {
+  border-color: hsl(var(--primary));
+  transform: translateY(-1px);
+  background: hsl(var(--primary) / .05);
+}
+.contact-method-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: hsl(var(--primary) / .12);
+  color: hsl(var(--primary));
+  flex-shrink: 0;
+}
+.contact-method-icon.whatsapp {
+  background: hsl(142 70% 45% / .15);
+  color: #25D366;
+}
+.contact-method-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.contact-method-info strong {
+  font-size: 13px;
+  font-weight: 600;
+}
+.contact-method-info span {
+  font-size: 12px;
+  color: hsl(var(--muted-foreground));
+  font-family: var(--app-font-mono);
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .prose-page { max-width: 760px; margin: 0 auto; padding: 70px 0 100px; }
 .prose-page h1 { margin: 14px 0 19px; font: 600 54px/1 var(--app-font-display); letter-spacing: -.07em; }
 .prose-page h2 { margin: 42px 0 12px; font: 600 25px var(--app-font-display); }

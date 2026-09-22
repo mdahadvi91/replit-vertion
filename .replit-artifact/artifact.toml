@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "Ahadex Tools"
+description = "A fast, bilingual browser-based toolkit for compressing images, converting files, formatting JSON, extracting PDF text, counting words, picking colors, resizing images, merging PDFs, and generating photo QR codes."
+version = "1.0.0"
+id = "artifacts/ahadex-tools"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 21596
+
+[services.development]
+run = "pnpm --filter @workspace/ahadex-tools run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/ahadex-tools", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/ahadex-tools/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "21596"
+BASE_PATH = "/"

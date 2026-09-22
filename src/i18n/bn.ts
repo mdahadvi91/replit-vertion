@@ -1,0 +1,1 @@
+export const locale = 'bn' as const;

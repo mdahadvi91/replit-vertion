@@ -1,0 +1,2 @@
+.modal-backdrop { position: fixed; inset: 0; z-index: 100; display: grid; place-items: center; padding: 20px; background: hsl(var(--foreground) / .38); }
+.mobile-drawer { position: fixed; inset: 0 0 0 auto; width: min(88vw, 340px); z-index: 40; background: hsl(var(--background)); padding: 24px; }

@@ -1,0 +1,1 @@
+export { ToolRoute as default } from './page-components';

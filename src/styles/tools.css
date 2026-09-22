@@ -1,0 +1,2 @@
+.tool-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+.upload-zone { border: 1px dashed hsl(var(--primary) / .45); border-radius: var(--radius); padding: 28px; }

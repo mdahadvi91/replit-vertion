@@ -1,0 +1,1 @@
+export { CategoryPage as default } from './page-components';

@@ -1,35 +1,33 @@
 {
-  "name": "@workspace/ahadex-tools",
-  "version": "0.0.0",
+  "name": "ahadex-tools",
+  "version": "1.0.0",
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "vite --config vite.config.ts --host 0.0.0.0",
-    "build": "pnpm run typecheck && pnpm run validate && vite build --config vite.config.ts",
-    "serve": "vite preview --config vite.config.ts --host 0.0.0.0",
-    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "dev": "vite --host 0.0.0.0",
+    "build": "npm run typecheck && npm run validate && vite build",
+    "preview": "vite preview --host 0.0.0.0",
+    "typecheck": "tsc --noEmit",
     "validate": "tsx scripts/validate-registry.ts"
   },
-  "devDependencies": {
-    "@replit/vite-plugin-cartographer": "catalog:",
-    "@replit/vite-plugin-dev-banner": "catalog:",
-    "@replit/vite-plugin-runtime-error-modal": "catalog:",
-    "@tailwindcss/typography": "^0.5.15",
-    "@tailwindcss/vite": "catalog:",
-    "@tanstack/react-query": "catalog:",
-    "@types/node": "catalog:",
-    "@types/react": "catalog:",
-    "@types/react-dom": "catalog:",
-    "@vitejs/plugin-react": "catalog:",
-    "lucide-react": "catalog:",
-    "react": "catalog:",
-    "react-dom": "catalog:",
-    "tailwindcss": "catalog:",
-    "tsx": "catalog:",
-    "tw-animate-css": "^1.4.0",
-    "vite": "catalog:"
-  },
   "dependencies": {
-    "react-router-dom": "^7.18.4"
+    "@vitejs/plugin-react": "^4.4.1",
+    "@tailwindcss/vite": "^4.1.13",
+    "@tailwindcss/typography": "^0.5.15",
+    "@tanstack/react-query": "^5.85.5",
+    "lucide-react": "^0.468.0",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
+    "react-router-dom": "^7.8.2",
+    "tailwindcss": "^4.1.13",
+    "tw-animate-css": "^1.4.0"
+  },
+  "devDependencies": {
+    "@types/node": "^24.3.0",
+    "@types/react": "^19.1.12",
+    "@types/react-dom": "^19.1.9",
+    "tsx": "^4.20.5",
+    "typescript": "^5.9.2",
+    "vite": "^7.1.3"
   }
 }

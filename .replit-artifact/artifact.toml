@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "Ahadex Tools"
+description = "A polished, fast, and discoverable toolkit hub for everyday digital tasks, designed for global users with a distinctive Ahadex experience."
+version = "1.0.0"
+id = "artifacts/ahadex-tools"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 21596
+
+[services.development]
+run = "pnpm --filter @workspace/ahadex-tools run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/ahadex-tools", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/ahadex-tools/dist"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "21596"
+BASE_PATH = "/"

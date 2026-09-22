@@ -905,6 +905,14 @@ function ConsentBanner({ choice, setChoice }: { choice: ConsentChoice; setChoice
 function FixedToolsButton() {
   const { copy } = useI18n();
   const location = useLocation();
+
+  // If user is already on the Home page, the back button should not appear / have no action
+  if (location.pathname === '/') {
+    return null;
+  }
+
+  // From any tool, category, or inner page, button goes directly back to the Tools directory
+  // If on the /tools directory page itself, clicking goes back to Home ('/')
   const isToolsPage = location.pathname === '/tools';
   const targetPath = isToolsPage ? '/' : '/tools';
   const label = isToolsPage ? copy.home : copy.backToTools;

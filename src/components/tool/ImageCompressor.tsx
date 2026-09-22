@@ -4,12 +4,14 @@ import {
   ArrowRight,
   Check,
   Download,
+  FileCheck,
   FileImage,
   RotateCcw,
   ShieldCheck,
   Sparkles,
   Upload,
   X,
+  Zap,
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { getRelatedTools, type ToolDefinition } from '@/data/tools';
@@ -20,13 +22,16 @@ import {
   compressImage,
   compressionProfiles,
   type CompressionProfile,
+  type CompressionStats,
 } from '@/tools/image-compressor';
+import { AdSlot } from '@/components/ads/AdSlot';
+import { adConfig } from '@/lib/ads/adConfig';
 
 type CompressorStatus = 'idle' | 'ready' | 'processing' | 'success' | 'error';
 
 function formatBytes(bytes: number) {
   if (bytes < 1024) return `${bytes} B`;
-  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(0)} KB`;
+  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
   return `${(bytes / (1024 * 1024)).toFixed(2)} MB`;
 }
 
@@ -99,8 +104,14 @@ export function ImageCompressor({ tool }: { tool: ToolDefinition }) {
   const outputUrlRef = useRef('');
   const runIdRef = useRef(0);
   const [quality, setQuality] = useState<CompressionProfile>('balanced');
+  const [convertToWebP, setConvertToWebP] = useState(false);
   const [file, setFile] = useState<File | null>(null);
-  const [result, setResult] = useState<{ url: string; name: string; size: number } | null>(null);
+  const [result, setResult] = useState<{
+    url: string;
+    name: string;
+    size: number;
+    stats: CompressionStats;
+  } | null>(null);
   const [status, setStatus] = useState<CompressorStatus>('idle');
   const [message, setMessage] = useState('');
 
@@ -141,7 +152,11 @@ export function ImageCompressor({ tool }: { tool: ToolDefinition }) {
     releaseOutput();
     setFile(nextFile);
     setStatus('ready');
-    setMessage('Ready to compress. Choose a profile, then start the local process.');
+    setMessage(
+      language === 'bn'
+        ? 'ছবি প্রস্তুত। কোয়ালিটি প্রোফাইল নির্বাচন করে কমপ্রেস বাটনে ক্লিক করুন।'
+        : 'Ready to compress. Choose a profile, then start the local process.'
+    );
     trackEvent('file_upload', {
       tool_id: tool.id,
       tool_slug: tool.slug,
@@ -155,25 +170,44 @@ export function ImageCompressor({ tool }: { tool: ToolDefinition }) {
     if (!file || status === 'processing') return;
     const currentRunId = ++runIdRef.current;
     setStatus('processing');
-    setMessage('Processing your image locally in this browser…');
-    trackEvent('tool_start', { tool_id: tool.id, tool_slug: tool.slug, profile: quality });
+    setMessage(
+      language === 'bn'
+        ? 'ব্রাউজারে কোনো ডেটা আপলোড ছাড়াই লোকাল প্রসেসিং চলছে…'
+        : 'Processing your image locally in this browser…'
+    );
+    trackEvent('tool_start', {
+      tool_id: tool.id,
+      tool_slug: tool.slug,
+      profile: quality,
+      convertToWebP,
+    });
 
     try {
-      await new Promise<void>((resolve) => window.setTimeout(resolve, 40));
-      const output = await compressImage(file, quality);
+      await new Promise<void>((resolve) => window.setTimeout(resolve, 60));
+      const output = await compressImage(file, { profile: quality, convertToWebP });
       if (currentRunId !== runIdRef.current) return;
       const url = URL.createObjectURL(output.blob);
       releaseOutput();
       outputUrlRef.current = url;
-      setResult({ url, name: output.fileName, size: output.blob.size });
+      setResult({
+        url,
+        name: output.fileName,
+        size: output.blob.size,
+        stats: output.stats,
+      });
       setStatus('success');
-      setMessage(`Compressed from ${formatBytes(file.size)} to ${formatBytes(output.blob.size)}.`);
+      setMessage(
+        language === 'bn'
+          ? `${formatBytes(file.size)} থেকে কমে ${formatBytes(output.blob.size)} হয়েছে (${output.stats.ratioPercent}% সাশ্রয়)!`
+          : `Compressed from ${formatBytes(file.size)} to ${formatBytes(output.blob.size)} (${output.stats.ratioPercent}% saved).`
+      );
       trackEvent('tool_process', {
         tool_id: tool.id,
         tool_slug: tool.slug,
         profile: quality,
         input_bytes: file.size,
         output_bytes: output.blob.size,
+        saved_percent: output.stats.ratioPercent,
       });
       trackEvent('tool_success', { tool_id: tool.id, tool_slug: tool.slug });
     } catch (error) {
@@ -258,16 +292,34 @@ export function ImageCompressor({ tool }: { tool: ToolDefinition }) {
                             : (language === 'bn' ? 'পদক্ষেপ প্রয়োজন' : 'Action needed')}
                   </span>
                 </div>
+
                 {status === 'success' && result ? (
-                  <a
-                    className="button button-primary"
-                    href={result.url}
-                    download={result.name}
-                    onClick={handleDownload}
-                    data-testid="download-compressed-image"
-                  >
-                    <Download size={16} /> {copy.downloadFile} {result.name}
-                  </a>
+                  <div className="compression-result-card">
+                    <div className="compression-stats-row">
+                      <div className="compression-stat-item">
+                        <span>{copy.originalSize}</span>
+                        <strong>{formatBytes(result.stats.originalBytes)}</strong>
+                      </div>
+                      <div className="compression-stat-arrow">→</div>
+                      <div className="compression-stat-item highlight">
+                        <span>{copy.compressedSize}</span>
+                        <strong>{formatBytes(result.stats.compressedBytes)}</strong>
+                      </div>
+                      <div className="compression-stat-badge">
+                        <Zap size={13} />
+                        <span>{result.stats.ratioPercent}% {copy.reductionSaved}</span>
+                      </div>
+                    </div>
+                    <a
+                      className="button button-primary"
+                      href={result.url}
+                      download={result.name}
+                      onClick={handleDownload}
+                      data-testid="download-compressed-image"
+                    >
+                      <Download size={16} /> {copy.downloadFile} {result.name}
+                    </a>
+                  </div>
                 ) : (
                   <button
                     className="button button-primary"
@@ -279,6 +331,7 @@ export function ImageCompressor({ tool }: { tool: ToolDefinition }) {
                     <FileImage size={16} /> {copy.chooseImage}
                   </button>
                 )}
+
                 <input
                   ref={fileInputRef}
                   id="image-file"
@@ -325,6 +378,9 @@ export function ImageCompressor({ tool }: { tool: ToolDefinition }) {
                 ))}
               </div>
             </div>
+
+            {/* Content-rich, policy-compliant ad placement */}
+            <AdSlot enabled={true} slot={adConfig.toolSlot} label="Sponsored Ad" />
           </section>
 
           <aside className="workspace-side">
@@ -335,13 +391,13 @@ export function ImageCompressor({ tool }: { tool: ToolDefinition }) {
                   <span>
                     <strong>
                       {language === 'bn'
-                        ? value === 'light' ? 'হালকা (বেশি ডিটেইল)' : value === 'balanced' ? 'ভারসাম্যপূর্ণ (প্রস্তাবিত)' : 'সর্বোচ্চ (ক্ষুদ্র সাইজ)'
+                        ? value === 'light' ? 'হাই কোয়ালিটি' : value === 'balanced' ? 'ব্যালেন্সড (প্রস্তাবিত)' : 'সর্বোচ্চ সাইজ হ্রাস'
                         : profile.label}
                     </strong>
                     <small>
                       {language === 'bn'
-                        ? value === 'light' ? 'সর্বোচ্চ কোয়ালিটি রক্ষা' : value === 'balanced' ? 'দৈনন্দিন ব্যবহারের জন্য' : 'সবচেয়ে কম ফাইল সাইজ'
-                        : value === 'light' ? 'More detail' : value === 'balanced' ? 'Everyday use' : 'Smallest output'}
+                        ? value === 'light' ? 'ছবির সর্বোচ্চ ডিটেইল ও শার্পনেস বজায় রাখে' : value === 'balanced' ? 'দৈনন্দিন শেয়ার ও সাধারণ ব্যবহারের জন্য' : 'ওয়েবসাইট ও চ্যাটের জন্য সবচেয়ে ছোট সাইজ'
+                        : value === 'light' ? copy.profileLightDesc : value === 'balanced' ? copy.profileBalancedDesc : copy.profileSmallDesc}
                     </small>
                   </span>
                   <input
@@ -355,6 +411,22 @@ export function ImageCompressor({ tool }: { tool: ToolDefinition }) {
                 </label>
               ))}
             </div>
+
+            {/* Optional WebP modern format toggle */}
+            <div className="webp-toggle-wrap">
+              <label className="webp-checkbox-label">
+                <input
+                  type="checkbox"
+                  checked={convertToWebP}
+                  onChange={(e) => setConvertToWebP(e.target.checked)}
+                />
+                <div>
+                  <strong>{copy.convertToWebPLabel}</strong>
+                  <small>{copy.convertToWebPDesc}</small>
+                </div>
+              </label>
+            </div>
+
             <p className="side-note">
               <ShieldCheck size={14} aria-hidden="true" /> {copy.imageStaysLocal}
             </p>

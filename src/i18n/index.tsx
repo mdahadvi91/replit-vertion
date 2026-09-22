@@ -145,6 +145,11 @@ export type Copy = {
   privacyAndLimitations: string;
   relatedToolsTitle: string;
   keepGoing: string;
+  originalSize: string;
+  compressedSize: string;
+  reductionSaved: string;
+  convertToWebPLabel: string;
+  convertToWebPDesc: string;
 
   // Planned & 404
   plannedBadge: string;
@@ -190,13 +195,13 @@ const english: Copy = {
   onlyEssential: 'Only essential',
   allowMeasurement: 'Allow analytics',
 
-  heroEyebrow: 'A growing digital toolkit',
-  heroH1: 'Make the small stuff feel small.',
-  heroCopy: 'Ahadex Tools brings the useful utilities you reach for between bigger tasks — quick, considered, and ready when you are.',
-  microTrust: 'Browser-first · No account needed · 100% Free',
-  homeStartHereEyebrow: 'Start here',
-  homeStartHereTitle: 'One less tab to search for.',
-  homeStartHereCopy: 'Focused tools for images, documents, text and developer work. No noisy dashboards. Just the right surface for the job.',
+  heroEyebrow: 'Fast, Private Web Utilities',
+  heroH1: 'Everyday digital tasks, done in seconds.',
+  heroCopy: 'Ahadex brings lightweight, zero-upload browser tools for images, documents, text, and code — completely free, private, and always ready.',
+  microTrust: '100% Client-Side · No Sign-Up Needed · Instant Results',
+  homeStartHereEyebrow: 'Explore Toolkit',
+  homeStartHereTitle: 'Zero clutter. Pure utility.',
+  homeStartHereCopy: 'Purpose-built utilities designed to work directly inside your browser. No server uploads, no wait queues, and no noisy dashboard mazes.',
   theAhadexWay: 'The Ahadex way',
   usefulIsAFeeling: 'Useful is a feeling.',
   stat01Num: '01',
@@ -346,6 +351,11 @@ const english: Copy = {
   privacyAndLimitations: 'Privacy and limitations',
   relatedToolsTitle: 'Related tools',
   keepGoing: 'Keep going',
+  originalSize: 'Original size',
+  compressedSize: 'Compressed size',
+  reductionSaved: 'Saved',
+  convertToWebPLabel: 'Convert to WebP',
+  convertToWebPDesc: 'Ultra-efficient modern web format with higher compression ratio',
 
   // Planned & 404
   plannedBadge: 'Planned tool',
@@ -547,6 +557,11 @@ const bangla: Copy = {
   privacyAndLimitations: 'গোপনীয়তা ও সীমাবদ্ধতা',
   relatedToolsTitle: 'সম্পর্কিত টুলস',
   keepGoing: 'আরো দেখুন',
+  originalSize: 'আসল সাইজ',
+  compressedSize: 'নতুন সাইজ',
+  reductionSaved: 'সাশ্রয় হয়েছে',
+  convertToWebPLabel: 'WebP ফরম্যাটে রূপান্তর',
+  convertToWebPDesc: 'উন্নত ও আধুনিক ওয়েব ফরম্যাট যা ছবির সাইজ বহুগুণ কমিয়ে আনে',
 
   // Planned & 404
   plannedBadge: 'পরিকল্পিত টুল',

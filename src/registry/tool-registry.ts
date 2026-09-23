@@ -5,39 +5,10 @@ import {
   Image,
   Palette,
   QrCode,
-  type LucideIcon,
 } from 'lucide-react';
+import type { ToolDefinition, ToolCategory, ToolStatus, ToolLocalizedData } from './tool-types';
 
-export type ToolCategory = 'Images' | 'Documents' | 'Text' | 'Developer';
-export type ToolStatus = 'live' | 'planned';
-
-export interface ToolDefinition {
-  id: string;
-  slug: string;
-  name: string;
-  description: string;
-  category: ToolCategory;
-  status: ToolStatus;
-  color: string;
-  icon: LucideIcon;
-  route: string;
-  browserProcessing: boolean;
-  keywords: string[];
-  seo: {
-    title: string;
-    description: string;
-    h1: string;
-    canonical: string;
-  };
-  content: {
-    intro: string;
-    howToUse: string[];
-    privacy?: string;
-    limitations?: string;
-    faq: Array<{ question: string; answer: string }>;
-  };
-  relatedToolIds: string[];
-}
+export type { ToolDefinition, ToolCategory, ToolStatus, ToolLocalizedData };
 
 export const categoryList: Array<'All' | ToolCategory> = [
   'All',
@@ -91,6 +62,37 @@ export const tools: ToolDefinition[] = [
         },
       ],
     },
+    localized: {
+      bn: {
+        name: 'ইমেজ কম্প্রেসার',
+        description: 'ছবির স্পষ্টতা ও কোয়ালিটি বজায় রেখে ফাইলের সাইজ দ্রুত কমান।',
+        seo: {
+          title: 'অনলাইন ইমেজ কম্প্রেসার — Ahadex Tools',
+          description: 'আপনার ব্রাউজারে JPG, PNG ও WebP ছবি কম্প্রেস করুন সম্পূর্ণ বিনামূল্যে, নিরাপদে ও লোকাল প্রসেসিংয়ের মাধ্যমে।',
+          h1: 'ইমেজ কম্প্রেসার',
+        },
+        content: {
+          intro: 'ওয়েবসাইট, মেসেজ বা সোশ্যাল মিডিয়া আপলোডের জন্য ছবির সাইজ সহজে ছোট করুন কোনো সার্ভারে ফাইল পাঠানো ছাড়াই।',
+          howToUse: [
+            '২০ মেগাবাইট পর্যন্ত JPG, PNG বা WebP ছবি নির্বাচন করুন।',
+            'আপনার প্রয়োজনীয় কোয়ালিটি অনুযায়ী কম্প্রেশন প্রোফাইল পছন্দ করুন।',
+            'ছবি প্রসেস করুন এবং তাৎক্ষণিক অপ্টিমাইজড ফাইলটি ডাউনলোড করে নিন।',
+          ],
+          privacy: 'আপনার ছবি সম্পূর্ণ স্থানীয়ভাবে ব্রাউজার এপিআই দিয়ে প্রসেস করা হয়। কোনো রিমোট সার্ভারে আপলোড করা হয় না।',
+          limitations: 'মূল ছবির ফরম্যাট সংরক্ষিত থাকে। অত্যন্ত অপ্টিমাইজড ছবিতে সাইজ বেশি নাও কমতে পারে।',
+          faq: [
+            {
+              question: 'আমার ছবিগুলো কি সার্ভারে আপলোড করা হয়?',
+              answer: 'না। এই টুলটি সরাসরি আপনার ডিভাইসের ব্রাউজারে ইমেজ প্রসেস করে। কোনো ফাইল কোনো সার্ভারে আপলোড হয় না।',
+            },
+            {
+              question: 'কোন কোন ইমেজ ফরম্যাট সাপোর্ট করে?',
+              answer: 'সর্বোচ্চ ২০ মেগাবাইট পর্যন্ত JPG, PNG এবং WebP ফরম্যাট সাপোর্ট করে।',
+            },
+          ],
+        },
+      },
+    },
     relatedToolIds: ['jpg-to-png', 'image-resizer'],
   },
   {
@@ -135,6 +137,37 @@ export const tools: ToolDefinition[] = [
         },
       ],
     },
+    localized: {
+      bn: {
+        name: 'পিডিএফ টু টেক্সট',
+        description: 'পিডিএফ ফাইল থেকে পরিষ্কার ও কপিযোগ্য টেক্সট নিষ্কাশন করুন কয়েক সেকেন্ডে।',
+        seo: {
+          title: 'পিডিএফ টু টেক্সট কনভার্টার — Ahadex Tools',
+          description: 'ব্রাউজারেই পিডিএফ থেকে টেক্সট বের করুন নিরাপদে ও সম্পূর্ণ বিনামূল্যে। কোনো ফাইল আপলোড প্রয়োজন নেই।',
+          h1: 'পিডিএফ টু টেক্সট কনভার্টার',
+        },
+        content: {
+          intro: 'সার্ভারে ফাইল আপলোড না করেই যেকোনো পিডিএফ ডকুমেন্টের সব টেক্সট নিমিষেই এক্সট্রাক্ট করুন।',
+          howToUse: [
+            'আপনার পিডিএফ ডকুমেন্টটি সিলেক্ট বা ড্র্যাগ অ্যান্ড ড্রপ করুন।',
+            'এক্সট্রাক্ট টেক্সট বাটনে চাপ দিয়ে টেক্সট প্রসেস করুন।',
+            'ক্লিপবোর্ডে কপি করুন অথবা সরাসরি .txt ফরম্যাটে সেভ করে নিন।',
+          ],
+          privacy: 'সম্পূর্ণ প্রসেসিং আপনার ব্রাউজারের ভেতর মেমরিতে ঘটে। কোনো ফাইল বা মেটাডাটা ইন্টারনেটে পাঠানো হয় না।',
+          limitations: 'শুধুমাত্র ডিজিটাল টেক্সট থাকা পিডিএফ থেকে সরাসরি টেক্সট বের হয়। স্ক্যান করা ছবির ক্ষেত্রে ফলাফল সীমিত হতে পারে।',
+          faq: [
+            {
+              question: 'আমার গোপনীয় পিডিএফ কি কোথাও সংরক্ষিত হয়?',
+              answer: 'না, কোনো সার্ভার স্টোরেজ ব্যবহার করা হয় না। আপনার ডকুমেন্ট সম্পূর্ণ সুরক্ষিত এবং আপনার ডিভাইসেই থাকে।',
+            },
+            {
+              question: 'টেক্সট কি সরাসরি কপি করা যাবে?',
+              answer: 'হ্যাঁ! এক ক্লিকে সম্পূর্ণ টেক্সট কপি করতে পারেন অথবা টেক্সট ফাইলে ডাউনলোড করতে পারেন।',
+            },
+          ],
+        },
+      },
+    },
     relatedToolIds: ['merge-pdf', 'word-counter'],
   },
   {
@@ -174,6 +207,37 @@ export const tools: ToolDefinition[] = [
           answer: 'It leverages the browser native JSON parsing engine and highlights exact parsing issues with clear diagnostic messages.',
         },
       ],
+    },
+    localized: {
+      bn: {
+        name: 'জেসন ফরম্যাটার',
+        description: 'জটিল ও বিশৃঙ্খল JSON ডেটা সুন্দর, পরিচ্ছন্ন ও পাঠযোগ্য আকারে রূপান্তর করুন।',
+        seo: {
+          title: 'জেসন ফরম্যাটার ও ভ্যালিডেটর — Ahadex Tools',
+          description: 'অনলাইনে JSON কোড ফরম্যাট, ভ্যালিডেট, সাজানো বা মিনিফাই করুন তাৎক্ষণিক ত্রুটি শনাক্তকরণ সহ।',
+          h1: 'জেসন ফরম্যাটার ও ভ্যালিডেটর',
+        },
+        content: {
+          intro: 'JSON অবজেক্ট রিয়েল-টাইমে সাজান ও সিনট্যাক্স যাচাই করুন কোনো নেটওয়ার্ক রিকোয়েস্ট ছাড়াই।',
+          howToUse: [
+            'আপনার কাঁচা বা এলোমেলো JSON ডেটা ইনপুট বক্সে পেস্ট করুন।',
+            'পছন্দসই স্পেসিং বা ট্যাব ইনডেন্টেশন নির্বাচন করুন।',
+            'ফরম্যাট করতে Format JSON অথবা এক লাইনে আনতে Minify বাটনে চাপুন।',
+          ],
+          privacy: 'সবকিছু ক্লায়েন্ট-সাইড জাভাস্ক্রিপ্টে রান করে। আপনার এপিআই কি বা টোকেন কখনোই বাইরে যাবে না।',
+          limitations: 'ইনপুট কোড অবশ্যই স্ট্যান্ডার্ড JSON RFC 8259 নিয়ম মেনে হতে হবে।',
+          faq: [
+            {
+              question: 'আমার সংবেদনশীল কোড কি গোপন থাকবে?',
+              answer: 'হ্যাঁ! কোনো সার্ভার রিকোয়েস্ট ছাড়া সম্পূর্ণ ব্রাউজারে কাজ করায় আপনার ডেটা শতভাগ গোপন থাকে।',
+            },
+            {
+              question: 'সিনট্যাক্স ত্রুটি কীভাবে চিহ্নিত হয়?',
+              answer: 'বিল্ট-ইন ইঞ্জিন স্বয়ংক্রিয়ভাবে ভুল লাইনের পজিশন ও বিশদ মেসেজ সহ সতর্ক করে।',
+            },
+          ],
+        },
+      },
     },
     relatedToolIds: ['word-counter', 'color-picker'],
   },
@@ -215,6 +279,37 @@ export const tools: ToolDefinition[] = [
         },
       ],
     },
+    localized: {
+      bn: {
+        name: 'পিডিএফ মার্জার',
+        description: 'একাধিক বিচ্ছিন্ন পিডিএফ ফাইল একসাথে যুক্ত করে একটি সুশৃঙ্খল ডকুমেন্টে রূপান্তর করুন।',
+        seo: {
+          title: 'অনলাইন পিডিএফ মার্জার — Ahadex Tools',
+          description: 'সহজে ও নিরাপদে একাধিক পিডিএফ ফাইল একত্র করুন বিনামূল্যে কোনো সফটওয়্যার ইনস্টল ছাড়াই।',
+          h1: 'পিডিএফ ফাইল মার্জ করুন',
+        },
+        content: {
+          intro: 'কোনো ভারী সফটওয়্যার বা ইন্টারনেট আপলোড ছাড়াই একাধিক পিডিএফ ফাইল এক ফাইলে একত্র করুন।',
+          howToUse: [
+            'আপনার ডিভাইস থেকে ২টি বা তার বেশি পিডিএফ সিলেক্ট করুন।',
+            'লিস্টে ডকুমেন্টের ক্রম দেখে নিন।',
+            'Merge PDFs বাটনে ক্লিক করে সম্মিলিত ফাইলটি ডাউনলোড করে নিন।',
+          ],
+          privacy: 'ব্রাউজার মেমরিতে ফাইলগুলো একত্রিত করা হয়, সার্ভারে কোনো ডকুমেন্ট পাঠানো হয় না।',
+          limitations: 'একসাথে অনেকগুলো বড় সাইজের ফাইল মার্জ করার গতি ডিভাইসের র‍্যামের ওপর নির্ভর করে।',
+          faq: [
+            {
+              question: 'পিডিএফ মার্জ করতে কি কোনো ফি দিতে হয়?',
+              answer: 'না, এটি সম্পূর্ণ ফ্রি এবং কোনো জলছাপ যুক্ত করা হয় না।',
+            },
+            {
+              question: 'মোবাইল ফোনে কি কাজ করবে?',
+              answer: 'হ্যাঁ! মোবাইল, ট্যাবলেট এবং কম্পিউটার সব ডিভাইসেই চমৎকারভাবে কাজ করে।',
+            },
+          ],
+        },
+      },
+    },
     relatedToolIds: ['pdf-to-text', 'image-compressor'],
   },
   {
@@ -254,6 +349,37 @@ export const tools: ToolDefinition[] = [
           answer: 'Based on an industry-standard average reading speed of 200 words per minute for comprehensive comprehension.',
         },
       ],
+    },
+    localized: {
+      bn: {
+        name: 'ওয়ার্ড কাউন্টার',
+        description: 'লেখার সাথে সাথে শব্দ, অক্ষর, বাক্য ও পড়ার সময় রিয়েল-টাইমে গণনা করুন।',
+        seo: {
+          title: 'অনলাইন শব্দ ও অক্ষর গণনাকারী — Ahadex Tools',
+          description: 'রিয়েল-টাইমে শব্দ, ক্যারেক্টার, বাক্য ও রিডিং টাইম হিসাব করুন বাংলা ও ইংরেজি উভয়ের জন্য।',
+          h1: 'অনলাইন ওয়ার্ড কাউন্টার',
+        },
+        content: {
+          intro: 'লেখক, শিক্ষার্থী এবং কন্টেন্ট ক্রিয়েটরদের জন্য নিখুঁত রিয়েল-টাইম লেখার পরিসংখ্যান।',
+          howToUse: [
+            'এডিটরে আপনার টেক্সট টাইপ করুন অথবা পেস্ট করুন।',
+            'শব্দ, বর্ণ, বাক্য ও পড়ার সময়ের লাইভ হিসাব সরাসরি দেখুন।',
+            'প্রয়োজনে অতিরিক্ত স্পেস মোছা বা ফরম্যাট করার টুল ব্যবহার করুন।',
+          ],
+          privacy: 'আপনার লেখা কেবল আপনার স্ক্রিনে থাকে, কোনো বাহ্যিক ডাটাবেজ বা ট্র্যাকিংয়ে যায় না।',
+          limitations: 'বাংলা ও ইংরেজি উভয় ভাষার জন্য স্বয়ংক্রিয়ভাবে উপযোগী হিসাব পদ্ধতি রয়েছে।',
+          faq: [
+            {
+              question: 'বাংলা ভাষা সঠিকভাবে সাপোর্ট করে কি?',
+              answer: 'হ্যাঁ! বাংলা যুক্তবর্ণ ও ইউনিকোড ফন্টের জন্য এটি পুরোপুরি নিখুঁত হিসাব দেয়।',
+            },
+            {
+              question: 'রিডিং টাইম কীভাবে নির্ধারিত হয়?',
+              answer: 'সাধারণ গতিতে প্রতি মিনিটে ২০০ শব্দ পড়ার গড় হিসাব ধরে পড়ার সময় দেখানো হয়।',
+            },
+          ],
+        },
+      },
     },
     relatedToolIds: ['format-json', 'pdf-to-text'],
   },
@@ -295,6 +421,37 @@ export const tools: ToolDefinition[] = [
         },
       ],
     },
+    localized: {
+      bn: {
+        name: 'কালার পিকার',
+        description: 'যেকোনো রঙের শেড বাছাই করুন, কোড দেখুন এবং সুন্দর প্যালেট তৈরি করুন।',
+        seo: {
+          title: 'অনলাইন কালার পিকার ও হেক্স কনভার্টার — Ahadex Tools',
+          description: 'ইন্টারেক্টিভ কালার পিকার দিয়ে HEX, RGB, HSL এবং Tailwind CSS কোড সহজেই কপি করুন।',
+          h1: 'কালার পিকার ও প্যালেট জেনারেটর',
+        },
+        content: {
+          intro: 'ডিজাইন ও ফ্রন্টএন্ড ডেভেলপমেন্টের জন্য যেকোনো শেডের নিখুঁত কালার কোড বের করুন।',
+          howToUse: [
+            'কালার বক্সে ক্লিক করে অথবা HEX কোড লিখে রঙ নির্বাচন করুন।',
+            'স্বয়ংক্রিয়ভাবে তৈরি হওয়া RGB, HSL এবং Tailwind মানগুলো দেখুন।',
+            'এক ক্লিকেই পছন্দমতো ফরম্যাটের কোড ক্লিপবোর্ডে কপি করে নিন।',
+          ],
+          privacy: 'সম্পূর্ণ ব্রাউজারেই কাজ করে, কোনো নেটওয়ার্ক কল নেই।',
+          limitations: 'স্ট্যান্ডার্ড sRGB কালার স্পেকট্রাম সাপোর্ট করে।',
+          faq: [
+            {
+              question: 'কোন কোন ফরম্যাটে কালার কপি করা যায়?',
+              answer: 'HEX (#FFFFFF), RGB, HSL এবং Tailwind CSS ক্লাস ফরম্যাটে কপি করা যায়।',
+            },
+            {
+              question: 'নতুন রঙের আইডিয়া পাওয়া যাবে?',
+              answer: 'হ্যাঁ! Random Color বাটন ব্যবহার করে নিত্যনতুন আকর্ষণীয় কালার পাওয়া সম্ভব।',
+            },
+          ],
+        },
+      },
+    },
     relatedToolIds: ['format-json', 'image-resizer'],
   },
   {
@@ -311,7 +468,7 @@ export const tools: ToolDefinition[] = [
     keywords: ['jpg converter', 'convert jpg to png', 'image converter', 'jpeg to png'],
     seo: {
       title: 'Convert JPG to PNG Online Free — Ahadex Tools',
-      description: 'Convert JPG/JPEG images to lossless PNG format in seconds. 100% private, client-side conversion without file limits.',
+      description: 'Convert JPG/JPEG images to lossless PNG format in seconds. Private browser conversion without file limits.',
       h1: 'JPG to PNG Image Converter',
       canonical: '/tool/jpg-to-png',
     },
@@ -322,18 +479,49 @@ export const tools: ToolDefinition[] = [
         'Click Convert to PNG to process the image in browser canvas memory.',
         'Download your crisp, lossless PNG file right away.',
       ],
-      privacy: 'Pixel conversions execute entirely on your device with HTML5 Canvas. No photos are uploaded to any server.',
+      privacy: 'Pixel conversions execute entirely on your device with HTML5 Canvas. Your photos are not uploaded to any server.',
       limitations: 'Converting JPG to PNG does not automatically create transparent backgrounds if the original JPG had a solid background.',
       faq: [
         {
           question: 'Is my picture uploaded to the cloud?',
-          answer: 'No. The conversion happens 100% client-side inside your browser thread.',
+          answer: 'No. The conversion happens locally inside your browser thread and is not uploaded to servers.',
         },
         {
           question: 'Does converting JPG to PNG improve photo quality?',
           answer: 'It preserves exact pixel details without adding any further JPEG compression artifacts.',
         },
       ],
+    },
+    localized: {
+      bn: {
+        name: 'জেপিজি টু পিএনজি',
+        description: 'জেপিজি ছবিকে কোনো মানহানি ছাড়াই সরাসরি হাই-কোয়ালিটি পিএনজি ফাইলে রূপান্তর করুন।',
+        seo: {
+          title: 'JPG থেকে PNG কনভার্টার — Ahadex Tools',
+          description: 'বিনামূল্যে কোনো কোয়ালিটি লস ছাড়া JPG ছবিকে PNG ফরম্যাটে রূপান্তর করুন নিমিষেই।',
+          h1: 'JPG থেকে PNG কনভার্টার',
+        },
+        content: {
+          intro: 'JPEG ছবিকে হাই-রেজোলিউশন PNG ফাইলে সরাসরি আপনার ব্রাউজারে কনভার্ট করুন।',
+          howToUse: [
+            '২০ মেগাবাইট পর্যন্ত যেকোনো JPG বা JPEG ছবি আপলোড করুন।',
+            'Convert to PNG বাটনে চাপ দিয়ে প্রসেস করুন।',
+            'তৈরি হওয়া পিএনজি ফাইলটি তৎক্ষণাৎ ডাউনলোড করে নিন।',
+          ],
+          privacy: 'HTML5 ক্যানভাস দিয়ে আপনার ডিভাইসেই পুরো কাজ সম্পন্ন হয়, সার্ভারে কোনো ছবি আপলোড হয় না।',
+          limitations: 'মূল ছবিতে সলিড ব্যাকগ্রাউন্ড থাকলে স্বয়ংক্রিয়ভাবে ট্রান্সপারেন্ট হবে না।',
+          faq: [
+            {
+              question: 'ছবি কি কোনো সার্ভারে যায়?',
+              answer: 'না, রূপান্তর সম্পূর্ণভাবে আপনার ডিভাইসের ব্রাউজারে নিরাপদভাবে ঘটে।',
+            },
+            {
+              question: 'ছবি কি ঘোলা বা খারাপ হবে?',
+              answer: 'না, মূল ছবির প্রতিটি পিক্সেল অক্ষত রেখে পিএনজি ফাইলে সংরক্ষিত হয়।',
+            },
+          ],
+        },
+      },
     },
     relatedToolIds: ['image-compressor', 'image-resizer'],
   },
@@ -375,6 +563,37 @@ export const tools: ToolDefinition[] = [
         },
       ],
     },
+    localized: {
+      bn: {
+        name: 'ইমেজ রিসাইজার',
+        description: 'ছবির দৈর্ঘ্য ও প্রস্থ নির্দিষ্ট পিক্সেল মাপে সহজে পরিবর্তন করুন নিখুঁত অনুপাতে।',
+        seo: {
+          title: 'অনলাইন ইমেজ রিসাইজার — Ahadex Tools',
+          description: 'অনলাইনে JPG, PNG এবং WebP ছবির দৈর্ঘ্য-প্রস্থ সঠিক মাপে রিসাইজ করুন কোনো সফটওয়্যার ছাড়াই।',
+          h1: 'অনলাইন ইমেজ রিসাইজার',
+        },
+        content: {
+          intro: 'সোশ্যাল মিডিয়া ব্যানার, পোস্ট বা ফরম পূরণের জন্য ছবির সঠিক পিক্সেল সাইজ নির্ধারণ করুন।',
+          howToUse: [
+            'আপনার ছবিটি আপলোড করে মূল দৈর্ঘ্য-প্রস্থ দেখুন।',
+            'প্রয়োজনীয় দৈর্ঘ্য ও প্রস্থের মান লিখুন (অনুপাত লক রাখতে পারেন)।',
+            'Resize Image বাটনে ক্লিক করে নতুন সাইজের ছবি সেভ করে নিন।',
+          ],
+          privacy: 'সব ধরনের রিসাইজিং ব্রাউজার মেমরিতে স্থানীয়ভাবে সম্পন্ন হয়।',
+          limitations: 'খুব ছোট ছবির রেজোলিউশন মাত্রাতিরিক্ত বৃদ্ধি করলে ছবি ঝাপসা হতে পারে।',
+          faq: [
+            {
+              question: 'ছবির অনুপাত কি ঠিক থাকবে?',
+              answer: 'হ্যাঁ, লক অ্যাসপেক্ট রেশিও অন রাখলে ছবির অনুপাত কোনোভাবেই বিকৃত হবে না।',
+            },
+            {
+              question: 'কোন কোন ফরম্যাট সাপোর্ট করে?',
+              answer: 'JPG, PNG এবং WebP সব ফরম্যাটই সাপোর্ট করে।',
+            },
+          ],
+        },
+      },
+    },
     relatedToolIds: ['image-compressor', 'jpg-to-png'],
   },
   {
@@ -413,7 +632,7 @@ export const tools: ToolDefinition[] = [
         'Customize badge corner position, size, and styling with real-time preview.',
         'Download your ready-to-share composite image instantly.',
       ],
-      privacy: 'Your images and links never leave your browser. All QR generation and image compositing happen 100% locally.',
+      privacy: 'Your images and links never leave your browser. All QR generation and image compositing happen locally in your browser.',
       limitations: 'Make sure the badge is large enough to scan reliably when printing or uploading to compressed social media.',
       faq: [
         {
@@ -433,15 +652,74 @@ export const tools: ToolDefinition[] = [
         },
       ],
     },
+    localized: {
+      bn: {
+        name: 'ফটো কিউআর কোড',
+        description: 'যেকোনো ছবি বা পোস্টারের ওপর আকর্ষণীয় স্ক্যানযোগ্য কিউআর কোড ব্যাজ যুক্ত করুন।',
+        seo: {
+          title: 'ফটো কিউআর কোড জেনারেটর — Ahadex Tools',
+          description: 'ছবির ওপর সোশ্যাল মিডিয়া, ওয়েবসাইট, হোয়াটসঅ্যাপ বা ওয়াইফাই কিউআর কোড ব্যাজ যুক্ত করুন দ্রুত ও বিনামূল্যে।',
+          h1: 'ফটো কিউআর কোড জেনারেটর',
+        },
+        content: {
+          intro: 'ছবির আসল মান নষ্ট না করে সরাসরি পরিচ্ছন্ন ও স্পষ্ট কিউআর কোড ওয়াটারমার্ক ব্যাজ যুক্ত করুন পোস্টার বা ছবিতে।',
+          howToUse: [
+            'আপনার ছবি আপলোড করুন (JPG, PNG বা WebP)।',
+            'কিউআর কোডের ধরন বেছে নিন (সোশ্যাল, ওয়েবসাইট, হোয়াটসঅ্যাপ, ওয়াইফাই ইত্যাদি)।',
+            'আপনার লিঙ্ক বা তথ্য প্রদান করুন এবং ব্যাজের পজিশন ও সাইজ পছন্দ করুন।',
+            'লাইভ প্রিভিউ দেখে চূড়ান্ত ছবিটি সরাসরি ডাউনলোড করুন।',
+          ],
+          privacy: 'ছবি ও তথ্য কখনোই আপনার ব্রাউজারের বাইরে যাবে না। ১০০% স্থানীয় ডিভাইসে তৈরি হয়।',
+          limitations: 'সোশ্যাল মিডিয়া কম্প্রেশনেও যাতে সহজে স্ক্যান করা যায় সেজন্য ব্যাজটি পর্যাপ্ত সাইজের রাখুন।',
+          faq: [
+            {
+              question: 'যেকোনো সাধারণ মোবাইল ক্যামেরা দিয়ে কি স্ক্যান হবে?',
+              answer: 'হ্যাঁ! উচ্চমানের কনট্রাস্ট ও এরর কারেকশন থাকায় যেকোনো আইফোন বা অ্যান্ড্রয়েড ফোনে সহজে স্ক্যান হয়।',
+            },
+            {
+              question: 'ব্যাজের স্থান কি পরিবর্তন করা যায়?',
+              answer: 'হ্যাঁ, ছবির চারটি কোণায় (নিচে ডানে, নিচে বামে, ওপরে ডানে বা ওপরে বামে) বসানো সম্ভব।',
+            },
+          ],
+        },
+      },
+    },
     relatedToolIds: ['image-compressor', 'image-resizer', 'jpg-to-png'],
   },
 ];
 
-export function getToolBySlug(slug: string) {
+export function getToolBySlug(slug: string): ToolDefinition | undefined {
   return tools.find((tool) => tool.slug === slug);
 }
 
-export function getRelatedTools(tool: ToolDefinition) {
+export function getLocalizedTool(tool: ToolDefinition, language: 'en' | 'bn'): ToolDefinition {
+  if (language !== 'bn' || !tool.localized?.bn) {
+    return tool;
+  }
+  const bn = tool.localized.bn;
+  return {
+    ...tool,
+    name: bn.name || tool.name,
+    description: bn.description || tool.description,
+    seo: {
+      ...tool.seo,
+      title: bn.seo?.title || tool.seo.title,
+      description: bn.seo?.description || tool.seo.description,
+      h1: bn.seo?.h1 || tool.seo.h1,
+      canonical: bn.seo?.canonical || tool.seo.canonical,
+    },
+    content: {
+      ...tool.content,
+      intro: bn.content?.intro || tool.content.intro,
+      howToUse: bn.content?.howToUse || tool.content.howToUse,
+      privacy: bn.content?.privacy || tool.content.privacy,
+      limitations: bn.content?.limitations || tool.content.limitations,
+      faq: bn.content?.faq || tool.content.faq,
+    },
+  };
+}
+
+export function getRelatedTools(tool: ToolDefinition): ToolDefinition[] {
   // First get explicitly configured related tools
   const explicit = tool.relatedToolIds
     .map((id) => tools.find((candidate) => candidate.id === id))

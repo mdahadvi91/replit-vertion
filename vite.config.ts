@@ -19,6 +19,25 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     emptyOutDir: true,
+    chunkSizeWarningLimit: 600,
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (id.includes('node_modules/pdfjs-dist')) {
+            return 'vendor-pdfjs';
+          }
+          if (id.includes('node_modules/pdf-lib')) {
+            return 'vendor-pdflib';
+          }
+          if (id.includes('node_modules/tesseract.js')) {
+            return 'vendor-tesseract';
+          }
+          if (id.includes('node_modules/lucide-react')) {
+            return 'vendor-icons';
+          }
+        },
+      },
+    },
   },
 
   server: {

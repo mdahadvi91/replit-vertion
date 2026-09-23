@@ -19,12 +19,13 @@ import workerUrl from 'pdfjs-dist/build/pdf.worker.min.mjs?url';
 
 import {
   type ToolDefinition,
-  getRelatedTools,
 } from '@/registry/tool-registry';
 import { useI18n } from '@/i18n';
+import { useConsent } from '@/features/consent';
 import { trackEvent } from '@/lib/analytics';
 import { AdSlot } from '@/components/ads/AdSlot';
 import { adConfig } from '@/components/ads/adConfig';
+import { RelatedTools } from '@/components/tool/RelatedTools';
 
 GlobalWorkerOptions.workerSrc = workerUrl;
 
@@ -60,73 +61,80 @@ async function createPdfPreview(
     });
 
     const pdf = await loadingTask.promise;
-    const pageCount = pdf.numPages;
+    try {
+      const pageCount = pdf.numPages;
 
-    if (pageCount < 1) {
+      if (pageCount < 1) {
+        return {
+          previewUrl: null,
+          pageCount: 0,
+        };
+      }
+
+      const page = await pdf.getPage(1);
+
+      const baseViewport = page.getViewport({
+        scale: 1,
+      });
+
+      const targetWidth = 150;
+
+      const scale = Math.min(
+        targetWidth / baseViewport.width,
+        0.32,
+      );
+
+      const viewport = page.getViewport({
+        scale,
+      });
+
+      const canvas = document.createElement('canvas');
+
+      const context = canvas.getContext('2d', {
+        alpha: false,
+      });
+
+      if (!context) {
+        return {
+          previewUrl: null,
+          pageCount,
+        };
+      }
+
+      canvas.width = Math.max(
+        1,
+        Math.ceil(viewport.width),
+      );
+
+      canvas.height = Math.max(
+        1,
+        Math.ceil(viewport.height),
+      );
+
+      await page.render({
+        canvas,
+        canvasContext: context,
+        viewport,
+      }).promise;
+
+      const previewUrl = canvas.toDataURL(
+        'image/jpeg',
+        0.78,
+      );
+
+      canvas.width = 1;
+      canvas.height = 1;
+      await page.cleanup();
+
       return {
-        previewUrl: null,
-        pageCount: 0,
-      };
-    }
-
-    const page = await pdf.getPage(1);
-
-    const baseViewport = page.getViewport({
-      scale: 1,
-    });
-
-    const targetWidth = 150;
-
-    const scale = Math.min(
-      targetWidth / baseViewport.width,
-      0.32,
-    );
-
-    const viewport = page.getViewport({
-      scale,
-    });
-
-    const canvas = document.createElement('canvas');
-
-    const context = canvas.getContext('2d', {
-      alpha: false,
-    });
-
-    if (!context) {
-      return {
-        previewUrl: null,
+        previewUrl,
         pageCount,
       };
+    } finally {
+      try {
+        await pdf.cleanup();
+      } catch {}
     }
-
-    canvas.width = Math.max(
-      1,
-      Math.ceil(viewport.width),
-    );
-
-    canvas.height = Math.max(
-      1,
-      Math.ceil(viewport.height),
-    );
-
-    await page.render({
-      canvas,
-      canvasContext: context,
-      viewport,
-    }).promise;
-
-    const previewUrl = canvas.toDataURL(
-      'image/jpeg',
-      0.78,
-    );
-
-    canvas.width = 1;
-    canvas.height = 1;
-
-    return {
-      previewUrl,
-      pageCount,
-    };
   } catch (error) {
     console.error(
       'Failed to generate PDF preview:',
@@ -146,6 +154,7 @@ export function MergePdfTool({
   tool: ToolDefinition;
 }) {
   const { copy, language } = useI18n();
+  const { consent } = useConsent();
 
   const fileInputRef =
     useRef<HTMLInputElement | null>(null);
@@ -989,7 +998,7 @@ export function MergePdfTool({
             </div>
 
             <AdSlot
-              enabled={true}
+              enabled={consent.advertising}
               slot={adConfig.toolSlot}
               label="Sponsored Ad"
             />
@@ -1086,69 +1095,7 @@ export function MergePdfTool({
           </aside>
         </div>
 
-        <div
-          style={{
-            marginTop: 40,
-          }}
-        >
-          <div className="section-heading">
-            <div>
-              <span className="eyebrow">
-                {copy.exploreHeader}
-              </span>
-
-              <h2>
-                {copy.relatedToolsTitle}
-              </h2>
-            </div>
-          </div>
-
-          <div className="tool-grid">
-            {getRelatedTools(tool).map(
-              (candidate) => {
-                const Icon =
-                  candidate.icon;
-
-                return (
-                  <Link
-                    key={candidate.id}
-                    to={candidate.route}
-                    className="tool-card"
-                    style={
-                      {
-                        '--tool-color':
-                          candidate.color,
-                      } as React.CSSProperties
-                    }
-                  >
-                    <div>
-                      <span className="tool-icon">
-                        <Icon size={21} />
-                      </span>
-
-                      <h3>
-                        {candidate.name}
-                      </h3>
-
-                      <p>
-                        {candidate.description}
-                      </p>
-                    </div>
-
-                    <div className="tool-card-foot">
-                      <span>
-                        {candidate.status ===
-                        'live'
-                          ? copy.liveNow
-                          : copy.planned}
-                      </span>
-                    </div>
-                  </Link>
-                );
-              },
-            )}
-          </div>
-        </div>
+        <RelatedTools tool={tool} />
       </div>
     </main>
   );

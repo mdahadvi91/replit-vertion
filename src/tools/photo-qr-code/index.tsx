@@ -21,11 +21,13 @@ import {
   CheckCircle2,
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { type ToolDefinition, getRelatedTools } from '@/registry/tool-registry';
+import { type ToolDefinition } from '@/registry/tool-registry';
 import { useI18n } from '@/i18n';
+import { useConsent } from '@/features/consent';
 import { trackEvent } from '@/lib/analytics';
 import { AdSlot } from '@/components/ads/AdSlot';
 import { adConfig } from '@/components/ads/adConfig';
+import { RelatedTools } from '@/components/tool/RelatedTools';
 
 // Payload Platform Types
 export type PayloadType =
@@ -130,6 +132,7 @@ const SOCIAL_NETWORKS: Array<{
 
 export function PhotoQrCodeTool({ tool }: { tool: ToolDefinition }) {
   const { copy, language } = useI18n();
+  const { consent } = useConsent();
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   // File & Canvas states
@@ -1369,43 +1372,9 @@ export function PhotoQrCodeTool({ tool }: { tool: ToolDefinition }) {
               <p>{tool.content.limitations}</p>
             </div>
 
-            {/* 5. Related Tools Section */}
-            <div style={{ marginTop: 44, borderTop: '1px solid hsl(var(--border))', paddingTop: 32 }}>
-              <div className="section-heading">
-                <div>
-                  <span className="eyebrow">{copy.exploreHeader}</span>
-                  <h2>{language === 'bn' ? '৫. সম্পর্কিত অন্যান্য টুলস' : '5. Related Tools'}</h2>
-                </div>
-              </div>
-              <div className="tool-grid" style={{ marginTop: 20 }}>
-                {getRelatedTools(tool).map((candidate) => {
-                  const Icon = candidate.icon;
-                  return (
-                    <Link
-                      key={candidate.id}
-                      to={candidate.route}
-                      className="tool-card"
-                      style={{ '--tool-color': candidate.color } as any}
-                    >
-                      <div>
-                        <span className="tool-icon">
-                          <Icon size={21} />
-                        </span>
-                        <h3>{candidate.name}</h3>
-                        <p>{candidate.description}</p>
-                      </div>
-                      <div className="tool-card-foot">
-                        <span>{candidate.status === 'live' ? copy.liveNow : copy.planned}</span>
-                      </div>
-                    </Link>
-                  );
-                })}
-              </div>
-            </div>
-
-            {/* 6. FAQ Section */}
+            {/* FAQ Section */}
             <div className="tool-content" style={{ marginTop: 44, borderTop: '1px solid hsl(var(--border))', paddingTop: 32 }}>
-              <h2>{language === 'bn' ? '৬. সচরাচর জিজ্ঞাসিত প্রশ্ন (FAQ)' : '6. Frequently Asked Questions (FAQ)'}</h2>
+              <h2>{language === 'bn' ? '৬. সচরাচর জিজ্ঞাসিত প্রশ্ন (FAQ)' : 'Frequently Asked Questions (FAQ)'}</h2>
               <div className="faq-list">
                 {tool.content.faq.map(({ question, answer }) => (
                   <details key={question} className="tool-faq">
@@ -1418,9 +1387,14 @@ export function PhotoQrCodeTool({ tool }: { tool: ToolDefinition }) {
 
             {/* Sponsored Ad Slot */}
             <div style={{ marginTop: 32 }}>
-              <AdSlot enabled={true} slot={adConfig.toolSlot} label="Sponsored Ad" />
+              <AdSlot enabled={consent.advertising} slot={adConfig.toolSlot} label="Sponsored Ad" />
             </div>
           </section>
+        </div>
+
+        {/* Related Tools Section */}
+        <div style={{ marginTop: 44 }}>
+          <RelatedTools tool={tool} />
         </div>
       </div>
     </main>

@@ -23,6 +23,17 @@ export type Copy = {
   exploreTools: string;
   whyAhadex: string;
   searchTools: string;
+  searchNoResults: string;
+  searchViewAll: string;
+  clearSearch: string;
+  categories: {
+    All: string;
+    Images: string;
+    Documents: string;
+    Text: string;
+    Developer: string;
+    [key: string]: string;
+  };
   browseAllTools: string;
   liveNow: string;
   planned: string;
@@ -77,7 +88,6 @@ export type Copy = {
   removeFromFavorites: string;
   filterCountSuffix: string;
   noToolsMatch: string;
-  clearSearch: string;
 
   // About Page
   aboutEyebrow: string;
@@ -184,6 +194,19 @@ const english: Copy = {
   exploreTools: 'Explore tools',
   whyAhadex: 'Why Ahadex?',
   searchTools: 'Search tools…',
+  searchNoResults: 'No tools found',
+  searchViewAll: 'View all results',
+  clearSearch: 'Clear search',
+  categories: {
+    All: 'All Tools',
+    Images: 'Images',
+    Documents: 'Documents',
+    Image: 'Images',
+    Document: 'Documents',
+    Text: 'Text',
+    Utility: 'Utility',
+    Developer: 'Developer',
+  },
   browseAllTools: 'Browse all tools',
   liveNow: 'Live now',
   planned: 'Planned',
@@ -202,7 +225,7 @@ const english: Copy = {
   heroEyebrow: 'Fast, Private Web Utilities',
   heroH1: 'Everyday digital tasks, done in seconds.',
   heroCopy: 'Ahadex brings lightweight, zero-upload browser tools for images, documents, text, and code — completely free, private, and always ready.',
-  microTrust: '100% Client-Side · No Sign-Up Needed · Instant Results',
+  microTrust: 'Local Browser Processing · No Sign-Up Needed · Instant Results',
   homeStartHereEyebrow: 'Explore Toolkit',
   homeStartHereTitle: 'Zero clutter. Pure utility.',
   homeStartHereCopy: 'Purpose-built utilities designed to work directly inside your browser. No server uploads, no wait queues, and no noisy dashboard mazes.',
@@ -224,7 +247,7 @@ const english: Copy = {
   faqTitle: 'Questions, answered plainly.',
   faqItems: [
     ['Are Ahadex tools free to use?', 'Yes. Ahadex is designed to keep the core utility of every released tool free for everyday work.'],
-    ['Do you upload my files?', 'The live Image Compressor processes files directly in your browser. Files are never uploaded to an Ahadex server.'],
+    ['Do you upload my files?', 'No. Your files are processed locally in your browser and are not uploaded to Ahadex servers.'],
     ['Will more tools be added?', 'Yes. New tools are added when they solve a real task, work reliably, and maintain privacy.'],
     ['Can I suggest a tool?', 'Yes! Send us a note through the Contact page or directly on WhatsApp.'],
   ],
@@ -234,7 +257,7 @@ const english: Copy = {
   // Tools Page
   toolsPageEyebrow: 'The library',
   toolsPageH1: 'Smart tools for swift work.',
-  toolsPageCopy: 'Handcrafted browser utilities designed to solve everyday image, document, text, and developer tasks instantly — 100% private, client-side, and ad-light.',
+  toolsPageCopy: 'Handcrafted browser utilities designed to solve everyday image, document, text, and developer tasks instantly. Your files are processed locally in your browser and are not uploaded to servers.',
   allCategory: 'All Tools',
   favoritesCategory: 'Favorites',
   noFavoritesYet: 'No favorite tools pinned yet! Click the star icon (★) on any tool card to quickly access your most used tools here.',
@@ -242,7 +265,6 @@ const english: Copy = {
   removeFromFavorites: 'Remove from favorites',
   filterCountSuffix: 'tools',
   noToolsMatch: 'No tools match',
-  clearSearch: 'Clear search',
 
   // About Page
   aboutEyebrow: 'About Ahadex Tools',
@@ -394,6 +416,19 @@ const bangla: Copy = {
   exploreTools: 'টুলস দেখুন',
   whyAhadex: 'কেন Ahadex?',
   searchTools: 'টুল খুঁজুন…',
+  searchNoResults: 'কোনো টুল খুঁজে পাওয়া যায়নি',
+  searchViewAll: 'সব ফলাফল দেখুন',
+  clearSearch: 'মুছে ফেলুন',
+  categories: {
+    All: 'সব টুলস',
+    Images: 'ছবি (Images)',
+    Documents: 'ডকুমেন্ট (Documents)',
+    Image: 'ছবি (Images)',
+    Document: 'ডকুমেন্ট (Documents)',
+    Text: 'টেক্সট (Text)',
+    Utility: 'ইউটিলিটি (Utility)',
+    Developer: 'ডেভেলপার (Developer)',
+  },
   browseAllTools: 'সব টুলস দেখুন',
   liveNow: 'এখন চালু আছে',
   planned: 'শীঘ্রই আসছে',
@@ -412,7 +447,7 @@ const bangla: Copy = {
   heroEyebrow: 'দ্রুত ও নির্ভরযোগ্য ব্রাউজার টুলস',
   heroH1: 'কঠিন ও জটিল কাজগুলো এবার হবে নিমেষেই সহজ।',
   heroCopy: 'Ahadex Tools নিয়ে এসেছে আপনার দৈনন্দিন ডিজিটাল কাজের প্রয়োজনীয় সব টুলস — দ্রুত, নির্ভরযোগ্য এবং কোনো বাড়তি ঝামেলা ছাড়াই প্রস্তুত।',
-  microTrust: 'ব্রাউজারেই প্রসেসিং · কোনো অ্যাকাউন্ট দরকার নেই · ১০০% ফ্রি',
+  microTrust: 'লোকাল ব্রাউজার প্রসেসিং · অ্যাকাউন্ট ছাড়াই ব্যবহারযোগ্য · তাৎক্ষণিক ফলাফল',
   homeStartHereEyebrow: 'শুরু করুন এখান থেকেই',
   homeStartHereTitle: 'একটি ক্লিকের দূরত্বে সমাধান।',
   homeStartHereCopy: 'ছবি, ডকুমেন্ট, টেক্সট এবং ডেভেলপারদের কাজের জন্য প্রস্তুত হালকা ও নির্ভুল টুলস। কোনো অপ্রয়োজনীয় জটিলতা ছাড়া কেবল কাজের পরিবেশ।',
@@ -434,7 +469,7 @@ const bangla: Copy = {
   faqTitle: 'সাধারণ প্রশ্নের সহজ উত্তর।',
   faqItems: [
     ['Ahadex টুলস কি সম্পূর্ণ ফ্রি?', 'হ্যাঁ, Ahadex এর সকল টুলস দৈনন্দিন কাজের জন্য সম্পূর্ণ ফ্রি এবং কোনো সাবস্ক্রিপশন ছাড়াই ব্যবহার করা যায়।'],
-    ['আমার ফাইল কি আপনাদের সার্ভারে আপলোড হয়?', 'না! Image Compressor টুলটি আপনার ব্রাউজারের নিজস্ব মেমরিতে ফাইল প্রসেস করে। কোনো ফাইল সার্ভারে আপলোড করা হয় না।'],
+    ['আমার ফাইল কি আপনাদের সার্ভারে আপলোড হয়?', 'না। আপনার ফাইলগুলো লোকাল ব্রাউজারে প্রসেস হয় এবং Ahadex সার্ভারে আপলোড করা হয় না।'],
     ['ভবিষ্যতে কি আরো নতুন টুলস আসবে?', 'অবশ্যই! ব্যবহারকারীদের বাস্তব প্রয়োজন ও সিকিউরিটির বিষয়টি নিশ্চিত করে নিয়মিত নতুন টুলস যুক্ত করা হচ্ছে।'],
     ['আমি কি নতুন কোনো টুলের পরামর্শ দিতে পারি?', 'হ্যাঁ! আমাদের Contact পেজের মাধ্যমে অথবা সরাসরি হোয়াটসঅ্যাপে আপনার পছন্দের টুলের আইডিয়া শেয়ার করতে পারেন।'],
   ],
@@ -444,7 +479,7 @@ const bangla: Copy = {
   // Tools Page
   toolsPageEyebrow: 'টুলস লাইব্রেরি',
   toolsPageH1: 'সহজ সমাধান, দ্রুত কাজের নিশ্চয়তা।',
-  toolsPageCopy: 'ছবি, ডকুমেন্ট, টেক্সট এবং কোডিং সংক্রান্ত দৈনন্দিন কাজের জন্য তৈরি দ্রুত ও নিরাপদ ব্রাউজার টুলস — ১০০% ক্লায়েন্ট-সাইড এবং বিজ্ঞাপন-মুক্ত ভাব।',
+  toolsPageCopy: 'ছবি, ডকুমেন্ট, টেক্সট এবং কোডিং সংক্রান্ত দৈনন্দিন কাজের জন্য তৈরি দ্রুত ও নির্ভরযোগ্য ব্রাউজার টুলস। আপনার ফাইল লোকাল ব্রাউজারে প্রসেস হয় এবং সার্ভারে আপলোড করা হয় না।',
   allCategory: 'সব টুলস',
   favoritesCategory: 'পছন্দের টুলস',
   noFavoritesYet: 'এখনো কোনো ফেভারিট টুল পিন করা হয়নি! যেকোনো টুল কার্ডের ওপরের স্টার (★) আইকনে ক্লিক করে আপনার প্রয়োজনীয় টুলগুলো এখানে সহজে পিন করে রাখুন।',
@@ -452,7 +487,6 @@ const bangla: Copy = {
   removeFromFavorites: 'ফেভারিট থেকে সরান',
   filterCountSuffix: 'টি টুল',
   noToolsMatch: 'এমন কোনো টুল পাওয়া যায়নি',
-  clearSearch: 'সার্চ রিসেট করুন',
 
   // About Page
   aboutEyebrow: 'Ahadex Tools সম্পর্কে',

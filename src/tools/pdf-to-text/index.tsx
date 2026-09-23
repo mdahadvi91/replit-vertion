@@ -21,12 +21,13 @@ import {
 import { Link } from 'react-router-dom';
 import * as pdfjsLib from 'pdfjs-dist';
 import pdfjsWorker from 'pdfjs-dist/build/pdf.worker.min.mjs?url';
-import Tesseract from 'tesseract.js';
-import { type ToolDefinition, getRelatedTools } from '@/registry/tool-registry';
+import type { ToolDefinition } from '@/registry/tool-registry';
 import { useI18n } from '@/i18n';
+import { useConsent } from '@/features/consent';
 import { trackEvent } from '@/lib/analytics';
 import { AdSlot } from '@/components/ads/AdSlot';
 import { adConfig } from '@/components/ads/adConfig';
+import { RelatedTools } from '@/components/tool/RelatedTools';
 
 // Set up PDF.js worker
 pdfjsLib.GlobalWorkerOptions.workerSrc = pdfjsWorker;
@@ -42,6 +43,7 @@ type OcrLang = 'eng' | 'ben' | 'ben+eng' | 'hin' | 'spa' | 'fra' | 'ara';
 
 export function PdfToTextTool({ tool }: { tool: ToolDefinition }) {
   const { copy, language } = useI18n();
+  const { consent } = useConsent();
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   // File state
@@ -147,6 +149,7 @@ export function PdfToTextTool({ tool }: { tool: ToolDefinition }) {
     setExtractedText('');
     trackEvent('tool_start', { tool_id: tool.id });
 
+    let doc: any = null;
     try {
       const loadingTask = pdfjsLib.getDocument({
         data: new Uint8Array(fileBuffer.slice(0)),
@@ -154,7 +157,7 @@ export function PdfToTextTool({ tool }: { tool: ToolDefinition }) {
       });
 
       setStatusMessage(language === 'bn' ? 'PDF লোড করা হচ্ছে...' : 'Loading PDF into memory...');
-      const doc = await loadingTask.promise;
+      doc = await loadingTask.promise;
       const numPages = doc.numPages;
       setPdfPageCount(numPages);
 
@@ -177,6 +180,7 @@ export function PdfToTextTool({ tool }: { tool: ToolDefinition }) {
 
           totalCharsFound += pageStr.length;
           pageTexts.push(pageStr);
+          await page.cleanup();
           setProgressPercent(Math.round(10 + (i / numPages) * 35));
         }
 
@@ -214,39 +218,45 @@ export function PdfToTextTool({ tool }: { tool: ToolDefinition }) {
         );
 
         fullText = '';
-        for (let i = 1; i <= numPages; i++) {
-          setStatusMessage(
-            language === 'bn'
-              ? `পৃষ্ঠা ${i} / ${numPages} OCR স্ক্যান করা হচ্ছে...`
-              : `Scanning page ${i} of ${numPages} via OCR...`
-          );
+        // Dynamically import Tesseract so it is only loaded on demand
+        const { default: Tesseract } = await import('tesseract.js');
+        const worker = await Tesseract.createWorker(ocrLang);
 
-          const page = await doc.getPage(i);
-          const viewport = page.getViewport({ scale: 2.0 }); // Higher scale for better OCR accuracy
-          const canvas = document.createElement('canvas');
-          canvas.width = viewport.width;
-          canvas.height = viewport.height;
-          const context = canvas.getContext('2d');
+        try {
+          for (let i = 1; i <= numPages; i++) {
+            setStatusMessage(
+              language === 'bn'
+                ? `পৃষ্ঠা ${i} / ${numPages} OCR স্ক্যান করা হচ্ছে...`
+                : `Scanning page ${i} of ${numPages} via OCR...`
+            );
 
-          if (context) {
-            await (page.render as any)({ canvas, canvasContext: context, viewport }).promise;
+            const page = await doc.getPage(i);
+            const viewport = page.getViewport({ scale: 2.0 });
+            const canvas = document.createElement('canvas');
+            canvas.width = viewport.width;
+            canvas.height = viewport.height;
+            const context = canvas.getContext('2d');
 
-            const ocrResult = await Tesseract.recognize(canvas, ocrLang, {
-              logger: (m) => {
-                if (m.status === 'recognizing text' && m.progress) {
-                  const pageBase = 40 + ((i - 1) / numPages) * 55;
-                  const pageProgress = (m.progress / numPages) * 55;
-                  setProgressPercent(Math.round(pageBase + pageProgress));
-                }
-              },
-            });
+            if (context) {
+              await (page.render as any)({ canvas, canvasContext: context, viewport }).promise;
 
-            const recognizedText = ocrResult.data.text.trim();
-            if (includePageHeaders) {
-              fullText += `\n--- ${language === 'bn' ? 'পৃষ্ঠা' : 'Page'} ${i} [OCR] ---\n`;
+              const ocrResult = await worker.recognize(canvas);
+
+              canvas.width = 1;
+              canvas.height = 1;
+              await page.cleanup();
+
+              const recognizedText = ocrResult.data.text.trim();
+              if (includePageHeaders) {
+                fullText += `\n--- ${language === 'bn' ? 'পৃষ্ঠা' : 'Page'} ${i} [OCR] ---\n`;
+              }
+              fullText += recognizedText + '\n';
             }
-            fullText += recognizedText + '\n';
+            const pageBase = 40 + ((i - 1) / numPages) * 55;
+            setProgressPercent(Math.round(pageBase + (1 / numPages) * 55));
           }
+        } finally {
+          await worker.terminate();
         }
       }
 
@@ -276,6 +286,10 @@ export function PdfToTextTool({ tool }: { tool: ToolDefinition }) {
       setStatus('error');
       setStatusMessage(err?.message || (language === 'bn' ? 'টেক্সট এক্সট্রাক্ট করতে ব্যর্থ হয়েছে।' : 'Failed to extract text.'));
       trackEvent('tool_error', { tool_id: tool.id, error: err?.message });
+    } finally {
+      try {
+        if (doc) await doc.cleanup();
+      } catch {}
     }
   };
 
@@ -889,38 +903,7 @@ export function PdfToTextTool({ tool }: { tool: ToolDefinition }) {
             </div>
 
             {/* 5. Related Tools Section */}
-            <div style={{ marginTop: 44, borderTop: '1px solid hsl(var(--border))', paddingTop: 32 }}>
-              <div className="section-heading">
-                <div>
-                  <span className="eyebrow">{copy.exploreHeader}</span>
-                  <h2>{language === 'bn' ? '৫. সম্পর্কিত অন্যান্য টুলস' : '5. Related Tools'}</h2>
-                </div>
-              </div>
-              <div className="tool-grid" style={{ marginTop: 20 }}>
-                {getRelatedTools(tool).map((candidate) => {
-                  const Icon = candidate.icon;
-                  return (
-                    <Link
-                      key={candidate.id}
-                      to={candidate.route}
-                      className="tool-card"
-                      style={{ '--tool-color': candidate.color } as any}
-                    >
-                      <div>
-                        <span className="tool-icon">
-                          <Icon size={21} />
-                        </span>
-                        <h3>{candidate.name}</h3>
-                        <p>{candidate.description}</p>
-                      </div>
-                      <div className="tool-card-foot">
-                        <span>{candidate.status === 'live' ? copy.liveNow : copy.planned}</span>
-                      </div>
-                    </Link>
-                  );
-                })}
-              </div>
-            </div>
+            <RelatedTools tool={tool} />
 
             {/* 6. FAQ Section */}
             <div className="tool-content" style={{ marginTop: 44, borderTop: '1px solid hsl(var(--border))', paddingTop: 32 }}>
@@ -937,7 +920,7 @@ export function PdfToTextTool({ tool }: { tool: ToolDefinition }) {
 
             {/* Sponsored Ad Slot */}
             <div style={{ marginTop: 32 }}>
-              <AdSlot enabled={true} slot={adConfig.toolSlot} label="Sponsored Ad" />
+              <AdSlot enabled={consent.advertising} slot={adConfig.toolSlot} label="Sponsored Ad" />
             </div>
           </section>
         </div>

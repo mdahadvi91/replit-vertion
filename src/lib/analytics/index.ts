@@ -13,7 +13,10 @@ export type AnalyticsEventName =
   | 'tool_favorite_toggle'
   | 'related_tool_click'
   | 'theme_change'
-  | 'language_change';
+  | 'language_change'
+  | 'contact_form_submit'
+  | 'contact_click_email'
+  | 'contact_click_whatsapp';
 
 type EventParams = Record<string, string | number | boolean | undefined>;
 

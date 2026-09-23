@@ -3,14 +3,16 @@ import { Link } from 'react-router-dom';
 import { useI18n } from '@/i18n';
 import { useFavoriteTools } from '@/features/favorites/useFavorites';
 import { trackEvent } from '@/lib/analytics';
-import type { ToolDefinition } from '@/registry/tool-types';
+import { getLocalizedTool, type ToolDefinition } from '@/registry/tool-registry';
 import type { CSSProperties } from 'react';
 
-export default function ToolCard({ tool, index }: { tool: ToolDefinition; index: number }) {
-  const { copy } = useI18n();
+export default function ToolCard({ tool: rawTool, index }: { tool: ToolDefinition; index: number }) {
+  const { copy, language } = useI18n();
+  const tool = getLocalizedTool(rawTool, language);
   const { isFavorite, toggleFavorite } = useFavoriteTools();
   const Icon = tool.icon;
   const isFav = isFavorite(tool.id);
+
   const favButton = (
     <button
       type="button"
@@ -27,6 +29,7 @@ export default function ToolCard({ tool, index }: { tool: ToolDefinition; index:
       <Star size={16} fill={isFav ? 'currentColor' : 'none'} strokeWidth={isFav ? 1.5 : 2} />
     </button>
   );
+
   const content = (
     <>
       <div>
@@ -40,8 +43,19 @@ export default function ToolCard({ tool, index }: { tool: ToolDefinition; index:
       <div className="tool-card-foot"><span>{tool.status === 'live' ? copy.liveNow : copy.planned}</span><ArrowRight size={16} /></div>
     </>
   );
+
   if (tool.status !== 'live') {
     return <div className="tool-card reveal" style={{ '--tool-color': tool.color, animationDelay: `${index * 55}ms` } as CSSProperties} aria-label={`${tool.name} — ${copy.planned}`}>{content}</div>;
   }
-  return <Link to={tool.route} className="tool-card reveal" style={{ '--tool-color': tool.color, animationDelay: `${index * 55}ms` } as CSSProperties} onClick={() => trackEvent('tool_open', { tool_id: tool.id, tool_slug: tool.slug, category: tool.category })}>{content}</Link>;
+
+  return (
+    <Link
+      to={tool.route}
+      className="tool-card reveal"
+      style={{ '--tool-color': tool.color, animationDelay: `${index * 55}ms` } as CSSProperties}
+      onClick={() => trackEvent('tool_open', { tool_id: tool.id, tool_slug: tool.slug, category: tool.category })}
+    >
+      {content}
+    </Link>
+  );
 }

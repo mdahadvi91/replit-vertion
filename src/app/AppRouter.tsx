@@ -13,13 +13,14 @@ import {
   Routes,
   useLocation,
 } from 'react-router-dom';
-import { categoryList, getToolBySlug } from '@/registry/tool-registry';
+import { categoryList, getToolBySlug, getLocalizedTool } from '@/registry/tool-registry';
 import { AdSenseProvider } from '@/components/ads/AdSenseProvider';
 import { ErrorBoundary } from '@/components/error/ErrorBoundary';
 import { ErrorFallback } from '@/components/error/ErrorFallback';
 import { I18nProvider, useI18n, type Language } from '@/i18n';
 import { enableAnalytics, trackPageView } from '@/lib/analytics';
 import { updateDocumentMeta } from '@/lib/seo';
+import { useConsent, type ConsentChoice } from '@/features/consent';
 import HomePage from '@/pages/HomePage';
 import ToolsPage from '@/pages/ToolsPage';
 import ToolPage from '@/pages/ToolPage';
@@ -33,7 +34,6 @@ import { Footer } from '@/components/layout/Footer';
 
 const SITE_URL = (import.meta.env.VITE_SITE_URL as string | undefined) || 'https://ahadex.online';
 type Theme = 'light' | 'dark';
-type ConsentChoice = 'unknown' | 'essential' | 'measurement';
 
 const metaByLang: Record<Language, Record<string, { title: string; description: string; h1: string }>> = {
   en: {
@@ -44,7 +44,7 @@ const metaByLang: Record<Language, Record<string, { title: string; description: 
     },
     '/tools': {
       title: 'Online Tool Library — Ahadex Tools',
-      description: 'Handcrafted browser utilities designed to solve everyday tasks instantly — 100% private, client-side, and ad-light.',
+      description: 'Handcrafted browser utilities designed to solve everyday tasks instantly. Your files are processed locally in your browser and are not uploaded to servers.',
       h1: 'Smart tools for swift work.',
     },
     '/about': {
@@ -91,7 +91,7 @@ const metaByLang: Record<Language, Record<string, { title: string; description: 
     },
     '/tools': {
       title: 'টুলস সংগ্রহশালা — Ahadex Tools',
-      description: 'দৈনন্দিন কাজের জন্য তৈরি দ্রুত ও নিরাপদ ব্রাউজার টুলস — কোনো ফাইল আপলোড ছাড়াই ১০০% ক্লায়েন্ট-সাইড।',
+      description: 'দৈনন্দিন কাজের জন্য তৈরি দ্রুত ও নির্ভরযোগ্য ব্রাউজার টুলস। আপনার ফাইল নিরাপদে লোকাল ব্রাউজারে প্রসেস হয় এবং সার্ভারে আপলোড করা হয় না।',
       h1: 'সহজ সমাধান, দ্রুত কাজের নিশ্চয়তা।',
     },
     '/about': {
@@ -136,7 +136,8 @@ function usePageMeta(pathname: string) {
   const { language } = useI18n();
   useEffect(() => {
     const toolSlug = pathname.startsWith('/tool/') ? pathname.replace('/tool/', '') : '';
-    const tool = toolSlug ? getToolBySlug(toolSlug) : undefined;
+    const rawTool = toolSlug ? getToolBySlug(toolSlug) : undefined;
+    const tool = rawTool ? getLocalizedTool(rawTool, language) : undefined;
     const categorySlug = pathname.startsWith('/category/') ? pathname.replace('/category/', '') : '';
     const category = categoryList.find((candidate) => candidate.toLowerCase() === categorySlug.toLowerCase() && candidate !== 'All');
 
@@ -200,7 +201,7 @@ function ConsentBanner({ choice, setChoice }: { choice: ConsentChoice; setChoice
         <button className="button button-ghost" type="button" onClick={() => setChoice('essential')}>
           {copy.onlyEssential}
         </button>
-        <button className="button button-primary" type="button" onClick={() => setChoice('measurement')}>
+        <button className="button button-primary" type="button" onClick={() => setChoice('all')}>
           {copy.allowMeasurement}
         </button>
       </div>
@@ -240,16 +241,7 @@ function FixedToolsButton() {
 
 function AppLayout() {
   const [theme, setTheme] = useState<Theme>(() => localStorage.getItem('ahadex-theme') === 'dark' ? 'dark' : 'light');
-  const [consent, setConsentState] = useState<ConsentChoice>(() => {
-    const saved = localStorage.getItem('ahadex-consent');
-    return saved === 'essential' || saved === 'measurement' ? saved : 'unknown';
-  });
-
-  const setConsent = (next: ConsentChoice) => {
-    localStorage.setItem('ahadex-consent', next);
-    setConsentState(next);
-    if (next === 'measurement') enableAnalytics();
-  };
+  const { choice, consent, setConsent } = useConsent();
 
   useEffect(() => {
     document.documentElement.classList.toggle('dark', theme === 'dark');
@@ -257,12 +249,12 @@ function AppLayout() {
   }, [theme]);
 
   useEffect(() => {
-    if (consent === 'measurement') enableAnalytics();
-  }, [consent]);
+    if (consent.analytics) enableAnalytics();
+  }, [consent.analytics]);
 
   return (
     <>
-      <AdSenseProvider enabled={consent === 'measurement'} />
+      <AdSenseProvider enabled={consent.advertising} />
       <div className="app-shell">
         <Header theme={theme} setTheme={setTheme} />
         <Routes>
@@ -282,7 +274,7 @@ function AppLayout() {
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
         <Footer />
-        <ConsentBanner choice={consent} setChoice={setConsent} />
+        <ConsentBanner choice={choice} setChoice={setConsent} />
         <FixedToolsButton />
       </div>
     </>
@@ -313,4 +305,3 @@ export function AppRouter() {
     </BrowserRouter>
   );
 }
-

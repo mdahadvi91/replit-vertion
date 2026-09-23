@@ -18,6 +18,8 @@ import { getRelatedTools, type ToolDefinition } from '@/registry/tool-registry';
 import { trackEvent } from '@/lib/analytics';
 import { ImageValidationError, validateImageFile } from '@/lib/image-validation';
 import { useI18n } from '@/i18n';
+import { useConsent } from '@/features/consent';
+import { RelatedTools } from '@/components/tool/RelatedTools';
 import {
   compressImage,
   compressionProfiles,
@@ -48,58 +50,9 @@ function ToolBreadcrumb({ tool }: { tool: ToolDefinition }) {
   );
 }
 
-function RelatedTools({ tool }: { tool: ToolDefinition }) {
-  const { copy } = useI18n();
-  const related = getRelatedTools(tool);
-  if (!related.length) return null;
-
-  return (
-    <section className="related-tools" aria-labelledby="related-tools-heading">
-      <div className="section-heading">
-        <div>
-          <span className="eyebrow">{copy.exploreHeader}</span>
-          <h2 id="related-tools-heading">{copy.relatedToolsTitle}</h2>
-        </div>
-      </div>
-      <div className="tool-grid">
-        {related.map((candidate) => {
-          const Icon = candidate.icon;
-          return (
-            <Link
-              key={candidate.id}
-              to={candidate.route}
-              className="tool-card reveal"
-              style={{ '--tool-color': candidate.color } as CSSProperties}
-              data-testid={`link-related-tool-${candidate.slug}`}
-              onClick={() =>
-                trackEvent('related_tool_click', {
-                  source_tool_id: tool.id,
-                  related_tool_id: candidate.id,
-                  related_tool_slug: candidate.slug,
-                })
-              }
-            >
-              <div>
-                <span className="tool-icon">
-                  <Icon size={21} />
-                </span>
-                <h3>{candidate.name}</h3>
-                <p>{candidate.description}</p>
-              </div>
-              <div className="tool-card-foot">
-                <span>{candidate.status === 'live' ? copy.liveNow : copy.planned}</span>
-                <ArrowRight size={16} />
-              </div>
-            </Link>
-          );
-        })}
-      </div>
-    </section>
-  );
-}
-
 export function ImageCompressor({ tool }: { tool: ToolDefinition }) {
   const { copy, language } = useI18n();
+  const { consent } = useConsent();
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const outputUrlRef = useRef('');
   const runIdRef = useRef(0);
@@ -380,7 +333,7 @@ export function ImageCompressor({ tool }: { tool: ToolDefinition }) {
             </div>
 
             {/* Content-rich, policy-compliant ad placement */}
-            <AdSlot enabled={true} slot={adConfig.toolSlot} label="Sponsored Ad" />
+            <AdSlot enabled={consent.advertising} slot={adConfig.toolSlot} label="Sponsored Ad" />
           </section>
 
           <aside className="workspace-side">

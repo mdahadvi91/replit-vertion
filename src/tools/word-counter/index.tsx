@@ -1,14 +1,17 @@
 import { useState, useMemo } from 'react';
 import { ArrowLeft, Copy, Check, RotateCcw, Sparkles, FileText } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { type ToolDefinition, getRelatedTools } from '@/registry/tool-registry';
+import { type ToolDefinition } from '@/registry/tool-registry';
 import { useI18n } from '@/i18n';
+import { useConsent } from '@/features/consent';
 import { trackEvent } from '@/lib/analytics';
 import { AdSlot } from '@/components/ads/AdSlot';
 import { adConfig } from '@/components/ads/adConfig';
+import { RelatedTools } from '@/components/tool/RelatedTools';
 
 export function WordCounter({ tool }: { tool: ToolDefinition }) {
   const { copy, language } = useI18n();
+  const { consent } = useConsent();
   const [text, setText] = useState('');
   const [copied, setCopied] = useState(false);
 
@@ -221,7 +224,7 @@ export function WordCounter({ tool }: { tool: ToolDefinition }) {
             </div>
 
             {/* Strategic Ad Placement */}
-            <AdSlot enabled={true} slot={adConfig.toolSlot} label="Sponsored Ad" />
+            <AdSlot enabled={consent.advertising} slot={adConfig.toolSlot} label="Sponsored Ad" />
           </section>
 
           <aside className="workspace-side">
@@ -283,38 +286,7 @@ export function WordCounter({ tool }: { tool: ToolDefinition }) {
         </div>
 
         {/* Related Tools */}
-        <div style={{ marginTop: 40 }}>
-          <div className="section-heading">
-            <div>
-              <span className="eyebrow">{copy.exploreHeader}</span>
-              <h2>{copy.relatedToolsTitle}</h2>
-            </div>
-          </div>
-          <div className="tool-grid">
-            {getRelatedTools(tool).map((candidate) => {
-              const Icon = candidate.icon;
-              return (
-                <Link
-                  key={candidate.id}
-                  to={candidate.route}
-                  className="tool-card"
-                  style={{ '--tool-color': candidate.color } as any}
-                >
-                  <div>
-                    <span className="tool-icon">
-                      <Icon size={21} />
-                    </span>
-                    <h3>{candidate.name}</h3>
-                    <p>{candidate.description}</p>
-                  </div>
-                  <div className="tool-card-foot">
-                    <span>{candidate.status === 'live' ? copy.liveNow : copy.planned}</span>
-                  </div>
-                </Link>
-              );
-            })}
-          </div>
-        </div>
+        <RelatedTools tool={tool} />
       </div>
     </main>
   );

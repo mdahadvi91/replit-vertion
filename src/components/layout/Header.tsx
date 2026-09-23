@@ -18,7 +18,7 @@ import {
 } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 
-import { categoryList, tools } from '@/registry/tool-registry';
+import { categoryList, tools, getLocalizedTool } from '@/registry/tool-registry';
 import { useI18n, type Language } from '@/i18n';
 import { trackEvent } from '@/lib/analytics';
 import { MainNavigation } from '@/components/navigation/MainNavigation';
@@ -137,6 +137,9 @@ export function Header({
   const [activeIndex, setActiveIndex] = useState(-1);
 
   const searchRef = useRef<HTMLDivElement | null>(null);
+  const drawerSearchRef = useRef<HTMLDivElement | null>(null);
+  const desktopInputRef = useRef<HTMLInputElement | null>(null);
+  const mobileInputRef = useRef<HTMLInputElement | null>(null);
 
   const navItems: Array<[string, string]> = [
     ['/', copy.home],
@@ -145,21 +148,34 @@ export function Header({
     ['/contact', copy.contact],
   ];
 
-  const closeTools = () => setToolsOpen(false);
+  const closeTools = () => {
+    setToolsOpen(false);
+    setSearchOpen(false);
+    setActiveIndex(-1);
+  };
   const closeSettings = () => setSettingsOpen(false);
 
   const normalizedQuery = query.trim().toLowerCase();
 
+  const localizedTools = useMemo(() => {
+    return tools.map((tool) => getLocalizedTool(tool, language));
+  }, [language]);
+
   const searchResults = useMemo(() => {
     if (!normalizedQuery) return [];
 
-    return tools
+    return localizedTools
       .filter((tool) => {
+        const raw = tools.find((r) => r.id === tool.id);
         const searchableText = [
           tool.name,
           tool.description,
           tool.category,
+          raw?.name ?? '',
+          raw?.description ?? '',
+          raw?.category ?? '',
           ...(tool.keywords ?? []),
+          ...(raw?.keywords ?? []),
         ]
           .join(' ')
           .toLowerCase();
@@ -167,13 +183,15 @@ export function Header({
         return searchableText.includes(normalizedQuery);
       })
       .slice(0, 8);
-  }, [normalizedQuery]);
+  }, [normalizedQuery, localizedTools]);
 
   useEffect(() => {
     const handleOutsideClick = (event: MouseEvent) => {
-      if (!searchRef.current) return;
+      const target = event.target as Node;
+      const clickedInsideDesktop = searchRef.current?.contains(target);
+      const clickedInsideDrawer = drawerSearchRef.current?.contains(target);
 
-      if (!searchRef.current.contains(event.target as Node)) {
+      if (!clickedInsideDesktop && !clickedInsideDrawer) {
         setSearchOpen(false);
         setActiveIndex(-1);
       }
@@ -186,26 +204,28 @@ export function Header({
     };
   }, []);
 
-  const submitSearch = (event: FormEvent) => {
+  const openTool = (tool: (typeof localizedTools)[number], isDrawer = false) => {
+    trackEvent('search_result_click', {
+      query: query.trim().slice(0, 80),
+      tool: tool.slug,
+    });
+
+    navigate(tool.route);
+
+    setQuery('');
+    setSearchOpen(false);
+    setActiveIndex(-1);
+    if (isDrawer) closeTools();
+  };
+
+  const submitSearch = (event: FormEvent, isDrawer = false) => {
     event.preventDefault();
 
     const trimmedQuery = query.trim();
 
     if (activeIndex >= 0 && activeIndex < searchResults.length) {
       const tool = searchResults[activeIndex];
-
-      trackEvent('search_result_click', {
-        query: trimmedQuery.slice(0, 80),
-        tool: tool.slug,
-      });
-
-      navigate(tool.route);
-
-      setQuery('');
-      setSearchOpen(false);
-      setActiveIndex(-1);
-      closeTools();
-
+      openTool(tool, isDrawer);
       return;
     }
 
@@ -221,25 +241,12 @@ export function Header({
 
     setSearchOpen(false);
     setActiveIndex(-1);
-    closeTools();
-  };
-
-  const openTool = (tool: (typeof tools)[number]) => {
-    trackEvent('search_result_click', {
-      query: query.trim().slice(0, 80),
-      tool: tool.slug,
-    });
-
-    navigate(tool.route);
-
-    setQuery('');
-    setSearchOpen(false);
-    setActiveIndex(-1);
-    closeTools();
+    if (isDrawer) closeTools();
   };
 
   const handleSearchKeyDown = (
     event: React.KeyboardEvent<HTMLInputElement>,
+    isDrawer = false,
   ) => {
     if (!searchOpen) {
       if (event.key === 'ArrowDown' && searchResults.length > 0) {
@@ -247,31 +254,24 @@ export function Header({
         setSearchOpen(true);
         setActiveIndex(0);
       }
-
       return;
     }
 
     if (event.key === 'ArrowDown') {
       event.preventDefault();
-
       if (searchResults.length === 0) return;
-
       setActiveIndex((current) =>
         current >= searchResults.length - 1 ? 0 : current + 1,
       );
-
       return;
     }
 
     if (event.key === 'ArrowUp') {
       event.preventDefault();
-
       if (searchResults.length === 0) return;
-
       setActiveIndex((current) =>
         current <= 0 ? searchResults.length - 1 : current - 1,
       );
-
       return;
     }
 
@@ -284,33 +284,43 @@ export function Header({
 
     if (event.key === 'Enter' && activeIndex >= 0) {
       event.preventDefault();
-
       const tool = searchResults[activeIndex];
-
       if (tool) {
-        openTool(tool);
+        openTool(tool, isDrawer);
       }
     }
   };
 
-  const renderSearchResults = () => {
+  const renderSearchResults = (isDrawer = false) => {
     if (!searchOpen || !normalizedQuery) {
       return null;
     }
 
     if (searchResults.length === 0) {
       return (
-        <div className="search-results" role="status">
+        <div className="search-dropdown" role="status">
           <div className="search-no-results">
-            No tools found
+            {copy.searchNoResults}
           </div>
+          <button
+            type="button"
+            className="search-dropdown-footer"
+            onMouseDown={(e) => e.preventDefault()}
+            onClick={() => {
+              navigate(`/tools?query=${encodeURIComponent(query.trim())}`);
+              setSearchOpen(false);
+              if (isDrawer) closeTools();
+            }}
+          >
+            {language === 'bn' ? 'সব টুলস লাইব্রেরিতে খুঁজুন' : 'Search in all tools library'} →
+          </button>
         </div>
       );
     }
 
     return (
       <div
-        className="search-results"
+        className="search-dropdown"
         role="listbox"
         aria-label={copy.searchTools}
       >
@@ -329,23 +339,43 @@ export function Header({
               onMouseDown={(event) => {
                 event.preventDefault();
               }}
-              onClick={() => openTool(tool)}
+              onClick={() => openTool(tool, isDrawer)}
               onMouseEnter={() => setActiveIndex(index)}
             >
               <span
                 className="search-result-icon"
                 aria-hidden="true"
+                style={{ color: tool.color }}
               >
-                <Icon size={15} />
+                <Icon size={16} />
               </span>
 
               <span className="search-result-content">
                 <strong>{tool.name}</strong>
                 <small>{tool.description}</small>
               </span>
+
+              <span className="search-result-badge">
+                {tool.status === 'live' ? copy.liveNow : copy.planned}
+              </span>
             </button>
           );
         })}
+
+        <button
+          type="button"
+          className="search-dropdown-footer"
+          onMouseDown={(e) => e.preventDefault()}
+          onClick={() => {
+            navigate(`/tools?query=${encodeURIComponent(query.trim())}`);
+            setSearchOpen(false);
+            if (isDrawer) closeTools();
+          }}
+        >
+          {language === 'bn'
+            ? `"${query.trim()}" এর সকল ফলাফল দেখুন (${searchResults.length})`
+            : `${copy.searchViewAll} for "${query.trim()}" (${searchResults.length})`} →
+        </button>
       </div>
     );
   };
@@ -370,18 +400,23 @@ export function Header({
 
           <div
             ref={searchRef}
-            className="header-search"
+            className="header-search-wrapper"
           >
             <form
-              onSubmit={submitSearch}
+              className="header-search"
+              onSubmit={(e) => submitSearch(e, false)}
               role="search"
             >
-              <Search
-                size={15}
-                aria-hidden="true"
-              />
+              <button
+                type="submit"
+                className="search-icon-btn"
+                aria-label={copy.searchTools}
+              >
+                <Search size={15} aria-hidden="true" />
+              </button>
 
               <input
+                ref={desktopInputRef}
                 value={query}
                 onChange={(event) => {
                   setQuery(event.target.value);
@@ -393,15 +428,31 @@ export function Header({
                     setSearchOpen(true);
                   }
                 }}
-                onKeyDown={handleSearchKeyDown}
+                onKeyDown={(e) => handleSearchKeyDown(e, false)}
                 placeholder={copy.searchTools}
                 aria-label={copy.searchTools}
                 aria-expanded={searchOpen}
                 autoComplete="off"
               />
+
+              {query.trim() && (
+                <button
+                  type="button"
+                  className="search-clear-btn"
+                  aria-label={copy.clearSearch}
+                  onClick={() => {
+                    setQuery('');
+                    setSearchOpen(false);
+                    setActiveIndex(-1);
+                    desktopInputRef.current?.focus();
+                  }}
+                >
+                  <X size={14} />
+                </button>
+              )}
             </form>
 
-            {renderSearchResults()}
+            {renderSearchResults(false)}
           </div>
 
           <div className="nav-actions">
@@ -467,18 +518,22 @@ export function Header({
         title={copy.tools}
         onClose={closeTools}
       >
-        <div className="drawer-search-wrapper">
+        <div className="drawer-search-wrapper" ref={drawerSearchRef}>
           <form
             className="drawer-search"
-            onSubmit={submitSearch}
+            onSubmit={(e) => submitSearch(e, true)}
             role="search"
           >
-            <Search
-              size={15}
-              aria-hidden="true"
-            />
+            <button
+              type="submit"
+              className="search-icon-btn"
+              aria-label={copy.searchTools}
+            >
+              <Search size={15} aria-hidden="true" />
+            </button>
 
             <input
+              ref={mobileInputRef}
               value={query}
               onChange={(event) => {
                 setQuery(event.target.value);
@@ -490,14 +545,30 @@ export function Header({
                   setSearchOpen(true);
                 }
               }}
-              onKeyDown={handleSearchKeyDown}
+              onKeyDown={(e) => handleSearchKeyDown(e, true)}
               placeholder={copy.searchTools}
               aria-label={copy.searchTools}
               autoComplete="off"
             />
+
+            {query.trim() && (
+              <button
+                type="button"
+                className="search-clear-btn"
+                aria-label={copy.clearSearch}
+                onClick={() => {
+                  setQuery('');
+                  setSearchOpen(false);
+                  setActiveIndex(-1);
+                  mobileInputRef.current?.focus();
+                }}
+              >
+                <X size={14} />
+              </button>
+            )}
           </form>
 
-          {renderSearchResults()}
+          {renderSearchResults(true)}
         </div>
 
         <nav
@@ -514,9 +585,7 @@ export function Header({
               }
               onClick={closeTools}
             >
-              {category === 'All'
-                ? copy.allCategory
-                : category}
+              {copy.categories?.[category] || (category === 'All' ? copy.allCategory : category)}
             </Link>
           ))}
         </nav>

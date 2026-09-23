@@ -1,17 +1,11 @@
 import { useEffect } from 'react';
 import { adConfig } from '@/components/ads/adConfig';
 
-declare global {
-  interface Window {
-    adsbygoogle?: Array<Record<string, unknown>>;
-  }
-}
+declare global { interface Window { adsbygoogle?: Array<Record<string, unknown>>; } }
 
 export function AdSenseProvider({ enabled }: { enabled: boolean }) {
   useEffect(() => {
-    if (!enabled || !adConfig.enabled || document.querySelector('script[data-ahadex-adsense]')) {
-      return;
-    }
+    if (!enabled || !adConfig.enabled || localStorage.getItem('ahadex-ad-consent') !== 'advertising' || document.querySelector('script[data-ahadex-adsense]')) return;
     const script = document.createElement('script');
     script.async = true;
     script.crossOrigin = 'anonymous';

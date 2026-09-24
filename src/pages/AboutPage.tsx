@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useI18n } from '@/i18n';
 
 export default function AboutPage() {
-  const { copy } = useI18n();
+  const { copy, getLocalizedPath } = useI18n();
 
   return (
     <main>
@@ -51,7 +51,7 @@ export default function AboutPage() {
             <span className="eyebrow">{copy.aboutCtaEyebrow}</span>
             <h2>{copy.aboutCtaTitle}</h2>
           </div>
-          <Link to="/contact" className="button">
+          <Link to={getLocalizedPath('/contact')} className="button">
             {copy.sendANote} <ArrowRight size={16} />
           </Link>
         </div>

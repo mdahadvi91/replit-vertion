@@ -131,7 +131,7 @@ const SOCIAL_NETWORKS: Array<{
 ];
 
 export function PhotoQrCodeTool({ tool }: { tool: ToolDefinition }) {
-  const { copy, language } = useI18n();
+  const { copy, language, getLocalizedPath } = useI18n();
   const { consent } = useConsent();
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -510,15 +510,15 @@ export function PhotoQrCodeTool({ tool }: { tool: ToolDefinition }) {
       <div className="container">
         {/* Breadcrumb Navigation */}
         <nav className="breadcrumb" aria-label="Breadcrumb">
-          <Link to="/tools">{copy.tools}</Link>
+          <Link to={getLocalizedPath('/tools')}>{copy.tools}</Link>
           <span>/</span>
-          <span>{tool.category}</span>
+          <Link to={getLocalizedPath(`/category/${tool.category.toLowerCase()}`)}>{tool.category}</Link>
           <span>/</span>
           <strong>{tool.name}</strong>
         </nav>
 
         {/* Back Link */}
-        <Link to="/tools" className="back-link">
+        <Link to={getLocalizedPath('/tools')} className="back-link">
           <ArrowLeft size={16} /> {copy.backToTools}
         </Link>
 

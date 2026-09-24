@@ -625,32 +625,64 @@ const bangla: Copy = {
   footerTagline: 'আপনার কাজ হোক আরো হালকা ও দ্রুত।',
 };
 
+export function getLocalizedPath(path: string, targetLang: Language): string {
+  const cleanPath = path.startsWith('/') ? path : `/${path}`;
+  const isBnPath = cleanPath === '/bn' || cleanPath.startsWith('/bn/');
+  const basePath = isBnPath ? (cleanPath.slice(3) || '/') : cleanPath;
+
+  if (targetLang === 'bn') {
+    return basePath === '/' ? '/bn' : `/bn${basePath}`;
+  }
+  return basePath;
+}
+
 const copyByLanguage: Record<Language, Copy> = { en: english, bn: bangla };
 
 type I18nContextValue = {
   language: Language;
   setLanguage: (language: Language) => void;
   copy: Copy;
+  getLocalizedPath: (path: string, overrideLang?: Language) => string;
 };
 
 const I18nContext = createContext<I18nContextValue | null>(null);
 
 export function I18nProvider({ children }: { children: ReactNode }) {
-  const [language, setLanguage] = useState<Language>(() => {
-    const saved = localStorage.getItem('ahadex-language');
+  // Check if initial URL is Bengali route
+  const getUrlLanguage = (): Language | null => {
+    if (typeof window === 'undefined') return null;
+    const pathname = window.location.pathname;
+    if (pathname === '/bn' || pathname.startsWith('/bn/')) {
+      return 'bn';
+    }
+    return null;
+  };
+
+  const [language, setLanguageState] = useState<Language>(() => {
+    const urlLang = getUrlLanguage();
+    if (urlLang) return urlLang;
+    const saved = typeof localStorage !== 'undefined' ? localStorage.getItem('ahadex-language') : null;
     return saved === 'bn' ? 'bn' : 'en';
   });
+
+  const setLanguage = (next: Language) => {
+    if (typeof localStorage !== 'undefined') {
+      localStorage.setItem('ahadex-language', next);
+    }
+    setLanguageState(next);
+  };
+
   const value = useMemo(
     () => ({
       language,
-      setLanguage: (next: Language) => {
-        localStorage.setItem('ahadex-language', next);
-        setLanguage(next);
-      },
+      setLanguage,
       copy: copyByLanguage[language],
+      getLocalizedPath: (targetPath: string, overrideLang?: Language) =>
+        getLocalizedPath(targetPath, overrideLang || language),
     }),
     [language],
   );
+
   return <I18nContext.Provider value={value}>{children}</I18nContext.Provider>;
 }
 
@@ -659,3 +691,4 @@ export function useI18n() {
   if (!context) throw new Error('useI18n must be used within I18nProvider');
   return context;
 }
+

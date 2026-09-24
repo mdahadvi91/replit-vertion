@@ -7,7 +7,7 @@ import { getLocalizedTool, type ToolDefinition } from '@/registry/tool-registry'
 import type { CSSProperties } from 'react';
 
 export default function ToolCard({ tool: rawTool, index }: { tool: ToolDefinition; index: number }) {
-  const { copy, language } = useI18n();
+  const { copy, language, getLocalizedPath } = useI18n();
   const tool = getLocalizedTool(rawTool, language);
   const { isFavorite, toggleFavorite } = useFavoriteTools();
   const Icon = tool.icon;
@@ -50,7 +50,7 @@ export default function ToolCard({ tool: rawTool, index }: { tool: ToolDefinitio
 
   return (
     <Link
-      to={tool.route}
+      to={getLocalizedPath(tool.route)}
       className="tool-card reveal"
       style={{ '--tool-color': tool.color, animationDelay: `${index * 55}ms` } as CSSProperties}
       onClick={() => trackEvent('tool_open', { tool_id: tool.id, tool_slug: tool.slug, category: tool.category })}

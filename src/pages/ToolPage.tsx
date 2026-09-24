@@ -32,14 +32,14 @@ function getToolComponent(slug: string) {
 }
 
 function PlannedTool({ tool }: { tool: ToolDefinition }) {
-  const { copy } = useI18n();
+  const { copy, getLocalizedPath } = useI18n();
   return (
     <main className="prose-page">
       <span className="eyebrow">{tool.category} / {copy.plannedBadge}</span>
       <h1>{tool.seo.h1}</h1>
       <p style={{ fontSize: 18 }}>{tool.description}</p>
       <p>{copy.plannedIntro}</p>
-      <Link to="/tools" className="button button-primary">
+      <Link to={getLocalizedPath('/tools')} className="button button-primary">
         <ArrowLeft size={16} /> {copy.backToTools}
       </Link>
     </main>

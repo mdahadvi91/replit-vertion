@@ -153,7 +153,7 @@ export function MergePdfTool({
 }: {
   tool: ToolDefinition;
 }) {
-  const { copy, language } = useI18n();
+  const { copy, language, getLocalizedPath } = useI18n();
   const { consent } = useConsent();
 
   const fileInputRef =
@@ -430,13 +430,15 @@ export function MergePdfTool({
           className="breadcrumb"
           aria-label="Breadcrumb"
         >
-          <Link to="/tools">
+          <Link to={getLocalizedPath('/tools')}>
             {copy.tools}
           </Link>
 
           <span>/</span>
 
-          <span>{tool.category}</span>
+          <Link to={getLocalizedPath(`/category/${tool.category.toLowerCase()}`)}>
+            {tool.category}
+          </Link>
 
           <span>/</span>
 
@@ -444,7 +446,7 @@ export function MergePdfTool({
         </nav>
 
         <Link
-          to="/tools"
+          to={getLocalizedPath('/tools')}
           className="back-link"
         >
           <ArrowLeft size={15} />

@@ -1,0 +1,7 @@
+{
+  "name": "Ahadex Tools",
+  "description": "Fast, private browser-based utilities for PDF, images, text, and developer workflows.",
+  "capabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

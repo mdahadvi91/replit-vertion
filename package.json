@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite --host 0.0.0.0 --port 3000",
-    "build": "npm run validate && npm run sitemap && vite build",
+    "build": "npm run validate && npm run sitemap && vite build && node scripts/prerender.mjs",
+    "prerender": "node scripts/prerender.mjs",
     "serve": "vite preview --host 0.0.0.0 --port 3000",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "lint": "tsc -p tsconfig.json --noEmit",

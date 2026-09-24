@@ -16,7 +16,7 @@ function formatBytes(bytes: number) {
 }
 
 export function ImageResizer({ tool }: { tool: ToolDefinition }) {
-  const { copy, language } = useI18n();
+  const { copy, language, getLocalizedPath } = useI18n();
   const { consent } = useConsent();
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [file, setFile] = useState<File | null>(null);
@@ -135,13 +135,13 @@ export function ImageResizer({ tool }: { tool: ToolDefinition }) {
     <main className="workspace">
       <div className="container">
         <nav className="breadcrumb" aria-label="Breadcrumb">
-          <Link to="/tools">{copy.tools}</Link>
+          <Link to={getLocalizedPath('/tools')}>{copy.tools}</Link>
           <span>/</span>
-          <span>{tool.category}</span>
+          <Link to={getLocalizedPath(`/category/${tool.category.toLowerCase()}`)}>{tool.category}</Link>
           <span>/</span>
           <strong>{tool.name}</strong>
         </nav>
-        <Link to="/tools" className="back-link">
+        <Link to={getLocalizedPath('/tools')} className="back-link">
           <ArrowLeft size={15} /> {copy.backToTools}
         </Link>
         <div className="workspace-head">

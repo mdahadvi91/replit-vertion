@@ -120,8 +120,8 @@ export const tools: ToolDefinition[] = [
         'Click the Extract Text button to parse textual content locally.',
         'Copy the extracted text to your clipboard or download it as a .txt file.',
       ],
-      privacy: 'Your document is analyzed locally inside your browser memory using Web APIs. No document bytes are transmitted to any remote server.',
-      limitations: 'Text extraction relies on readable vector text streams. Scanned image-only PDFs without an OCR layer may produce limited results.',
+      privacy: 'Your document is processed locally inside your browser memory. No document bytes are uploaded to any server.',
+      limitations: 'Direct text extraction parses readable text streams instantly. For scanned image-only documents, client-side OCR is utilized (which loads OCR recognition models into browser memory during execution).',
       faq: [
         {
           question: 'Are my private PDF documents uploaded to your servers?',
@@ -153,8 +153,8 @@ export const tools: ToolDefinition[] = [
             'এক্সট্রাক্ট টেক্সট বাটনে চাপ দিয়ে টেক্সট প্রসেস করুন।',
             'ক্লিপবোর্ডে কপি করুন অথবা সরাসরি .txt ফরম্যাটে সেভ করে নিন।',
           ],
-          privacy: 'সম্পূর্ণ প্রসেসিং আপনার ব্রাউজারের ভেতর মেমরিতে ঘটে। কোনো ফাইল বা মেটাডাটা ইন্টারনেটে পাঠানো হয় না।',
-          limitations: 'শুধুমাত্র ডিজিটাল টেক্সট থাকা পিডিএফ থেকে সরাসরি টেক্সট বের হয়। স্ক্যান করা ছবির ক্ষেত্রে ফলাফল সীমিত হতে পারে।',
+          privacy: 'আপনার ডকুমেন্ট সম্পূর্ণ স্থানীয়ভাবে আপনার ব্রাউজার মেমরিতে প্রসেস হয়। কোনো ফাইল সার্ভারে আপলোড করা হয় না।',
+          limitations: 'ডিজিটাল টেক্সট সাথে সাথে এক্সট্রাক্ট হয়। স্ক্যান করা বা ছবির ক্ষেত্রে ব্রাউজার-ভিত্তিক OCR কার্যকর হয় (যা প্রসেসিংয়ের সময় ব্রাউজার মেমরিতে মডেল লোড করে)।',
           faq: [
             {
               question: 'আমার গোপনীয় পিডিএফ কি কোথাও সংরক্ষিত হয়?',

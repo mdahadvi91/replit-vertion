@@ -42,7 +42,7 @@ type ExtractionMode = 'auto' | 'direct' | 'ocr';
 type OcrLang = 'eng' | 'ben' | 'ben+eng' | 'hin' | 'spa' | 'fra' | 'ara';
 
 export function PdfToTextTool({ tool }: { tool: ToolDefinition }) {
-  const { copy, language } = useI18n();
+  const { copy, language, getLocalizedPath } = useI18n();
   const { consent } = useConsent();
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -326,13 +326,13 @@ export function PdfToTextTool({ tool }: { tool: ToolDefinition }) {
       <div className="container">
         {/* Breadcrumb Navigation */}
         <nav className="breadcrumb" aria-label="Breadcrumb">
-          <Link to="/tools">{copy.tools}</Link>
+          <Link to={getLocalizedPath('/tools')}>{copy.tools}</Link>
           <span>/</span>
-          <span>{tool.category}</span>
+          <Link to={getLocalizedPath(`/category/${tool.category.toLowerCase()}`)}>{tool.category}</Link>
           <span>/</span>
           <strong>{tool.name}</strong>
         </nav>
-        <Link to="/tools" className="back-link">
+        <Link to={getLocalizedPath('/tools')} className="back-link">
           <ArrowLeft size={15} /> {copy.backToTools}
         </Link>
 
@@ -535,11 +535,11 @@ export function PdfToTextTool({ tool }: { tool: ToolDefinition }) {
             >
               <strong style={{ color: 'hsl(var(--foreground))', display: 'flex', alignItems: 'center', gap: 6, marginBottom: 4 }}>
                 <Check size={14} style={{ color: 'hsl(var(--primary))' }} />
-                {language === 'bn' ? '১০০% ক্লায়েন্ট-সাইড নিরাপদ' : '100% Client-Side Private'}
+                {language === 'bn' ? '১০০% ক্লায়েন্ট-সাইড নিরাপদ' : '100% Client-Side Processing'}
               </strong>
               {language === 'bn'
-                ? 'আপনার গোপনীয় ব্যাংক স্টেটমেন্ট, মেডিকেল রিপোর্ট বা আইনি নথি কোনো রিমোট সার্ভারে আপলোড হয় না। সবকিছু সরাসরি আপনার ডিভাইসে প্রসেস হয়।'
-                : 'Sensitive documents, bank statements, and legal files never leave your device. All parsing and OCR runs in your browser memory.'}
+                ? 'আপনার গোপনীয় নথি কোনো সার্ভারে আপলোড হয় না। ব্রাউজার মেমরিতে টেক্সট প্রসেস হয় (স্ক্যান করা নথিতে OCR চালানোর জন্য ব্রাউজারে মডেল লোড হয়)।'
+                : 'Sensitive documents never leave your browser. All parsing and OCR execute in client memory without uploading files to any server.'}
             </div>
           </aside>
 

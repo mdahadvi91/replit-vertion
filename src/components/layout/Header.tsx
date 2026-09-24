@@ -16,7 +16,7 @@ import {
   X,
   Zap,
 } from 'lucide-react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 
 import { categoryList, tools, getLocalizedTool } from '@/registry/tool-registry';
 import { useI18n, type Language } from '@/i18n';
@@ -26,9 +26,10 @@ import { MainNavigation } from '@/components/navigation/MainNavigation';
 type Theme = 'light' | 'dark';
 
 export function Logo() {
+  const { getLocalizedPath } = useI18n();
   return (
     <Link
-      to="/"
+      to={getLocalizedPath('/')}
       className="brand"
       aria-label="Ahadex Tools home"
       data-testid="link-logo"
@@ -126,8 +127,9 @@ export function Header({
   theme: Theme;
   setTheme: (theme: Theme) => void;
 }) {
-  const { copy, language, setLanguage } = useI18n();
+  const { copy, language, setLanguage, getLocalizedPath } = useI18n();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const [toolsOpen, setToolsOpen] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
@@ -142,11 +144,19 @@ export function Header({
   const mobileInputRef = useRef<HTMLInputElement | null>(null);
 
   const navItems: Array<[string, string]> = [
-    ['/', copy.home],
-    ['/tools', copy.tools],
-    ['/about', copy.about],
-    ['/contact', copy.contact],
+    [getLocalizedPath('/'), copy.home],
+    [getLocalizedPath('/tools'), copy.tools],
+    [getLocalizedPath('/about'), copy.about],
+    [getLocalizedPath('/contact'), copy.contact],
   ];
+
+  const handleToggleLanguage = (targetLang?: Language) => {
+    const nextLang: Language = targetLang || (language === 'en' ? 'bn' : 'en');
+    setLanguage(nextLang);
+    const targetUrl = getLocalizedPath(location.pathname + location.search, nextLang);
+    navigate(targetUrl);
+    trackEvent('language_change', { language: nextLang });
+  };
 
   const closeTools = () => {
     setToolsOpen(false);
@@ -210,7 +220,7 @@ export function Header({
       tool: tool.slug,
     });
 
-    navigate(tool.route);
+    navigate(getLocalizedPath(tool.route));
 
     setQuery('');
     setSearchOpen(false);
@@ -235,8 +245,8 @@ export function Header({
 
     navigate(
       trimmedQuery
-        ? `/tools?query=${encodeURIComponent(trimmedQuery)}`
-        : '/tools',
+        ? getLocalizedPath(`/tools?query=${encodeURIComponent(trimmedQuery)}`)
+        : getLocalizedPath('/tools'),
     );
 
     setSearchOpen(false);
@@ -460,16 +470,7 @@ export function Header({
               className="lang-button"
               type="button"
               aria-label="Switch language"
-              onClick={() => {
-                const next: Language =
-                  language === 'en' ? 'bn' : 'en';
-
-                setLanguage(next);
-
-                trackEvent('language_change', {
-                  language: next,
-                });
-              }}
+              onClick={() => handleToggleLanguage()}
             >
               <Languages size={15} />
               <span>{copy.languageLabel}</span>
@@ -578,11 +579,11 @@ export function Header({
           {categoryList.map((category) => (
             <Link
               key={category}
-              to={
+              to={getLocalizedPath(
                 category === 'All'
                   ? '/tools'
                   : `/category/${category.toLowerCase()}`
-              }
+              )}
               onClick={closeTools}
             >
               {copy.categories?.[category] || (category === 'All' ? copy.allCategory : category)}
@@ -633,7 +634,7 @@ export function Header({
             className={`setting-choice${
               language === 'en' ? ' active' : ''
             }`}
-            onClick={() => setLanguage('en')}
+            onClick={() => handleToggleLanguage('en')}
           >
             English
           </button>
@@ -643,7 +644,7 @@ export function Header({
             className={`setting-choice${
               language === 'bn' ? ' active' : ''
             }`}
-            onClick={() => setLanguage('bn')}
+            onClick={() => handleToggleLanguage('bn')}
           >
             বাংলা
           </button>

@@ -9,16 +9,16 @@ const rootDir = path.resolve(__dirname, '..');
 const BASE_URL = 'https://ahadex.online';
 const today = new Date().toISOString().split('T')[0];
 
-const staticPages = [
-  { url: '/', changefreq: 'daily', priority: '1.0' },
-  { url: '/tools', changefreq: 'daily', priority: '0.9' },
-  { url: '/about', changefreq: 'monthly', priority: '0.7' },
-  { url: '/contact', changefreq: 'monthly', priority: '0.8' },
-  { url: '/privacy-policy', changefreq: 'monthly', priority: '0.5' },
-  { url: '/terms', changefreq: 'monthly', priority: '0.5' },
-  { url: '/disclaimer', changefreq: 'monthly', priority: '0.5' },
-  { url: '/cookie-policy', changefreq: 'monthly', priority: '0.5' },
-  { url: '/accessibility', changefreq: 'monthly', priority: '0.5' },
+const staticPaths = [
+  { path: '', changefreq: 'daily', priority: '1.0' },
+  { path: '/tools', changefreq: 'daily', priority: '0.9' },
+  { path: '/about', changefreq: 'monthly', priority: '0.7' },
+  { path: '/contact', changefreq: 'monthly', priority: '0.8' },
+  { path: '/privacy-policy', changefreq: 'monthly', priority: '0.5' },
+  { path: '/terms', changefreq: 'monthly', priority: '0.5' },
+  { path: '/disclaimer', changefreq: 'monthly', priority: '0.5' },
+  { path: '/cookie-policy', changefreq: 'monthly', priority: '0.5' },
+  { path: '/accessibility', changefreq: 'monthly', priority: '0.5' },
 ];
 
 const categories = ['images', 'documents', 'text', 'developer'];
@@ -35,40 +35,56 @@ while ((match = slugRegex.exec(registryContent)) !== null) {
 }
 
 let xml = `<?xml version="1.0" encoding="UTF-8"?>\n`;
-xml += `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
+xml += `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n`;
 
-// Add static pages
-for (const page of staticPages) {
+function renderUrlEntry(enPath, bnPath, changefreq, priority) {
+  const enUrl = `${BASE_URL}${enPath}`;
+  const bnUrl = `${BASE_URL}${bnPath}`;
+
+  // EN Entry
   xml += `  <url>\n`;
-  xml += `    <loc>${BASE_URL}${page.url}</loc>\n`;
+  xml += `    <loc>${enUrl}</loc>\n`;
+  xml += `    <xhtml:link rel="alternate" hreflang="en" href="${enUrl}" />\n`;
+  xml += `    <xhtml:link rel="alternate" hreflang="bn" href="${bnUrl}" />\n`;
+  xml += `    <xhtml:link rel="alternate" hreflang="x-default" href="${enUrl}" />\n`;
   xml += `    <lastmod>${today}</lastmod>\n`;
-  xml += `    <changefreq>${page.changefreq}</changefreq>\n`;
-  xml += `    <priority>${page.priority}</priority>\n`;
+  xml += `    <changefreq>${changefreq}</changefreq>\n`;
+  xml += `    <priority>${priority}</priority>\n`;
+  xml += `  </url>\n`;
+
+  // BN Entry
+  xml += `  <url>\n`;
+  xml += `    <loc>${bnUrl}</loc>\n`;
+  xml += `    <xhtml:link rel="alternate" hreflang="en" href="${enUrl}" />\n`;
+  xml += `    <xhtml:link rel="alternate" hreflang="bn" href="${bnUrl}" />\n`;
+  xml += `    <xhtml:link rel="alternate" hreflang="x-default" href="${enUrl}" />\n`;
+  xml += `    <lastmod>${today}</lastmod>\n`;
+  xml += `    <changefreq>${changefreq}</changefreq>\n`;
+  xml += `    <priority>${priority}</priority>\n`;
   xml += `  </url>\n`;
 }
 
-// Add categories
+// 1. Static Pages (EN + BN)
+for (const page of staticPaths) {
+  const enPath = page.path || '/';
+  const bnPath = page.path ? `/bn${page.path}` : '/bn';
+  renderUrlEntry(enPath, bnPath, page.changefreq, page.priority);
+}
+
+// 2. Categories (EN + BN)
 for (const cat of categories) {
-  xml += `  <url>\n`;
-  xml += `    <loc>${BASE_URL}/category/${cat}</loc>\n`;
-  xml += `    <lastmod>${today}</lastmod>\n`;
-  xml += `    <changefreq>weekly</changefreq>\n`;
-  xml += `    <priority>0.8</priority>\n`;
-  xml += `  </url>\n`;
+  renderUrlEntry(`/category/${cat}`, `/bn/category/${cat}`, 'weekly', '0.8');
 }
 
-// Add tools
+// 3. Tools (EN + BN)
 for (const slug of slugs) {
-  xml += `  <url>\n`;
-  xml += `    <loc>${BASE_URL}/tool/${slug}</loc>\n`;
-  xml += `    <lastmod>${today}</lastmod>\n`;
-  xml += `    <changefreq>weekly</changefreq>\n`;
-  xml += `    <priority>0.9</priority>\n`;
-  xml += `  </url>\n`;
+  renderUrlEntry(`/tool/${slug}`, `/bn/tool/${slug}`, 'weekly', '0.9');
 }
 
 xml += `</urlset>\n`;
 
 const sitemapPath = path.join(rootDir, 'public', 'sitemap.xml');
 fs.writeFileSync(sitemapPath, xml, 'utf8');
-console.log(`[sitemap] Generated sitemap with ${staticPages.length + categories.length + slugs.size} URLs at ${sitemapPath}`);
+
+const totalUrls = (staticPaths.length + categories.length + slugs.size) * 2;
+console.log(`[sitemap] Generated bilingual sitemap with ${totalUrls} crawlable URLs at ${sitemapPath}`);

@@ -1,1 +1,8 @@
+# 301 Canonical Redirects
+/tools/image-compressor /tool/image-compressor 301
+/privacy /privacy-policy 301
+/bn/tools/image-compressor /bn/tool/image-compressor 301
+/bn/privacy /bn/privacy-policy 301
+
+# SPA fallback
 /* /index.html 200

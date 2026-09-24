@@ -86,7 +86,7 @@ const metaByLang: Record<Language, Record<string, { title: string; description: 
   bn: {
     '/': {
       title: 'ফ্রি অনলাইন ব্রাউজার টুলস — Ahadex Tools',
-      description: 'ছবি, ডকুমেন্ট, টেক্সট এবং ডেভেলপারদের জন্য দ্রুত ও নির্ভরযোগ্য ব্রাউজার টুলস।',
+      description: 'ছবি, ডকুমেন্ট, টেক্সট এবং ডেভেলপারদের জন্য দ্রুত ও নির্ভরযোগ্য ব্রাউজার টুলস। কোনো সার্ভার আপলোড ছাড়া শতভাগ নিরাপদ।',
       h1: 'কঠিন ও জটিল কাজগুলো এবার হবে নিমেষেই সহজ।',
     },
     '/tools': {
@@ -133,69 +133,97 @@ const metaByLang: Record<Language, Record<string, { title: string; description: 
 };
 
 function usePageMeta(pathname: string) {
-  const { language } = useI18n();
-  useEffect(() => {
-    const toolSlug = pathname.startsWith('/tool/') ? pathname.replace('/tool/', '') : '';
-    const rawTool = toolSlug ? getToolBySlug(toolSlug) : undefined;
-    const tool = rawTool ? getLocalizedTool(rawTool, language) : undefined;
-    const categorySlug = pathname.startsWith('/category/') ? pathname.replace('/category/', '') : '';
-    const category = categoryList.find((candidate) => candidate.toLowerCase() === categorySlug.toLowerCase() && candidate !== 'All');
+  const { language, setLanguage } = useI18n();
 
-    const localizedMap = metaByLang[language] ?? metaByLang.en;
+  useEffect(() => {
+    const isBn = pathname === '/bn' || pathname.startsWith('/bn/');
+    const currentLang: Language = isBn ? 'bn' : 'en';
+
+    // Synchronize language state if URL does not match current state
+    if (language !== currentLang) {
+      setLanguage(currentLang);
+    }
+
+    // Determine normalized logical path without /bn prefix
+    const normalizedPath = isBn ? (pathname.slice(3) || '/') : pathname;
+
+    const toolSlug = normalizedPath.startsWith('/tool/') ? normalizedPath.replace('/tool/', '') : '';
+    const rawTool = toolSlug ? getToolBySlug(toolSlug) : undefined;
+    const tool = rawTool ? getLocalizedTool(rawTool, currentLang) : undefined;
+
+    const categorySlug = normalizedPath.startsWith('/category/') ? normalizedPath.replace('/category/', '') : '';
+    const category = categoryList.find(
+      (candidate) => candidate.toLowerCase() === categorySlug.toLowerCase() && candidate !== 'All'
+    );
+
+    const localizedMap = metaByLang[currentLang] ?? metaByLang.en;
+    const is404 = !tool && !category && !localizedMap[normalizedPath];
+
     const current = tool
       ? { title: tool.seo.title, description: tool.seo.description, h1: tool.seo.h1 }
       : category
         ? {
-            title: language === 'bn' ? `${category} টুলস — Ahadex Tools` : `${category} Tools — Ahadex Tools`,
-            description: language === 'bn' ? `Ahadex Tools এর সব ${category.toLowerCase()} টুলস দেখুন।` : `Browse useful ${category.toLowerCase()} tools from Ahadex Tools.`,
+            title: currentLang === 'bn' ? `${category} টুলস — Ahadex Tools` : `${category} Tools — Ahadex Tools`,
+            description:
+              currentLang === 'bn'
+                ? `Ahadex Tools এর সব ${category.toLowerCase()} টুলস দেখুন।`
+                : `Browse useful ${category.toLowerCase()} tools from Ahadex Tools.`,
             h1: `${category} tools`,
           }
-      : localizedMap[pathname] ?? {
-          title: language === 'bn' ? 'পেজ পাওয়া যায়নি — Ahadex Tools' : 'Page not found — Ahadex Tools',
-          description: language === 'bn' ? 'অনুরোধকৃত পেজটি পাওয়া যায়নি। টুলস লাইব্রেরি দেখুন।' : 'The page you requested could not be found. Browse the Ahadex Tools library instead.',
-          h1: language === 'bn' ? 'পেজ পাওয়া যায়নি' : 'Page not found',
+        : is404
+          ? {
+              title: currentLang === 'bn' ? '৪০৪ / পেজ পাওয়া যায়নি — Ahadex Tools' : '404 / Page Not Found — Ahadex Tools',
+              description:
+                currentLang === 'bn'
+                  ? 'অনুরোধকৃত পেজটি পাওয়া যায়নি। টুলস লাইব্রেরি দেখুন।'
+                  : 'The page you requested could not be found. Browse the Ahadex Tools library instead.',
+              h1: currentLang === 'bn' ? 'পেজ পাওয়া যায়নি' : 'Page not found',
+            }
+          : localizedMap[normalizedPath];
+
+    const canonicalLogicalPath = tool?.seo.canonical ?? normalizedPath;
+    const canonicalUrl = `${SITE_URL}${isBn ? '/bn' : ''}${canonicalLogicalPath === '/' ? '' : canonicalLogicalPath}`;
+    const alternateEnUrl = `${SITE_URL}${canonicalLogicalPath === '/' ? '' : canonicalLogicalPath}`;
+    const alternateBnUrl = `${SITE_URL}/bn${canonicalLogicalPath === '/' ? '' : canonicalLogicalPath}`;
+    const alternateDefaultUrl = `${SITE_URL}${canonicalLogicalPath === '/' ? '' : canonicalLogicalPath}`;
+
+    const schema = is404
+      ? undefined
+      : {
+          '@context': 'https://schema.org',
+          '@type': tool ? 'WebApplication' : 'WebSite',
+          name: tool ? tool.name : 'Ahadex Tools',
+          description: current.description,
+          url: canonicalUrl,
+          applicationCategory: tool ? 'UtilitiesApplication' : undefined,
+          operatingSystem: 'Web',
+          inLanguage: currentLang === 'bn' ? 'bn-BD' : 'en-US',
+          isPartOf: { '@type': 'WebSite', name: 'Ahadex Tools', url: SITE_URL },
         };
 
-    const canonicalPath = tool?.seo.canonical ?? pathname;
-    const canonicalUrl = `${SITE_URL}${canonicalPath === '/' ? '' : canonicalPath}`;
-    updateDocumentMeta(current.title, current.description);
-    document.documentElement.lang = language === 'bn' ? 'bn' : 'en';
-    document.querySelector('meta[property="og:title"]')?.setAttribute('content', current.title);
-    document.querySelector('meta[property="og:description"]')?.setAttribute('content', current.description);
-    document.querySelector('meta[property="og:url"]')?.setAttribute('content', canonicalUrl);
-    document.querySelector('meta[name="twitter:title"]')?.setAttribute('content', current.title);
-    document.querySelector('meta[name="twitter:description"]')?.setAttribute('content', current.description);
-    document.querySelector('link[rel="canonical"]')?.setAttribute('href', canonicalUrl);
-
-    const schema = {
-      '@context': 'https://schema.org',
-      '@type': tool ? 'WebApplication' : 'WebSite',
-      name: tool ? tool.name : 'Ahadex Tools',
+    updateDocumentMeta({
+      title: current.title,
       description: current.description,
-      url: canonicalUrl,
-      applicationCategory: tool ? 'UtilitiesApplication' : undefined,
-      operatingSystem: 'Web',
-      isPartOf: { '@type': 'WebSite', name: 'Ahadex Tools', url: SITE_URL },
-    };
-    let schemaScript = document.querySelector<HTMLScriptElement>('#ahadex-jsonld');
-    if (!schemaScript) {
-      schemaScript = document.createElement('script');
-      schemaScript.id = 'ahadex-jsonld';
-      schemaScript.type = 'application/ld+json';
-      document.head.appendChild(schemaScript);
-    }
-    schemaScript.textContent = JSON.stringify(schema);
+      canonicalUrl: is404 ? undefined : canonicalUrl,
+      robots: is404 ? 'noindex, nofollow' : 'index, follow',
+      language: currentLang,
+      alternateEnUrl: is404 ? undefined : alternateEnUrl,
+      alternateBnUrl: is404 ? undefined : alternateBnUrl,
+      alternateDefaultUrl: is404 ? undefined : alternateDefaultUrl,
+      schema,
+    });
+
     trackPageView(pathname, current.title);
-  }, [language, pathname]);
+  }, [language, pathname, setLanguage]);
 }
 
 function ConsentBanner({ choice, setChoice }: { choice: ConsentChoice; setChoice: (choice: ConsentChoice) => void }) {
-  const { copy } = useI18n();
+  const { copy, getLocalizedPath } = useI18n();
   if (choice !== 'unknown') return null;
   return (
     <aside className="cookie" aria-label="Privacy choices">
       <p>
-        {copy.privacyNotice} <Link to="/cookie-policy" className="inline-link">Read the cookie policy.</Link>
+        {copy.privacyNotice} <Link to={getLocalizedPath('/cookie-policy')} className="inline-link">Read the cookie policy.</Link>
       </p>
       <div className="cookie-actions">
         <button className="button button-ghost" type="button" onClick={() => setChoice('essential')}>
@@ -210,18 +238,19 @@ function ConsentBanner({ choice, setChoice }: { choice: ConsentChoice; setChoice
 }
 
 function FixedToolsButton() {
-  const { copy } = useI18n();
+  const { copy, getLocalizedPath } = useI18n();
   const location = useLocation();
 
-  // If user is already on the Home page, the back button should not appear / have no action
-  if (location.pathname === '/') {
+  const isBn = location.pathname === '/bn' || location.pathname.startsWith('/bn/');
+  const normalizedPath = isBn ? (location.pathname.slice(3) || '/') : location.pathname;
+
+  // If user is already on the Home page, the back button should not appear
+  if (normalizedPath === '/') {
     return null;
   }
 
-  // From any tool, category, or inner page, button goes directly back to the Tools directory
-  // If on the /tools directory page itself, clicking goes back to Home ('/')
-  const isToolsPage = location.pathname === '/tools';
-  const targetPath = isToolsPage ? '/' : '/tools';
+  const isToolsPage = normalizedPath === '/tools';
+  const targetPath = getLocalizedPath(isToolsPage ? '/' : '/tools');
   const label = isToolsPage ? copy.home : copy.backToTools;
 
   return (
@@ -258,6 +287,7 @@ function AppLayout() {
       <div className="app-shell">
         <Header theme={theme} setTheme={setTheme} />
         <Routes>
+          {/* English / Default Routes */}
           <Route path="/" element={<HomePage consent={consent} />} />
           <Route path="/tools" element={<ToolsPage />} />
           <Route path="/category/:categorySlug" element={<CategoryPage />} />
@@ -271,6 +301,23 @@ function AppLayout() {
           <Route path="/disclaimer" element={<LegalPage pathKey="disclaimer" />} />
           <Route path="/cookie-policy" element={<LegalPage pathKey="cookiePolicy" />} />
           <Route path="/accessibility" element={<LegalPage pathKey="accessibility" />} />
+
+          {/* Bengali localized routes for dedicated SEO crawlability */}
+          <Route path="/bn" element={<HomePage consent={consent} />} />
+          <Route path="/bn/tools" element={<ToolsPage />} />
+          <Route path="/bn/category/:categorySlug" element={<CategoryPage />} />
+          <Route path="/bn/tool/:toolSlug" element={<ToolPage />} />
+          <Route path="/bn/tools/image-compressor" element={<Navigate to="/bn/tool/image-compressor" replace />} />
+          <Route path="/bn/about" element={<AboutPage />} />
+          <Route path="/bn/contact" element={<ContactPage />} />
+          <Route path="/bn/privacy-policy" element={<LegalPage pathKey="privacyPolicy" />} />
+          <Route path="/bn/privacy" element={<Navigate to="/bn/privacy-policy" replace />} />
+          <Route path="/bn/terms" element={<LegalPage pathKey="terms" />} />
+          <Route path="/bn/disclaimer" element={<LegalPage pathKey="disclaimer" />} />
+          <Route path="/bn/cookie-policy" element={<LegalPage pathKey="cookiePolicy" />} />
+          <Route path="/bn/accessibility" element={<LegalPage pathKey="accessibility" />} />
+
+          {/* Soft 404 Catcher */}
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
         <Footer />

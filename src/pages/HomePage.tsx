@@ -10,7 +10,7 @@ import { useConsent, type ConsentState } from '@/features/consent';
 import ToolCard from '@/components/tool/ToolCard';
 
 export default function HomePage({ consent }: { consent?: ConsentState | { advertising: boolean } }) {
-  const { copy, language } = useI18n();
+  const { copy, language, getLocalizedPath } = useI18n();
   const { consent: consentState } = useConsent();
   const [openFaq, setOpenFaq] = useState<number | null>(0);
 
@@ -30,10 +30,10 @@ export default function HomePage({ consent }: { consent?: ConsentState | { adver
             <h1>{copy.heroH1}</h1>
             <p className="hero-copy">{copy.heroCopy}</p>
             <div className="hero-ctas">
-              <Link to="/tools" className="button button-primary" onClick={() => trackEvent('tool_open', { source: 'hero' })}>
+              <Link to={getLocalizedPath('/tools')} className="button button-primary" onClick={() => trackEvent('tool_open', { source: 'hero' })}>
                 {copy.exploreTools} <ArrowRight size={16} />
               </Link>
-              <Link to="/about" className="button button-ghost">
+              <Link to={getLocalizedPath('/about')} className="button button-ghost">
                 {copy.whyAhadex}
               </Link>
             </div>
@@ -164,7 +164,7 @@ export default function HomePage({ consent }: { consent?: ConsentState | { adver
             <span className="eyebrow">{copy.ctaBandEyebrow}</span>
             <h2>{copy.ctaBandTitle}</h2>
           </div>
-          <Link to="/tools" className="button">
+          <Link to={getLocalizedPath('/tools')} className="button">
             {copy.browseAllTools} <ArrowRight size={16} />
           </Link>
         </div>

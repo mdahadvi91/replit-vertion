@@ -1,134 +1,398 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://ahadex.online/</loc>
-    <lastmod>2026-09-23</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ahadex.online/" />
+    <xhtml:link rel="alternate" hreflang="bn" href="https://ahadex.online/bn" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ahadex.online/" />
+    <lastmod>2026-09-24</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://ahadex.online/bn</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ahadex.online/" />
+    <xhtml:link rel="alternate" hreflang="bn" href="https://ahadex.online/bn" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ahadex.online/" />
+    <lastmod>2026-09-24</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://ahadex.online/tools</loc>
-    <lastmod>2026-09-23</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ahadex.online/tools" />
+    <xhtml:link rel="alternate" hreflang="bn" href="https://ahadex.online/bn/tools" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ahadex.online/tools" />
+    <lastmod>2026-09-24</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://ahadex.online/bn/tools</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ahadex.online/tools" />
+    <xhtml:link rel="alternate" hreflang="bn" href="https://ahadex.online/bn/tools" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ahadex.online/tools" />
+    <lastmod>2026-09-24</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://ahadex.online/about</loc>
-    <lastmod>2026-09-23</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ahadex.online/about" />
+    <xhtml:link rel="alternate" hreflang="bn" href="https://ahadex.online/bn/about" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ahadex.online/about" />
+    <lastmod>2026-09-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ahadex.online/bn/about</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ahadex.online/about" />
+    <xhtml:link rel="alternate" hreflang="bn" href="https://ahadex.online/bn/about" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ahadex.online/about" />
+    <lastmod>2026-09-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://ahadex.online/contact</loc>
-    <lastmod>2026-09-23</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ahadex.online/contact" />
+    <xhtml:link rel="alternate" hreflang="bn" href="https://ahadex.online/bn/contact" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ahadex.online/contact" />
+    <lastmod>2026-09-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ahadex.online/bn/contact</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ahadex.online/contact" />
+    <xhtml:link rel="alternate" hreflang="bn" href="https://ahadex.online/bn/contact" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ahadex.online/contact" />
+    <lastmod>2026-09-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://ahadex.online/privacy-policy</loc>
-    <lastmod>2026-09-23</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ahadex.online/privacy-policy" />
+    <xhtml:link rel="alternate" hreflang="bn" href="https://ahadex.online/bn/privacy-policy" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ahadex.online/privacy-policy" />
+    <lastmod>2026-09-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://ahadex.online/bn/privacy-policy</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ahadex.online/privacy-policy" />
+    <xhtml:link rel="alternate" hreflang="bn" href="https://ahadex.online/bn/privacy-policy" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ahadex.online/privacy-policy" />
+    <lastmod>2026-09-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://ahadex.online/terms</loc>
-    <lastmod>2026-09-23</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ahadex.online/terms" />
+    <xhtml:link rel="alternate" hreflang="bn" href="https://ahadex.online/bn/terms" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ahadex.online/terms" />
+    <lastmod>2026-09-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://ahadex.online/bn/terms</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ahadex.online/terms" />
+    <xhtml:link rel="alternate" hreflang="bn" href="https://ahadex.online/bn/terms" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ahadex.online/terms" />
+    <lastmod>2026-09-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://ahadex.online/disclaimer</loc>
-    <lastmod>2026-09-23</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ahadex.online/disclaimer" />
+    <xhtml:link rel="alternate" hreflang="bn" href="https://ahadex.online/bn/disclaimer" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ahadex.online/disclaimer" />
+    <lastmod>2026-09-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://ahadex.online/bn/disclaimer</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ahadex.online/disclaimer" />
+    <xhtml:link rel="alternate" hreflang="bn" href="https://ahadex.online/bn/disclaimer" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ahadex.online/disclaimer" />
+    <lastmod>2026-09-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://ahadex.online/cookie-policy</loc>
-    <lastmod>2026-09-23</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ahadex.online/cookie-policy" />
+    <xhtml:link rel="alternate" hreflang="bn" href="https://ahadex.online/bn/cookie-policy" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ahadex.online/cookie-policy" />
+    <lastmod>2026-09-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://ahadex.online/bn/cookie-policy</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ahadex.online/cookie-policy" />
+    <xhtml:link rel="alternate" hreflang="bn" href="https://ahadex.online/bn/cookie-policy" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ahadex.online/cookie-policy" />
+    <lastmod>2026-09-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://ahadex.online/accessibility</loc>
-    <lastmod>2026-09-23</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ahadex.online/accessibility" />
+    <xhtml:link rel="alternate" hreflang="bn" href="https://ahadex.online/bn/accessibility" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ahadex.online/accessibility" />
+    <lastmod>2026-09-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://ahadex.online/bn/accessibility</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ahadex.online/accessibility" />
+    <xhtml:link rel="alternate" hreflang="bn" href="https://ahadex.online/bn/accessibility" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ahadex.online/accessibility" />
+    <lastmod>2026-09-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://ahadex.online/category/images</loc>
-    <lastmod>2026-09-23</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ahadex.online/category/images" />
+    <xhtml:link rel="alternate" hreflang="bn" href="https://ahadex.online/bn/category/images" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ahadex.online/category/images" />
+    <lastmod>2026-09-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ahadex.online/bn/category/images</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ahadex.online/category/images" />
+    <xhtml:link rel="alternate" hreflang="bn" href="https://ahadex.online/bn/category/images" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ahadex.online/category/images" />
+    <lastmod>2026-09-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://ahadex.online/category/documents</loc>
-    <lastmod>2026-09-23</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ahadex.online/category/documents" />
+    <xhtml:link rel="alternate" hreflang="bn" href="https://ahadex.online/bn/category/documents" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ahadex.online/category/documents" />
+    <lastmod>2026-09-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ahadex.online/bn/category/documents</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ahadex.online/category/documents" />
+    <xhtml:link rel="alternate" hreflang="bn" href="https://ahadex.online/bn/category/documents" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ahadex.online/category/documents" />
+    <lastmod>2026-09-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://ahadex.online/category/text</loc>
-    <lastmod>2026-09-23</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ahadex.online/category/text" />
+    <xhtml:link rel="alternate" hreflang="bn" href="https://ahadex.online/bn/category/text" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ahadex.online/category/text" />
+    <lastmod>2026-09-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ahadex.online/bn/category/text</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ahadex.online/category/text" />
+    <xhtml:link rel="alternate" hreflang="bn" href="https://ahadex.online/bn/category/text" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ahadex.online/category/text" />
+    <lastmod>2026-09-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://ahadex.online/category/developer</loc>
-    <lastmod>2026-09-23</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ahadex.online/category/developer" />
+    <xhtml:link rel="alternate" hreflang="bn" href="https://ahadex.online/bn/category/developer" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ahadex.online/category/developer" />
+    <lastmod>2026-09-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ahadex.online/bn/category/developer</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ahadex.online/category/developer" />
+    <xhtml:link rel="alternate" hreflang="bn" href="https://ahadex.online/bn/category/developer" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ahadex.online/category/developer" />
+    <lastmod>2026-09-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://ahadex.online/tool/image-compressor</loc>
-    <lastmod>2026-09-23</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ahadex.online/tool/image-compressor" />
+    <xhtml:link rel="alternate" hreflang="bn" href="https://ahadex.online/bn/tool/image-compressor" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ahadex.online/tool/image-compressor" />
+    <lastmod>2026-09-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://ahadex.online/bn/tool/image-compressor</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ahadex.online/tool/image-compressor" />
+    <xhtml:link rel="alternate" hreflang="bn" href="https://ahadex.online/bn/tool/image-compressor" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ahadex.online/tool/image-compressor" />
+    <lastmod>2026-09-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://ahadex.online/tool/pdf-to-text</loc>
-    <lastmod>2026-09-23</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ahadex.online/tool/pdf-to-text" />
+    <xhtml:link rel="alternate" hreflang="bn" href="https://ahadex.online/bn/tool/pdf-to-text" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ahadex.online/tool/pdf-to-text" />
+    <lastmod>2026-09-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://ahadex.online/bn/tool/pdf-to-text</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ahadex.online/tool/pdf-to-text" />
+    <xhtml:link rel="alternate" hreflang="bn" href="https://ahadex.online/bn/tool/pdf-to-text" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ahadex.online/tool/pdf-to-text" />
+    <lastmod>2026-09-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://ahadex.online/tool/json-formatter</loc>
-    <lastmod>2026-09-23</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ahadex.online/tool/json-formatter" />
+    <xhtml:link rel="alternate" hreflang="bn" href="https://ahadex.online/bn/tool/json-formatter" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ahadex.online/tool/json-formatter" />
+    <lastmod>2026-09-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://ahadex.online/bn/tool/json-formatter</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ahadex.online/tool/json-formatter" />
+    <xhtml:link rel="alternate" hreflang="bn" href="https://ahadex.online/bn/tool/json-formatter" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ahadex.online/tool/json-formatter" />
+    <lastmod>2026-09-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://ahadex.online/tool/merge-pdf</loc>
-    <lastmod>2026-09-23</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ahadex.online/tool/merge-pdf" />
+    <xhtml:link rel="alternate" hreflang="bn" href="https://ahadex.online/bn/tool/merge-pdf" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ahadex.online/tool/merge-pdf" />
+    <lastmod>2026-09-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://ahadex.online/bn/tool/merge-pdf</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ahadex.online/tool/merge-pdf" />
+    <xhtml:link rel="alternate" hreflang="bn" href="https://ahadex.online/bn/tool/merge-pdf" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ahadex.online/tool/merge-pdf" />
+    <lastmod>2026-09-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://ahadex.online/tool/word-counter</loc>
-    <lastmod>2026-09-23</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ahadex.online/tool/word-counter" />
+    <xhtml:link rel="alternate" hreflang="bn" href="https://ahadex.online/bn/tool/word-counter" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ahadex.online/tool/word-counter" />
+    <lastmod>2026-09-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://ahadex.online/bn/tool/word-counter</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ahadex.online/tool/word-counter" />
+    <xhtml:link rel="alternate" hreflang="bn" href="https://ahadex.online/bn/tool/word-counter" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ahadex.online/tool/word-counter" />
+    <lastmod>2026-09-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://ahadex.online/tool/color-picker</loc>
-    <lastmod>2026-09-23</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ahadex.online/tool/color-picker" />
+    <xhtml:link rel="alternate" hreflang="bn" href="https://ahadex.online/bn/tool/color-picker" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ahadex.online/tool/color-picker" />
+    <lastmod>2026-09-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://ahadex.online/bn/tool/color-picker</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ahadex.online/tool/color-picker" />
+    <xhtml:link rel="alternate" hreflang="bn" href="https://ahadex.online/bn/tool/color-picker" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ahadex.online/tool/color-picker" />
+    <lastmod>2026-09-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://ahadex.online/tool/jpg-to-png</loc>
-    <lastmod>2026-09-23</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ahadex.online/tool/jpg-to-png" />
+    <xhtml:link rel="alternate" hreflang="bn" href="https://ahadex.online/bn/tool/jpg-to-png" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ahadex.online/tool/jpg-to-png" />
+    <lastmod>2026-09-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://ahadex.online/bn/tool/jpg-to-png</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ahadex.online/tool/jpg-to-png" />
+    <xhtml:link rel="alternate" hreflang="bn" href="https://ahadex.online/bn/tool/jpg-to-png" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ahadex.online/tool/jpg-to-png" />
+    <lastmod>2026-09-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://ahadex.online/tool/image-resizer</loc>
-    <lastmod>2026-09-23</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ahadex.online/tool/image-resizer" />
+    <xhtml:link rel="alternate" hreflang="bn" href="https://ahadex.online/bn/tool/image-resizer" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ahadex.online/tool/image-resizer" />
+    <lastmod>2026-09-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://ahadex.online/bn/tool/image-resizer</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ahadex.online/tool/image-resizer" />
+    <xhtml:link rel="alternate" hreflang="bn" href="https://ahadex.online/bn/tool/image-resizer" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ahadex.online/tool/image-resizer" />
+    <lastmod>2026-09-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://ahadex.online/tool/photo-qr-code</loc>
-    <lastmod>2026-09-23</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ahadex.online/tool/photo-qr-code" />
+    <xhtml:link rel="alternate" hreflang="bn" href="https://ahadex.online/bn/tool/photo-qr-code" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ahadex.online/tool/photo-qr-code" />
+    <lastmod>2026-09-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://ahadex.online/bn/tool/photo-qr-code</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ahadex.online/tool/photo-qr-code" />
+    <xhtml:link rel="alternate" hreflang="bn" href="https://ahadex.online/bn/tool/photo-qr-code" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ahadex.online/tool/photo-qr-code" />
+    <lastmod>2026-09-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>

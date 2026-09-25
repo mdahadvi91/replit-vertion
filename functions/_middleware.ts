@@ -66,6 +66,16 @@ function isValidRoute(pathname: string): boolean {
   return false;
 }
 
+function createRedirectResponse(location: string, status = 301): Response {
+  return new Response(null, {
+    status,
+    headers: {
+      Location: location,
+      'Cache-Control': 'public, max-age=86400',
+    },
+  });
+}
+
 function createNotFoundResponse(): Response {
   const notFoundHtml = `<!DOCTYPE html>
 <html lang="en">
@@ -140,16 +150,51 @@ export async function onRequest(context: {
     return context.next();
   }
 
-  // 2. Any URL with an unrecognised file extension (e.g. .html, .php, .bar, .css, .txt) is an unknown file -> return HTTP 404 immediately
+  // 2. Canonical redirects for index.html
+  if (pathname === '/index.html') {
+    return createRedirectResponse('/');
+  }
+  if (pathname === '/bn/index.html') {
+    return createRedirectResponse('/bn');
+  }
+
+  // 3. Normalize .html extensions on valid routes (e.g. /tools.html -> /tools, /tool/pdf-to-text/index.html -> /tool/pdf-to-text)
+  if (pathname.endsWith('/index.html')) {
+    const clean = pathname.slice(0, -11) || '/';
+    if (isValidRoute(clean)) {
+      return createRedirectResponse(clean + url.search);
+    }
+  } else if (pathname.endsWith('.html')) {
+    const clean = pathname.slice(0, -5);
+    if (isValidRoute(clean)) {
+      return createRedirectResponse(clean + url.search);
+    }
+  }
+
+  // 4. Legacy canonical redirects
+  if (pathname === '/tools/image-compressor') {
+    return createRedirectResponse('/tool/image-compressor');
+  }
+  if (pathname === '/bn/tools/image-compressor') {
+    return createRedirectResponse('/bn/tool/image-compressor');
+  }
+  if (pathname === '/privacy') {
+    return createRedirectResponse('/privacy-policy');
+  }
+  if (pathname === '/bn/privacy') {
+    return createRedirectResponse('/bn/privacy-policy');
+  }
+
+  // 5. Any other URL with a file extension (.php, .aspx, .unknown, etc.) is unknown -> return HTTP 404 immediately
   if (pathname.includes('.')) {
     return createNotFoundResponse();
   }
 
-  // 3. Clean routing check: Only proceed if it is a valid registered route
+  // 6. Clean routing check: Only proceed if it is a valid registered route
   if (isValidRoute(pathname)) {
     return context.next();
   }
 
-  // 4. Any other unknown route (e.g. /tool/unknown-tool, /random-slug) -> return HTTP 404 with noindex header
+  // 7. Any other unknown route (e.g. /tool/unknown-tool, /random-slug) -> return HTTP 404 with noindex header
   return createNotFoundResponse();
 }

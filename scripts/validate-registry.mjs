@@ -57,6 +57,42 @@ for (const match of relatedMatches) {
   }
 }
 
+// 5. Check ToolPage.tsx toolLoaders for each slug
+const toolPageFile = path.join(rootDir, 'src', 'pages', 'ToolPage.tsx');
+if (fs.existsSync(toolPageFile)) {
+  const toolPageContent = fs.readFileSync(toolPageFile, 'utf8');
+  for (const slug of seenSlugs) {
+    const slugInLoadersRegex = new RegExp(`['"]${slug}['"]\\s*:`);
+    if (!slugInLoadersRegex.test(toolPageContent)) {
+      errors.push(`ToolPage.tsx missing component loader for slug: "${slug}"`);
+    }
+  }
+}
+
+// 6. Check functions/_middleware.ts VALID_TOOL_SLUGS
+const middlewareFile = path.join(rootDir, 'functions', '_middleware.ts');
+if (fs.existsSync(middlewareFile)) {
+  const middlewareContent = fs.readFileSync(middlewareFile, 'utf8');
+  for (const slug of seenSlugs) {
+    const slugInMiddlewareRegex = new RegExp(`['"]${slug}['"]`);
+    if (!slugInMiddlewareRegex.test(middlewareContent)) {
+      errors.push(`functions/_middleware.ts VALID_TOOL_SLUGS missing slug: "${slug}"`);
+    }
+  }
+}
+
+// 7. Check scripts/prerender-data.mjs
+const prerenderDataFile = path.join(rootDir, 'scripts', 'prerender-data.mjs');
+if (fs.existsSync(prerenderDataFile)) {
+  const prerenderDataContent = fs.readFileSync(prerenderDataFile, 'utf8');
+  for (const slug of seenSlugs) {
+    const slugInPrerenderRegex = new RegExp(`slug:\\s*['"]${slug}['"]`);
+    if (!slugInPrerenderRegex.test(prerenderDataContent)) {
+      errors.push(`scripts/prerender-data.mjs missing prerender data for slug: "${slug}"`);
+    }
+  }
+}
+
 if (errors.length > 0) {
   console.error('[validate] ❌ Validation failed with errors:');
   errors.forEach((err) => console.error(`  - ${err}`));

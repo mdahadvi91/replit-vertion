@@ -22,6 +22,7 @@ import { categoryList, tools, getLocalizedTool } from '@/registry/tool-registry'
 import { useI18n, type Language } from '@/i18n';
 import { trackEvent } from '@/lib/analytics';
 import { MainNavigation } from '@/components/navigation/MainNavigation';
+import { matchToolQuery, calculateToolScore } from '@/lib/search/toolSearch';
 
 type Theme = 'light' | 'dark';
 
@@ -175,23 +176,14 @@ export function Header({
     if (!normalizedQuery) return [];
 
     return localizedTools
-      .filter((tool) => {
+      .map((tool) => {
         const raw = tools.find((r) => r.id === tool.id);
-        const searchableText = [
-          tool.name,
-          tool.description,
-          tool.category,
-          raw?.name ?? '',
-          raw?.description ?? '',
-          raw?.category ?? '',
-          ...(tool.keywords ?? []),
-          ...(raw?.keywords ?? []),
-        ]
-          .join(' ')
-          .toLowerCase();
-
-        return searchableText.includes(normalizedQuery);
+        const score = calculateToolScore(tool, normalizedQuery, raw);
+        return { tool, score };
       })
+      .filter((item) => item.score > 0)
+      .sort((a, b) => b.score - a.score)
+      .map((item) => item.tool)
       .slice(0, 8);
   }, [normalizedQuery, localizedTools]);
 

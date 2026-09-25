@@ -9,6 +9,7 @@ import { useFavoriteTools } from '@/features/favorites/useFavorites';
 import { trackEvent } from '@/lib/analytics';
 import { useConsent } from '@/features/consent';
 import ToolCard from '@/components/tool/ToolCard';
+import { matchToolQuery } from '@/lib/search/toolSearch';
 
 export default function ToolsPage({ initialCategory = 'All' }: { initialCategory?: 'All' | 'Favorites' | ToolCategory }) {
   const { copy, language } = useI18n();
@@ -35,8 +36,7 @@ export default function ToolsPage({ initialCategory = 'All' }: { initialCategory
             : tool.category === category;
 
         const raw = tools.find((r) => r.id === tool.id);
-        const searchable = `${tool.name} ${tool.description} ${tool.keywords.join(' ')} ${raw?.name ?? ''} ${raw?.description ?? ''} ${(raw?.keywords ?? []).join(' ')}`.toLowerCase();
-        const matchesQuery = searchable.includes(query.toLowerCase());
+        const matchesQuery = matchToolQuery(tool, query, raw);
 
         return matchesCategory && matchesQuery;
       }),

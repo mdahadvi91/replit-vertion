@@ -325,6 +325,17 @@ export function CompressPdfTool({ tool }: { tool: ToolDefinition }) {
                   </span>
                 </div>
               </div>
+
+              {/* Honest Compression Method Callout */}
+              <div style={{ marginTop: 14, padding: '12px 16px', borderRadius: 10, background: 'hsl(var(--primary) / .06)', border: '1px solid hsl(var(--primary) / .2)', display: 'flex', gap: 10, alignItems: 'flex-start' }}>
+                <span style={{ fontSize: 16 }}>⚡</span>
+                <p style={{ margin: 0, fontSize: 13, color: 'hsl(var(--muted-foreground))', lineHeight: 1.5 }}>
+                  <strong>{isBn ? 'কম্প্রেশন পদ্ধতি তথ্য:' : 'Compression Method Note:'}</strong>{' '}
+                  {isBn
+                    ? 'এই টুলটি স্ক্যান করা ছবি ও ভারী পেজ অপ্টিমাইজ করতে র্যাস্টারাইজড ক্যানভাস কম্প্রেশন পদ্ধতি ব্যবহার করে। ফলে ফাইলের সাইজ অনেক ছোট হয়, তবে ভেক্টর ডকুমেন্টের ক্ষেত্রে টেক্সট সিলেকশন পরিবর্তিত হতে পারে।'
+                    : 'Visual recompression re-encodes pages to achieve high file size reductions for WhatsApp, email, or upload portals. Note: Text in vector PDFs is visually preserved as high-resolution images and may not remain text-selectable.'}
+                </p>
+              </div>
             </div>
 
             {status === 'compressing' && (

@@ -430,7 +430,7 @@ for (const rawTool of toolsData) {
             <h2 style="font-size: 1.4rem; font-weight: 800; color: #f1f5f9; margin-bottom: 20px;">
               ${isBn ? 'সম্পর্কিত অন্যান্য প্রয়োজনীয় টুলস' : 'Related Tools You May Like'}
             </h2>
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 18px;">
+            <div class="tool-grid">
               ${relatedCardsHtml}
             </div>
           </section>
@@ -545,7 +545,7 @@ for (const [catKey, catObj] of Object.entries(categories)) {
           <p style="font-size: 1.1rem; color: #94a3b8; line-height: 1.6; max-width: 800px;">${cat.intro}</p>
         </header>
 
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-bottom: 48px;">
+        <div class="tool-grid" style="margin-bottom: 48px;">
           ${catToolsHtml}
         </div>
       </div>
@@ -698,7 +698,7 @@ for (const [key, pageData] of Object.entries(staticPages)) {
                 ${isBn ? 'সব টুলস ক্যাটালগ দেখুন →' : 'View Full Catalog →'}
               </a>
             </div>
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px;">
+            <div class="tool-grid">
               ${toolsGridHtml}
             </div>
           </section>
@@ -743,7 +743,7 @@ for (const [key, pageData] of Object.entries(staticPages)) {
               ${pageMeta.intro}
             </p>
           </header>
-          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px;">
+          <div class="tool-grid">
             ${toolsGridHtml}
           </div>
         </div>

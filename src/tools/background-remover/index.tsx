@@ -7,9 +7,7 @@ import {
   Check,
   AlertCircle,
   Image as ImageIcon,
-  Palette,
-  Sliders,
-  Eye,
+  Loader2,
 } from 'lucide-react';
 import type { ToolDefinition } from '@/registry/tool-registry';
 import { useI18n } from '@/i18n';
@@ -35,20 +33,26 @@ export function BackgroundRemoverTool({ tool }: { tool: ToolDefinition }) {
   const [file, setFile] = useState<File | null>(null);
   const [bgOption, setBgOption] = useState<BgOption>('transparent');
   const [customColor, setCustomColor] = useState<string>('#3b82f6');
-  const [tolerance, setTolerance] = useState<number>(32);
-  const [feather, setFeather] = useState<number>(2);
-  const [status, setStatus] = useState<'idle' | 'preparing' | 'segmenting' | 'compositing' | 'done' | 'error'>('idle');
+  const [status, setStatus] = useState<'idle' | 'loading_model' | 'segmenting' | 'compositing' | 'done' | 'error'>('idle');
+  const [progressStage, setProgressStage] = useState<string>('');
+  const [progressPercent, setProgressPercent] = useState<number>(0);
   const [errorMessage, setErrorMessage] = useState<string>('');
+  const [transparentBlob, setTransparentBlob] = useState<Blob | null>(null);
   const [resultBlob, setResultBlob] = useState<Blob | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string>('');
   const [originalUrl, setOriginalUrl] = useState<string>('');
+
+  const isBn = language === 'bn';
 
   const resetWorkspace = () => {
     if (previewUrl) URL.revokeObjectURL(previewUrl);
     if (originalUrl) URL.revokeObjectURL(originalUrl);
     setFile(null);
     setStatus('idle');
+    setProgressStage('');
+    setProgressPercent(0);
     setErrorMessage('');
+    setTransparentBlob(null);
     setResultBlob(null);
     setPreviewUrl('');
     setOriginalUrl('');
@@ -60,13 +64,13 @@ export function BackgroundRemoverTool({ tool }: { tool: ToolDefinition }) {
     if (!selected) return;
 
     if (!selected.type.startsWith('image/')) {
-      setErrorMessage(language === 'bn' ? 'অনুগ্রহ করে একটি ছবি সিলেক্ট করুন।' : 'Please select an image file.');
+      setErrorMessage(isBn ? 'অনুগ্রহ করে একটি বৈধ ইমেজ ফাইল সিলেক্ট করুন।' : 'Please select a valid image file.');
       setStatus('error');
       return;
     }
 
     if (selected.size > 25 * 1024 * 1024) {
-      setErrorMessage(language === 'bn' ? 'ছবির আকার ২৫ মেগাবাইটের কম হতে হবে।' : 'Image size must be under 25 MB.');
+      setErrorMessage(isBn ? 'ছবির আকার ২৫ মেগাবাইটের কম হতে হবে।' : 'Image size must be under 25 MB.');
       setStatus('error');
       return;
     }
@@ -76,144 +80,166 @@ export function BackgroundRemoverTool({ tool }: { tool: ToolDefinition }) {
     setOriginalUrl(objUrl);
     setStatus('idle');
     setErrorMessage('');
+    setTransparentBlob(null);
+    setResultBlob(null);
+    setPreviewUrl('');
+  };
+
+  // Helper to composite the transparent subject onto chosen background
+  const compositeBackground = async (sourceTransparentBlob: Blob, targetBg: BgOption, colorVal: string): Promise<Blob> => {
+    if (targetBg === 'transparent') {
+      return sourceTransparentBlob;
+    }
+
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      const tempUrl = URL.createObjectURL(sourceTransparentBlob);
+
+      img.onload = () => {
+        URL.revokeObjectURL(tempUrl);
+        const canvas = document.createElement('canvas');
+        canvas.width = img.naturalWidth || img.width;
+        canvas.height = img.naturalHeight || img.height;
+        const ctx = canvas.getContext('2d');
+        if (!ctx) {
+          resolve(sourceTransparentBlob);
+          return;
+        }
+
+        const fillMap: Record<string, string> = {
+          white: '#ffffff',
+          blue: '#1d4ed8', // Passport / ID photo blue
+          custom: colorVal,
+        };
+
+        ctx.fillStyle = fillMap[targetBg] || '#ffffff';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(img, 0, 0);
+
+        canvas.toBlob((b) => {
+          if (b) resolve(b);
+          else resolve(sourceTransparentBlob);
+        }, 'image/png', 1.0);
+      };
+
+      img.onerror = () => {
+        URL.revokeObjectURL(tempUrl);
+        reject(new Error('Failed to load segmented image for background composite'));
+      };
+
+      img.src = tempUrl;
+    });
   };
 
   const processSegmentation = async () => {
-    if (!file || !originalUrl) return;
+    if (!file) return;
 
-    setStatus('preparing');
-
-    await new Promise((r) => setTimeout(r, 120));
-    setStatus('segmenting');
+    setStatus('loading_model');
+    setProgressPercent(10);
+    setProgressStage(isBn ? 'AI নিউরাল মডেল লোড হচ্ছে...' : 'Loading neural AI segmentation model...');
+    setErrorMessage('');
 
     try {
-      const img = new Image();
-      await new Promise((resolve, reject) => {
-        img.onload = () => resolve(true);
-        img.onerror = () => reject(new Error('Failed to load image'));
-        img.src = originalUrl;
+      // Lazy load @imgly/background-removal so it never delays initial page loads
+      const { removeBackground } = await import('@imgly/background-removal');
+
+      setStatus('segmenting');
+      setProgressStage(isBn ? 'AI সাবজেক্ট সেগমেন্টেশন প্রসেসিং...' : 'Running AI neural segmentation on subject...');
+
+      const segmentedBlob = await removeBackground(file, {
+        model: 'isnet_fp16',
+        output: {
+          format: 'image/png',
+          quality: 0.95,
+        },
+        progress: (key: string, current: number, total: number) => {
+          if (key.includes('fetch')) {
+            const pct = Math.round((current / (total || 1)) * 100);
+            setProgressPercent(Math.min(50, Math.max(10, Math.round(pct * 0.5))));
+            setProgressStage(isBn ? `মডেল ডেটা ডাউনলোড হচ্ছে (${pct}%)...` : `Downloading neural weights (${pct}%)...`);
+          } else if (key.includes('compute')) {
+            const pct = Math.round((current / (total || 1)) * 100);
+            setProgressPercent(50 + Math.min(45, Math.max(5, Math.round(pct * 0.45))));
+            setProgressStage(isBn ? 'নিউরাল নেটওয়ার্ক মাস্ক তৈরি করছে...' : 'Computing neural foreground mask...');
+          }
+        },
       });
 
-      const width = img.naturalWidth;
-      const height = img.naturalHeight;
-
-      // Processing canvas
-      const canvas = document.createElement('canvas');
-      canvas.width = width;
-      canvas.height = height;
-      const ctx = canvas.getContext('2d', { willReadFrequently: true });
-      if (!ctx) throw new Error('No canvas context');
-
-      ctx.drawImage(img, 0, 0);
-      const imgData = ctx.getImageData(0, 0, width, height);
-      const data = imgData.data;
-
-      // Sample border corners and edges to detect background color profile
-      const sampleCoords = [
-        [0, 0],
-        [width - 1, 0],
-        [0, height - 1],
-        [width - 1, height - 1],
-        [Math.floor(width / 2), 0],
-        [0, Math.floor(height / 2)],
-        [width - 1, Math.floor(height / 2)],
-      ];
-
-      let avgR = 0, avgG = 0, avgB = 0;
-      sampleCoords.forEach(([x, y]) => {
-        const idx = (y * width + x) * 4;
-        avgR += data[idx];
-        avgG += data[idx + 1];
-        avgB += data[idx + 2];
-      });
-      avgR = Math.round(avgR / sampleCoords.length);
-      avgG = Math.round(avgG / sampleCoords.length);
-      avgB = Math.round(avgB / sampleCoords.length);
-
-      // Chroma-luminance distance threshold
-      const thresh = tolerance * 2.2;
-
-      // Generate mask
-      for (let i = 0; i < data.length; i += 4) {
-        const r = data[i];
-        const g = data[i + 1];
-        const b = data[i + 2];
-
-        // Euclidean color distance from background
-        const dist = Math.sqrt(
-          (r - avgR) ** 2 +
-          (g - avgG) ** 2 +
-          (b - avgB) ** 2
-        );
-
-        if (dist < thresh) {
-          // Soft feathering edge transition
-          const alphaRatio = dist / thresh;
-          data[i + 3] = Math.max(0, Math.min(255, Math.floor(alphaRatio ** 1.8 * 255)));
-        }
-      }
-
-      ctx.putImageData(imgData, 0, 0);
+      setTransparentBlob(segmentedBlob);
 
       setStatus('compositing');
-      await new Promise((r) => setTimeout(r, 100));
+      setProgressStage(isBn ? 'আউটপুট কম্পোজিট করা হচ্ছে...' : 'Compositing final output image...');
+      setProgressPercent(95);
 
-      // Composite onto final canvas with requested background
-      const finalCanvas = document.createElement('canvas');
-      finalCanvas.width = width;
-      finalCanvas.height = height;
-      const finalCtx = finalCanvas.getContext('2d');
-      if (!finalCtx) throw new Error('No final context');
+      const finalBlob = await compositeBackground(segmentedBlob, bgOption, customColor);
+      const url = URL.createObjectURL(finalBlob);
 
-      if (bgOption !== 'transparent') {
-        const fillMap: Record<string, string> = {
-          white: '#ffffff',
-          blue: '#1d4ed8', // official passport blue
-          custom: customColor,
-        };
-        finalCtx.fillStyle = fillMap[bgOption] || '#ffffff';
-        finalCtx.fillRect(0, 0, width, height);
-      }
+      if (previewUrl) URL.revokeObjectURL(previewUrl);
+      setResultBlob(finalBlob);
+      setPreviewUrl(url);
+      setProgressPercent(100);
+      setStatus('done');
 
-      finalCtx.drawImage(canvas, 0, 0);
-
-      finalCanvas.toBlob(
-        (blob) => {
-          if (!blob) throw new Error('Blob export failed');
-          const url = URL.createObjectURL(blob);
-          setResultBlob(blob);
-          setPreviewUrl(url);
-          setStatus('done');
-          trackEvent('tool_run', { tool: 'background-remover', bg: bgOption });
-        },
-        'image/png',
-        1.0
-      );
-    } catch (err: any) {
-      console.error(err);
+      trackEvent('tool_run', { tool: 'background-remover', bg: bgOption });
+    } catch (err: unknown) {
+      console.error('[background-remover] AI segmentation failed:', err);
       setStatus('error');
-      setErrorMessage(language === 'bn' ? 'ব্যাকগ্রাউন্ড অপসারণে সমস্যা হয়েছে।' : 'Error processing image background.');
+      setErrorMessage(
+        isBn
+          ? 'AI ব্যাকগ্রাউন্ড অপসারণে সমস্যা হয়েছে। অনুগ্রহ করে আপনার ব্রাউজারে WebAssembly সক্ষম কিনা ও ইন্টারনেট সংযোগ নিশ্চিত করুন।'
+          : 'Failed to run AI segmentation. Please verify that your browser supports WebAssembly and has an active network connection for initial model initialization.'
+      );
+    }
+  };
+
+  // Instant re-composite when user switches background option after segmentation has run
+  const handleBgOptionChange = async (newOption: BgOption) => {
+    setBgOption(newOption);
+    if (transparentBlob && status === 'done') {
+      try {
+        const updatedBlob = await compositeBackground(transparentBlob, newOption, customColor);
+        if (previewUrl) URL.revokeObjectURL(previewUrl);
+        const url = URL.createObjectURL(updatedBlob);
+        setResultBlob(updatedBlob);
+        setPreviewUrl(url);
+      } catch (err) {
+        console.error('Failed to re-composite background:', err);
+      }
+    }
+  };
+
+  const handleCustomColorChange = async (newColor: string) => {
+    setCustomColor(newColor);
+    if (bgOption === 'custom' && transparentBlob && status === 'done') {
+      try {
+        const updatedBlob = await compositeBackground(transparentBlob, 'custom', newColor);
+        if (previewUrl) URL.revokeObjectURL(previewUrl);
+        const url = URL.createObjectURL(updatedBlob);
+        setResultBlob(updatedBlob);
+        setPreviewUrl(url);
+      } catch (err) {
+        console.error('Failed to update custom color:', err);
+      }
     }
   };
 
   const handleDownload = () => {
     if (!resultBlob || !file) return;
     const baseName = file.name.replace(/\.[^/.]+$/, '');
+    const suffix = bgOption === 'transparent' ? 'transparent' : bgOption;
     const link = document.createElement('a');
     link.href = previewUrl;
-    link.download = `${baseName}-no-bg.png`;
+    link.download = `${baseName}-${suffix}.png`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
   };
 
-  const isBn = language === 'bn';
-
   return (
     <main className="prose-page" style={{ maxWidth: 1100, margin: '0 auto', padding: '32px 16px' }}>
       <header style={{ marginBottom: 28 }}>
         <span className="eyebrow" style={{ color: 'hsl(var(--primary))' }}>
-          {tool.category} / {isBn ? '১০০% ব্রাউজার প্রসেসিং' : 'Zero Server Latency'}
+          {tool.category} / {isBn ? 'AI নিউরাল সেগমেন্টেশন' : 'Client-Side Neural AI'}
         </span>
         <h1 style={{ fontSize: '2.2rem', fontWeight: 800, marginTop: 8 }}>{tool.seo.h1}</h1>
         <p style={{ fontSize: 16, color: 'hsl(var(--muted-foreground))', marginTop: 8 }}>{tool.description}</p>
@@ -266,7 +292,9 @@ export function BackgroundRemoverTool({ tool }: { tool: ToolDefinition }) {
               {isBn ? 'আপনার ছবি নির্বাচন বা ড্র্যাগ করুন' : 'Select Image to Remove Background'}
             </h3>
             <p style={{ fontSize: 14, color: 'hsl(var(--muted-foreground))', margin: '0 0 18px' }}>
-              {isBn ? 'কোনো পেইড সাবস্ক্রিপশন ছাড়াই ট্রান্সপারেন্ট বা পাসপোর্ট সাইজ নীল ব্যাকগ্রাউন্ড তৈরি করুন' : 'Fast client-side segmentation with transparent, white, or passport blue background'}
+              {isBn
+                ? 'ব্রাউজারে নিউরাল AI মডেল দিয়ে চুল ও সূক্ষ্ম সীমানা নিখুঁত রেখে স্বচ্ছ বা পাসপোর্ট সাইজ নীল ব্যাকগ্রাউন্ড তৈরি করুন'
+                : '100% in-browser AI segmentation model. Preserves hair, clothing edges, and produces clean transparent PNG or ID blue background.'}
             </p>
             <button type="button" className="button button-primary">
               <Upload size={16} /> {isBn ? 'ছবি নির্বাচন করুন' : 'Upload Image'}
@@ -301,7 +329,7 @@ export function BackgroundRemoverTool({ tool }: { tool: ToolDefinition }) {
               </button>
             </div>
 
-            {/* Background Style Options */}
+            {/* Target Background Choice */}
             <div
               style={{
                 display: 'flex',
@@ -313,23 +341,30 @@ export function BackgroundRemoverTool({ tool }: { tool: ToolDefinition }) {
                 border: '1px solid hsl(var(--border))',
               }}
             >
-              <strong style={{ fontSize: 14 }}>{isBn ? 'ব্যাকগ্রাউন্ড নির্বাচন করুন:' : 'Target Background:'}</strong>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <strong style={{ fontSize: 14 }}>{isBn ? 'ব্যাকগ্রাউন্ড নির্বাচন করুন:' : 'Target Background:'}</strong>
+                {transparentBlob && (
+                  <span style={{ fontSize: 12, color: 'hsl(var(--primary))', fontWeight: 600 }}>
+                    ⚡ {isBn ? 'তাৎক্ষণিক পরিবর্তন সচল' : 'Instant live preview'}
+                  </span>
+                )}
+              </div>
               <div style={{ display: 'flex', gap: 14, flexWrap: 'wrap' }}>
                 <button
                   type="button"
                   className="button button-ghost"
-                  onClick={() => setBgOption('transparent')}
+                  onClick={() => handleBgOptionChange('transparent')}
                   style={{
                     border: bgOption === 'transparent' ? '2px solid hsl(var(--primary))' : undefined,
                     background: bgOption === 'transparent' ? 'hsl(var(--primary) / .1)' : undefined,
                   }}
                 >
-                  🏁 {isBn ? 'স্বচ্ছ (Transparent PNG)' : 'Transparent'}
+                  🏁 {isBn ? 'স্বচ্ছ (Transparent PNG)' : 'Transparent PNG'}
                 </button>
                 <button
                   type="button"
                   className="button button-ghost"
-                  onClick={() => setBgOption('white')}
+                  onClick={() => handleBgOptionChange('white')}
                   style={{
                     border: bgOption === 'white' ? '2px solid hsl(var(--primary))' : undefined,
                     background: bgOption === 'white' ? 'hsl(var(--primary) / .1)' : undefined,
@@ -340,7 +375,7 @@ export function BackgroundRemoverTool({ tool }: { tool: ToolDefinition }) {
                 <button
                   type="button"
                   className="button button-ghost"
-                  onClick={() => setBgOption('blue')}
+                  onClick={() => handleBgOptionChange('blue')}
                   style={{
                     border: bgOption === 'blue' ? '2px solid hsl(var(--primary))' : undefined,
                     background: bgOption === 'blue' ? 'hsl(var(--primary) / .1)' : undefined,
@@ -352,7 +387,7 @@ export function BackgroundRemoverTool({ tool }: { tool: ToolDefinition }) {
                   <button
                     type="button"
                     className="button button-ghost"
-                    onClick={() => setBgOption('custom')}
+                    onClick={() => handleBgOptionChange('custom')}
                     style={{
                       border: bgOption === 'custom' ? '2px solid hsl(var(--primary))' : undefined,
                       background: bgOption === 'custom' ? 'hsl(var(--primary) / .1)' : undefined,
@@ -364,27 +399,11 @@ export function BackgroundRemoverTool({ tool }: { tool: ToolDefinition }) {
                     <input
                       type="color"
                       value={customColor}
-                      onChange={(e) => setCustomColor(e.target.value)}
+                      onChange={(e) => handleCustomColorChange(e.target.value)}
                       style={{ width: 32, height: 32, border: 'none', borderRadius: 6, cursor: 'pointer', padding: 0 }}
                     />
                   )}
                 </div>
-              </div>
-
-              {/* Edge Tolerance Slider */}
-              <div style={{ maxWidth: 360, marginTop: 8 }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 6 }}>
-                  <span style={{ fontSize: 13, fontWeight: 600 }}>{isBn ? 'কাটিং সংবেদনশীলতা (Tolerance)' : 'Edge Sensitivity'}</span>
-                  <strong style={{ fontSize: 13, color: 'hsl(var(--primary))' }}>{tolerance}</strong>
-                </div>
-                <input
-                  type="range"
-                  min="15"
-                  max="65"
-                  value={tolerance}
-                  onChange={(e) => setTolerance(parseInt(e.target.value, 10))}
-                  style={{ width: '100%', accentColor: 'hsl(var(--primary))' }}
-                />
               </div>
             </div>
 
@@ -393,18 +412,31 @@ export function BackgroundRemoverTool({ tool }: { tool: ToolDefinition }) {
                 type="button"
                 className="button button-primary"
                 onClick={processSegmentation}
-                style={{ padding: '12px 28px', fontSize: 15, alignSelf: 'flex-start' }}
+                style={{ padding: '12px 28px', fontSize: 15, alignSelf: 'flex-start', display: 'flex', alignItems: 'center', gap: 8 }}
               >
-                <Sparkles size={16} /> {isBn ? 'ব্যাকগ্রাউন্ড সরান' : 'Remove Background'}
+                <Sparkles size={16} /> {isBn ? 'AI দিয়ে ব্যাকগ্রাউন্ড সরান' : 'Remove Background with AI'}
               </button>
             )}
 
-            {(status === 'preparing' || status === 'segmenting' || status === 'compositing') && (
-              <div style={{ padding: '24px 0', textAlign: 'center' }}>
-                <span style={{ fontSize: 14, color: 'hsl(var(--primary))', fontWeight: 600 }}>
-                  {status === 'preparing' && (isBn ? 'ছবি প্রস্তুত করা হচ্ছে...' : 'Preparing image...')}
-                  {status === 'segmenting' && (isBn ? 'ব্যাকগ্রাউন্ড শনাক্ত ও পৃথক করা হচ্ছে...' : 'Detecting and segmenting background...')}
-                  {status === 'compositing' && (isBn ? 'নতুন ব্যাকগ্রাউন্ডে সেট করা হচ্ছে...' : 'Compositing final output...')}
+            {(status === 'loading_model' || status === 'segmenting' || status === 'compositing') && (
+              <div style={{ padding: '24px 16px', borderRadius: 14, background: 'hsl(var(--secondary) / .3)', border: '1px solid hsl(var(--border))', textAlign: 'center' }}>
+                <div style={{ display: 'inline-flex', alignItems: 'center', gap: 10, marginBottom: 12 }}>
+                  <Loader2 size={20} className="animate-spin" style={{ color: 'hsl(var(--primary))' }} />
+                  <strong style={{ fontSize: 15, color: 'hsl(var(--primary))' }}>{progressStage}</strong>
+                </div>
+
+                <div style={{ width: '100%', maxWidth: 360, margin: '0 auto', background: 'hsl(var(--border))', height: 8, borderRadius: 999, overflow: 'hidden' }}>
+                  <div
+                    style={{
+                      height: '100%',
+                      background: 'hsl(var(--primary))',
+                      width: `${progressPercent}%`,
+                      transition: 'width 0.3s ease',
+                    }}
+                  />
+                </div>
+                <span style={{ display: 'block', fontSize: 12, color: 'hsl(var(--muted-foreground))', marginTop: 8 }}>
+                  {progressPercent}% • {isBn ? 'ক্লায়েন্ট-সাইড ব্রাউজার প্রসেসিং' : 'Browser WebAssembly Neural Engine'}
                 </span>
               </div>
             )}
@@ -427,9 +459,9 @@ export function BackgroundRemoverTool({ tool }: { tool: ToolDefinition }) {
                   <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                     <Check size={24} style={{ color: 'hsl(var(--primary))' }} />
                     <div>
-                      <strong style={{ fontSize: 16 }}>{isBn ? 'ব্যাকগ্রাউন্ড সরানো সম্পন্ন!' : 'Background Removed!'}</strong>
+                      <strong style={{ fontSize: 16 }}>{isBn ? 'AI ব্যাকগ্রাউন্ড অপসারণ সম্পন্ন!' : 'AI Background Removed Successfully!'}</strong>
                       <span style={{ fontSize: 13, color: 'hsl(var(--muted-foreground))', display: 'block' }}>
-                        {resultBlob ? formatBytes(resultBlob.size) : ''} • High Quality Clean PNG
+                        {resultBlob ? formatBytes(resultBlob.size) : ''} • Clean Subject Mask & Transparent Edges
                       </span>
                     </div>
                   </div>
@@ -440,7 +472,7 @@ export function BackgroundRemoverTool({ tool }: { tool: ToolDefinition }) {
                       onClick={processSegmentation}
                       style={{ fontSize: 13 }}
                     >
-                      {isBn ? 'পুনরায় প্রসেস' : 'Re-apply'}
+                      {isBn ? 'পুনরায় প্রসেস' : 'Re-run Model'}
                     </button>
                     <button
                       type="button"
@@ -465,7 +497,7 @@ export function BackgroundRemoverTool({ tool }: { tool: ToolDefinition }) {
                   </div>
                   <div>
                     <span style={{ display: 'block', fontSize: 13, fontWeight: 600, marginBottom: 6 }}>
-                      {isBn ? 'ফলাফল (স্বচ্ছ ব্যাকগ্রাউন্ড প্রিভিউ)' : 'Result Preview'}
+                      {isBn ? 'ফলাফল (প্রিভিউ)' : 'Result Preview'}
                     </span>
                     <div
                       style={{

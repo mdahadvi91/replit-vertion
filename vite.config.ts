@@ -35,6 +35,12 @@ export default defineConfig({
           if (id.includes('node_modules/lucide-react')) {
             return 'vendor-icons';
           }
+          if (id.includes('node_modules/@imgly/background-removal')) {
+            return 'vendor-imgly';
+          }
+          if (id.includes('node_modules/docx')) {
+            return 'vendor-docx';
+          }
         },
       },
     },

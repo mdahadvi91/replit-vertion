@@ -6,6 +6,7 @@ export type ToolStatus = 'live' | 'planned';
 export interface ToolLocalizedData {
   name: string;
   description: string;
+  keywords?: string[];
   seo: {
     title: string;
     description: string;

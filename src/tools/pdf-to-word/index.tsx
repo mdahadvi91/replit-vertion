@@ -311,6 +311,17 @@ export function PdfToWordTool({ tool }: { tool: ToolDefinition }) {
               </label>
             </div>
 
+            {/* Layout Fidelity Callout */}
+            <div style={{ padding: '12px 16px', borderRadius: 10, background: 'hsl(var(--primary) / .06)', border: '1px solid hsl(var(--primary) / .2)', display: 'flex', gap: 10, alignItems: 'flex-start' }}>
+              <span style={{ fontSize: 16 }}>💡</span>
+              <p style={{ margin: 0, fontSize: 13, color: 'hsl(var(--muted-foreground))', lineHeight: 1.5 }}>
+                <strong>{isBn ? 'স্বচ্ছতা ও ফরম্যাট নোট:' : 'Conversion Fidelity Note:'}</strong>{' '}
+                {isBn
+                  ? 'এই টুলটি PDF থেকে টেক্সট, শিরোনাম ও অনুচ্ছেদগুলো বের করে এডিটেবল DOCX ডকুমেন্টে রূপান্তর করে। জটিল মাল্টি-কলাম ব্রোশিওর বা গ্রাফিক্সের ক্ষেত্রে লেআউট ফিক্সড কোঅর্ডিনেটের বদলে পরিষ্কার ফ্লোয়িং টেক্সটে সংরক্ষিত হয়।'
+                  : 'Extracts real readable text streams, headings, and paragraphs into editable Microsoft Word (.docx) format. For heavily styled brochures or multi-column flyers, text is structured into clean flowing editable paragraphs rather than rigid absolute coordinate overlays.'}
+              </p>
+            </div>
+
             {/* Progress or Actions */}
             {status === 'converting' && (
               <div style={{ textAlign: 'center', padding: '24px 0' }}>

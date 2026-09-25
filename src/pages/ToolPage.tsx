@@ -17,6 +17,21 @@ const toolLoaders: Record<string, () => Promise<{ default: ComponentType<{ tool:
   'pdf-to-text': () => import('@/tools/pdf-to-text').then((m) => ({ default: m.PdfToTextTool })),
   'merge-pdf': () => import('@/tools/merge-pdf').then((m) => ({ default: m.MergePdfTool })),
   'photo-qr-code': () => import('@/tools/photo-qr-code').then((m) => ({ default: m.PhotoQrCodeTool })),
+  'pdf-to-word': () => import('@/tools/pdf-to-word').then((m) => ({ default: m.PdfToWordTool })),
+  'jpg-to-pdf': () => import('@/tools/jpg-to-pdf').then((m) => ({ default: m.JpgToPdfTool })),
+  'split-pdf': () => import('@/tools/split-pdf').then((m) => ({ default: m.SplitPdfTool })),
+  'compress-pdf': () => import('@/tools/compress-pdf').then((m) => ({ default: m.CompressPdfTool })),
+  'pdf-to-jpg': () => import('@/tools/pdf-to-jpg').then((m) => ({ default: m.PdfToJpgTool })),
+  'heic-to-jpg': () => import('@/tools/heic-to-jpg').then((m) => ({ default: m.HeicToJpgTool })),
+  'png-to-jpg': () => import('@/tools/png-to-jpg').then((m) => ({ default: m.PngToJpgTool })),
+  'webp-to-jpg': () => import('@/tools/webp-to-jpg').then((m) => ({ default: m.WebpToJpgTool })),
+  'image-to-pdf': () => import('@/tools/image-to-pdf').then((m) => ({ default: m.ImageToPdfTool })),
+  'background-remover': () => import('@/tools/background-remover').then((m) => ({ default: m.BackgroundRemoverTool })),
+  'image-to-text': () => import('@/tools/image-to-text').then((m) => ({ default: m.ImageToTextTool })),
+  'pdf-page-extractor': () => import('@/tools/pdf-page-extractor').then((m) => ({ default: m.PdfPageExtractorTool })),
+  'pdf-rotate': () => import('@/tools/pdf-rotate').then((m) => ({ default: m.PdfRotateTool })),
+  'pdf-to-png': () => import('@/tools/pdf-to-png').then((m) => ({ default: m.PdfToPngTool })),
+  'password-generator': () => import('@/tools/password-generator').then((m) => ({ default: m.PasswordGeneratorTool })),
 };
 
 const lazyCache = new Map<string, React.LazyExoticComponent<ComponentType<{ tool: ToolDefinition }>>>();

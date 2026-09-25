@@ -1,0 +1,348 @@
+import { useState, useRef } from 'react';
+import {
+  Download,
+  RotateCcw,
+  Sparkles,
+  Upload,
+  Check,
+  AlertCircle,
+  Image as ImageIcon,
+  Sliders,
+} from 'lucide-react';
+import heic2any from 'heic2any';
+import type { ToolDefinition } from '@/registry/tool-registry';
+import { useI18n } from '@/i18n';
+import { useConsent } from '@/features/consent';
+import { trackEvent } from '@/lib/analytics';
+import { AdSlot } from '@/components/ads/AdSlot';
+import { adConfig } from '@/components/ads/adConfig';
+import { RelatedTools } from '@/components/tool/RelatedTools';
+
+function formatBytes(bytes: number) {
+  if (bytes < 1024) return `${bytes} B`;
+  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+  return `${(bytes / (1024 * 1024)).toFixed(2)} MB`;
+}
+
+export function HeicToJpgTool({ tool }: { tool: ToolDefinition }) {
+  const { copy, language } = useI18n();
+  const { consent } = useConsent();
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+
+  const [file, setFile] = useState<File | null>(null);
+  const [quality, setQuality] = useState<number>(0.9);
+  const [status, setStatus] = useState<'idle' | 'converting' | 'done' | 'error'>('idle');
+  const [errorMessage, setErrorMessage] = useState<string>('');
+  const [resultBlob, setResultBlob] = useState<Blob | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string>('');
+
+  const resetWorkspace = () => {
+    if (previewUrl) URL.revokeObjectURL(previewUrl);
+    setFile(null);
+    setStatus('idle');
+    setErrorMessage('');
+    setResultBlob(null);
+    setPreviewUrl('');
+    if (fileInputRef.current) fileInputRef.current.value = '';
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const selected = e.target.files?.[0];
+    if (!selected) return;
+
+    const name = selected.name.toLowerCase();
+    if (!name.endsWith('.heic') && !name.endsWith('.heif')) {
+      setErrorMessage(language === 'bn' ? 'অনুগ্রহ করে একটি HEIC বা HEIF ফরম্যাটের ছবি সিলেক্ট করুন।' : 'Please upload an Apple HEIC or HEIF image.');
+      setStatus('error');
+      return;
+    }
+
+    if (selected.size > 50 * 1024 * 1024) {
+      setErrorMessage(language === 'bn' ? 'ফাইলের আকার ৫০ মেগাবাইটের কম হতে হবে।' : 'File size must be under 50 MB.');
+      setStatus('error');
+      return;
+    }
+
+    setFile(selected);
+    setStatus('idle');
+    setErrorMessage('');
+  };
+
+  const handleConvert = async () => {
+    if (!file) return;
+    setStatus('converting');
+    setErrorMessage('');
+
+    try {
+      const conversionResult = await heic2any({
+        blob: file,
+        toType: 'image/jpeg',
+        quality,
+      });
+
+      const blob = Array.isArray(conversionResult) ? conversionResult[0] : conversionResult;
+      const url = URL.createObjectURL(blob);
+
+      setResultBlob(blob);
+      setPreviewUrl(url);
+      setStatus('done');
+
+      trackEvent('tool_run', { tool: 'heic-to-jpg' });
+    } catch (err: any) {
+      console.error(err);
+      setStatus('error');
+      setErrorMessage(
+        language === 'bn'
+          ? 'HEIC ছবি ডিকোড করতে সমস্যা হয়েছে। ফাইলটি ক্ষতিগ্রস্ত হতে পারে।'
+          : 'Failed to convert HEIC image. The file might be corrupted or in an unsupported container.'
+      );
+    }
+  };
+
+  const handleDownload = () => {
+    if (!resultBlob || !file) return;
+    const baseName = file.name.replace(/\.[^/.]+$/, '');
+    const link = document.createElement('a');
+    link.href = previewUrl;
+    link.download = `${baseName}.jpg`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  const isBn = language === 'bn';
+
+  return (
+    <main className="prose-page" style={{ maxWidth: 1100, margin: '0 auto', padding: '32px 16px' }}>
+      <header style={{ marginBottom: 28 }}>
+        <span className="eyebrow" style={{ color: 'hsl(var(--primary))' }}>
+          {tool.category} / {isBn ? 'অ্যাপল ছবির সহজ সমাধান' : 'Apple HEIC/HEIF Decoder'}
+        </span>
+        <h1 style={{ fontSize: '2.2rem', fontWeight: 800, marginTop: 8 }}>{tool.seo.h1}</h1>
+        <p style={{ fontSize: 16, color: 'hsl(var(--muted-foreground))', marginTop: 8 }}>{tool.description}</p>
+      </header>
+
+      <section
+        style={{
+          background: 'hsl(var(--card))',
+          border: '1px solid hsl(var(--border))',
+          borderRadius: 20,
+          padding: 24,
+          marginBottom: 40,
+        }}
+      >
+        {!file ? (
+          <div
+            onClick={() => fileInputRef.current?.click()}
+            style={{
+              border: '2px dashed hsl(var(--primary) / .4)',
+              borderRadius: 16,
+              padding: '60px 20px',
+              textAlign: 'center',
+              cursor: 'pointer',
+              background: 'hsl(var(--primary) / .03)',
+            }}
+          >
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept=".heic,.heif"
+              onChange={handleFileChange}
+              style={{ display: 'none' }}
+            />
+            <div
+              style={{
+                width: 60,
+                height: 60,
+                borderRadius: '50%',
+                background: 'hsl(var(--primary) / .1)',
+                color: 'hsl(var(--primary))',
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginBottom: 16,
+              }}
+            >
+              <ImageIcon size={28} />
+            </div>
+            <h3 style={{ fontSize: 18, fontWeight: 700, margin: '0 0 8px' }}>
+              {isBn ? 'আপনার iPhone / HEIC ছবি নির্বাচন বা ড্র্যাগ করুন' : 'Select Apple HEIC/HEIF Image'}
+            </h3>
+            <p style={{ fontSize: 14, color: 'hsl(var(--muted-foreground))', margin: '0 0 18px' }}>
+              {isBn ? 'কোনো সার্ভারে পাঠানো ছাড়াই সরাসরি ব্রাউজারে JPG তৈরি হবে' : 'Converts directly in browser without uploading to any server'}
+            </p>
+            <button type="button" className="button button-primary">
+              <Upload size={16} /> {isBn ? 'HEIC ছবি নির্বাচন করুন' : 'Choose HEIC Photo'}
+            </button>
+          </div>
+        ) : (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                flexWrap: 'wrap',
+                gap: 12,
+                padding: '16px 20px',
+                borderRadius: 12,
+                background: 'hsl(var(--secondary) / .4)',
+                border: '1px solid hsl(var(--border))',
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                <ImageIcon size={24} style={{ color: 'hsl(var(--primary))' }} />
+                <div>
+                  <strong style={{ fontSize: 15, display: 'block' }}>{file.name}</strong>
+                  <span style={{ fontSize: 13, color: 'hsl(var(--muted-foreground))' }}>
+                    {formatBytes(file.size)} • Apple HEIC/HEIF Format
+                  </span>
+                </div>
+              </div>
+              <button type="button" className="button button-ghost" onClick={resetWorkspace} style={{ fontSize: 13 }}>
+                <RotateCcw size={14} /> {isBn ? 'নতুন ছবি' : 'New Photo'}
+              </button>
+            </div>
+
+            {/* Quality Slider */}
+            {status !== 'done' && (
+              <div
+                style={{
+                  padding: 16,
+                  borderRadius: 12,
+                  background: 'hsl(var(--secondary) / .2)',
+                  border: '1px solid hsl(var(--border))',
+                  maxWidth: 420,
+                }}
+              >
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
+                  <span style={{ fontSize: 13, fontWeight: 600 }}>{isBn ? 'JPG আউটপুট কোয়ালিটি' : 'Output JPG Quality'}</span>
+                  <strong style={{ fontSize: 13, color: 'hsl(var(--primary))' }}>{Math.round(quality * 100)}%</strong>
+                </div>
+                <input
+                  type="range"
+                  min="0.5"
+                  max="1.0"
+                  step="0.05"
+                  value={quality}
+                  onChange={(e) => setQuality(parseFloat(e.target.value))}
+                  style={{ width: '100%', accentColor: 'hsl(var(--primary))' }}
+                />
+              </div>
+            )}
+
+            {status !== 'converting' && status !== 'done' && (
+              <button
+                type="button"
+                className="button button-primary"
+                onClick={handleConvert}
+                style={{ padding: '12px 28px', fontSize: 15, alignSelf: 'flex-start' }}
+              >
+                <Sparkles size={16} /> {isBn ? 'JPG ফরম্যাটে কনভার্ট করুন' : 'Convert to JPG'}
+              </button>
+            )}
+
+            {status === 'converting' && (
+              <div style={{ padding: '24px 0', textAlign: 'center' }}>
+                <span style={{ fontSize: 14, color: 'hsl(var(--primary))', fontWeight: 600 }}>
+                  {isBn ? 'HEIC ডিকোড হচ্ছে এবং JPG তৈরি হচ্ছে...' : 'Decoding HEIC and generating JPG...'}
+                </span>
+              </div>
+            )}
+
+            {status === 'done' && resultBlob && previewUrl && (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+                <div
+                  style={{
+                    background: 'hsl(var(--primary) / .08)',
+                    border: '1px solid hsl(var(--primary) / .3)',
+                    borderRadius: 14,
+                    padding: 20,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    flexWrap: 'wrap',
+                    gap: 16,
+                  }}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                    <Check size={24} style={{ color: 'hsl(var(--primary))' }} />
+                    <div>
+                      <strong style={{ fontSize: 16 }}>{isBn ? 'কনভার্শন সফল হয়েছে!' : 'Converted to JPG Successfully!'}</strong>
+                      <span style={{ fontSize: 13, color: 'hsl(var(--muted-foreground))', display: 'block' }}>
+                        {formatBytes(resultBlob.size)} • Standard Universal JPEG Format
+                      </span>
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    className="button button-primary"
+                    onClick={handleDownload}
+                    style={{ padding: '10px 24px', fontSize: 14 }}
+                  >
+                    <Download size={16} /> {isBn ? 'JPG ছবি ডাউনলোড করুন' : 'Download JPG Image'}
+                  </button>
+                </div>
+
+                {/* Preview Box */}
+                <div style={{ maxWidth: 500, borderRadius: 14, overflow: 'hidden', border: '1px solid hsl(var(--border))', background: '#000' }}>
+                  <img src={previewUrl} alt="Converted JPEG" style={{ width: '100%', height: 'auto', display: 'block' }} />
+                </div>
+              </div>
+            )}
+
+            {status === 'error' && (
+              <div
+                style={{
+                  padding: 16,
+                  borderRadius: 12,
+                  background: 'hsl(var(--destructive) / .1)',
+                  color: 'hsl(var(--destructive))',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 10,
+                }}
+              >
+                <AlertCircle size={20} />
+                <span style={{ fontSize: 14 }}>{errorMessage}</span>
+              </div>
+            )}
+          </div>
+        )}
+      </section>
+
+      <section className="tool-content" style={{ marginTop: 40, borderTop: '1px solid hsl(var(--border))', paddingTop: 28 }}>
+        <h2>{isBn ? 'কীভাবে HEIC ছবিকে JPG তে রূপান্তর করবেন' : 'How to Convert HEIC Photos to JPG'}</h2>
+        <ol>
+          <li>{tool.content.howToUse[0]}</li>
+          <li>{tool.content.howToUse[1]}</li>
+          <li>{tool.content.howToUse[2]}</li>
+        </ol>
+
+        <h2>{copy.privacyAndLimitations}</h2>
+        <p>{tool.content.privacy}</p>
+        <p>{tool.content.limitations}</p>
+      </section>
+
+      <RelatedTools tool={tool} />
+
+      <section className="tool-content" style={{ marginTop: 44, borderTop: '1px solid hsl(var(--border))', paddingTop: 32 }}>
+        <h2>{isBn ? 'সচরাচর জিজ্ঞাসিত প্রশ্ন (FAQ)' : 'Frequently Asked Questions (FAQ)'}</h2>
+        <div className="faq-list">
+          {tool.content.faq.map(({ question, answer }) => (
+            <details key={question} className="tool-faq">
+              <summary>{question}</summary>
+              <p>{answer}</p>
+            </details>
+          ))}
+        </div>
+      </section>
+
+      <div style={{ marginTop: 32 }}>
+        <AdSlot enabled={consent.advertising} slot={adConfig.toolSlot} label="Sponsored Ad" />
+      </div>
+    </main>
+  );
+}
+
+export default HeicToJpgTool;

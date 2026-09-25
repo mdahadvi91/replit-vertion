@@ -16,7 +16,8 @@ export type AnalyticsEventName =
   | 'language_change'
   | 'contact_form_submit'
   | 'contact_click_email'
-  | 'contact_click_whatsapp';
+  | 'contact_click_whatsapp'
+  | 'tool_run';
 
 type EventParams = Record<string, string | number | boolean | undefined>;
 

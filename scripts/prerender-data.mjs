@@ -609,6 +609,994 @@ export const toolsData = [
       relatedSlugs: ['image-compressor', 'image-resizer', 'jpg-to-png'],
     },
   },
+  {
+    "id": "pdf-to-word",
+    "slug": "pdf-to-word",
+    "category": "documents",
+    "categoryName": "Documents",
+    "en": {
+      "name": "PDF to Word",
+      "title": "PDF to Word Converter — Ahadex Tools",
+      "description": "Convert PDF documents to editable Microsoft Word (.docx) files free online in your browser. 100% private client-side processing.",
+      "h1": "PDF to Word Converter",
+      "intro": "Extract formatted text and paragraphs from your PDF documents and export directly as clean, editable Word (.docx) files without uploading to external servers.",
+      "howToUse": [
+        "Select or drag & drop your PDF file into the upload zone.",
+        "Choose whether to include page divider labels in the generated Word document.",
+        "Click \"Convert to Word (.DOCX)\" and download your editable document."
+      ],
+      "privacy": "Your PDF is parsed entirely in your browser using client-side JavaScript. Confidential documents are never transmitted across the network.",
+      "limitations": "Scanned image-only PDFs with no embedded text streams require OCR extraction. Very complex multi-column brochure layouts are exported as clean editable text paragraphs.",
+      "faq": [
+        {
+          "question": "Is this PDF to Word converter completely free?",
+          "answer": "Yes! You can convert as many PDF files as you need without accounts, paywalls, or limits."
+        },
+        {
+          "question": "Are my private PDF documents uploaded to your server?",
+          "answer": "No. All parsing and DOCX assembly execute 100% locally within your browser memory."
+        }
+      ],
+      "relatedSlugs": [
+        "pdf-to-text",
+        "merge-pdf",
+        "split-pdf",
+        "compress-pdf"
+      ]
+    },
+    "bn": {
+      "name": "PDF থেকে Word কনভার্টার",
+      "title": "অনলাইন PDF থেকে Word কনভার্টার — Ahadex Tools",
+      "description": "ব্রাউজারে কোনো ফাইল আপলোড ছাড়াই সরাসরি PDF থেকে এডিটেবল Word (.docx) ফাইলে কনভার্ট করুন সম্পূর্ণ বিনামূল্যে।",
+      "h1": "PDF থেকে Word কনভার্টার",
+      "intro": "PDF এর ভেতরের টেক্সট ও প্যারাগ্রাফ নির্ভুলভাবে এক্সট্রাক্ট করে তাৎক্ষণিকভাবে এডিটেবল ওয়ার্ড ফাইলে রূপান্তর করুন।",
+      "howToUse": [
+        "আপনার কাঙ্ক্ষিত PDF ফাইলটি ড্র্যাগ করে আনুন বা নির্বাচন করুন।",
+        "ডকুমেন্টে পৃষ্ঠা নম্বর রাখতে চান কিনা তা নির্ধারণ করুন।",
+        "\"Word (.docx) ফরম্যাটে রূপান্তর করুন\" বাটনে ক্লিক করে ফাইলটি ডাউনলোড করুন।"
+      ],
+      "privacy": "আপনার ফাইল সম্পূর্ণ স্থানীয়ভাবে ব্রাউজার মেমরিতে প্রসেস হয়। কোনো রিমোট সার্ভারে পাঠানো হয় না।",
+      "limitations": "শুধুমাত্র স্ক্যান করা ছবির PDF-এর ক্ষেত্রে টেক্সট রিকগনিশন প্রয়োজন হতে পারে। সাধারণ টেক্সট PDF পুরোপুরি এডিটেবল হয়।",
+      "faq": [
+        {
+          "question": "এটি কি মাইক্রোসফট ওয়ার্ড এবং গুগল ডকসে সাপোর্ট করবে?",
+          "answer": "হ্যাঁ, তৈরি হওয়া .docx ফাইলটি MS Word, Google Docs এবং LibreOffice-এ স্বাচ্ছন্দ্যে এডিট করা যায়।"
+        },
+        {
+          "question": "আমার ফাইল কি কোনো সার্ভারে জমা থাকে?",
+          "answer": "না, আপনার ফাইল আপনার কম্পিউটার বা মোবাইলের ব্রাউজারেই প্রক্রিয়াজাত হয়।"
+        }
+      ],
+      "relatedSlugs": [
+        "pdf-to-text",
+        "merge-pdf",
+        "split-pdf",
+        "compress-pdf"
+      ]
+    }
+  },
+  {
+    "id": "jpg-to-pdf",
+    "slug": "jpg-to-pdf",
+    "category": "documents",
+    "categoryName": "Documents",
+    "en": {
+      "name": "JPG to PDF",
+      "title": "JPG to PDF Converter — Ahadex Tools",
+      "description": "Convert one or multiple JPG images into a single PDF document. Choose page size, orientation, and margins free online in your browser.",
+      "h1": "JPG to PDF Converter",
+      "intro": "Combine single or multiple JPG/JPEG photos into an organized PDF file with complete control over A4/Letter page size, margins, and page orientation.",
+      "howToUse": [
+        "Select or drag & drop one or multiple JPG photos.",
+        "Reorder images as needed and customize page size, orientation, or margins.",
+        "Click \"Convert to PDF\" and download your finished document."
+      ],
+      "privacy": "Images are combined and embedded into PDF documents directly inside your browser. No photos leave your device.",
+      "limitations": "Supports JPG and JPEG formats. For mixed image types (PNG/WebP), use our Image to PDF tool.",
+      "faq": [
+        {
+          "question": "Can I combine multiple photos into a single PDF?",
+          "answer": "Yes! You can upload dozens of photos, reorder them with one click, and combine them into one multi-page PDF."
+        },
+        {
+          "question": "Will image quality be preserved?",
+          "answer": "Yes, full original resolution is embedded into the PDF without degradation."
+        }
+      ],
+      "relatedSlugs": [
+        "image-to-pdf",
+        "jpg-to-png",
+        "image-compressor",
+        "merge-pdf"
+      ]
+    },
+    "bn": {
+      "name": "JPG থেকে PDF কনভার্টার",
+      "title": "অনলাইন JPG থেকে PDF কনভার্টার — Ahadex Tools",
+      "description": "একাধিক JPG ছবি নির্বাচন করে পেজ সাইজ ও মার্জিন পছন্দ অনুযায়ী নিমেষেই PDF তৈরি করুন সম্পূর্ণ বিনামূল্যে।",
+      "h1": "JPG থেকে PDF কনভার্টার",
+      "intro": "ডকুমেন্ট স্ক্যান বা ফটোগ্রাফগুলোকে এক ক্লিকে অফিশিয়াল A4 অথবা লেটার সাইজের PDF ফাইলে রূপান্তর করুন।",
+      "howToUse": [
+        "এক বা একাধিক JPG ছবি আপলোড করুন।",
+        "প্রয়োজনে ছবির ক্রম পরিবর্তন করুন এবং পেজের সাইজ নির্ধারণ করুন।",
+        "\"PDF তৈরি করুন\" বাটনে ক্লিক করে সাথে সাথে ডাউনলোড করে নিন।"
+      ],
+      "privacy": "সব ছবি আপনার ডিভাইসের মেমরিতে যুক্ত হয়ে PDF তৈরি হয়। কোনো ক্লাউড সার্ভারে আপলোড হয় না।",
+      "limitations": "JPG ও JPEG ফরম্যাটের ফাইল সমর্থিত।",
+      "faq": [
+        {
+          "question": "একাধিক ছবি একসাথে একটি ফাইলে জোড়া দেওয়া যাবে কি?",
+          "answer": "হ্যাঁ, যতগুলো ইচ্ছা ছবি নির্বাচন করে একটি সিঙ্গেল মাল্টি-পেজ PDF তৈরি করা যাবে।"
+        },
+        {
+          "question": "প্রিন্ট করার জন্য A4 পেজ সাইজ সাপোর্ট করবে?",
+          "answer": "হ্যাঁ, A4, US Letter অথবা ছবির মাপ অনুযায়ী যেকোনো সাইজ বেছে নেওয়া যায়।"
+        }
+      ],
+      "relatedSlugs": [
+        "image-to-pdf",
+        "jpg-to-png",
+        "image-compressor",
+        "merge-pdf"
+      ]
+    }
+  },
+  {
+    "id": "split-pdf",
+    "slug": "split-pdf",
+    "category": "documents",
+    "categoryName": "Documents",
+    "en": {
+      "name": "Split PDF",
+      "title": "Split PDF Online — Ahadex Tools",
+      "description": "Split PDF files into individual pages or custom ranges (e.g., 1-3, 5). Fast, free, and 100% private in-browser tool.",
+      "h1": "Split PDF Files Online",
+      "intro": "Divide large PDF documents into smaller files by specifying exact page numbers or extract every page into individual PDFs packed in a ZIP.",
+      "howToUse": [
+        "Upload your PDF document.",
+        "Choose whether to extract a specific page range (e.g., 1-3, 5) or split all pages.",
+        "Click \"Split PDF Now\" and instantly download your split PDF or ZIP archive."
+      ],
+      "privacy": "PDF page copying and splitting happen locally in WebAssembly memory. Your confidential files are never uploaded.",
+      "limitations": "Password-encrypted documents must be unlocked before splitting.",
+      "faq": [
+        {
+          "question": "How do I specify multiple page ranges?",
+          "answer": "Use commas and dashes like \"1-3, 5, 8-10\" to include precisely the pages you need."
+        },
+        {
+          "question": "Can I split every page into separate files?",
+          "answer": "Yes! Choose the \"Split Every Page\" option to receive all pages as individual PDFs bundled in a ZIP."
+        }
+      ],
+      "relatedSlugs": [
+        "pdf-page-extractor",
+        "merge-pdf",
+        "pdf-rotate",
+        "compress-pdf"
+      ]
+    },
+    "bn": {
+      "name": "স্প্লিট PDF",
+      "title": "অনলাইন স্প্লিট PDF — Ahadex Tools",
+      "description": "সহজে PDF ফাইলের নির্দিষ্ট পেজ আলাদা করুন বা সব পেজ আলাদা PDF বানিয়ে জিপ ফাইলে ডাউনলোড করুন বিনামূল্যে।",
+      "h1": "স্প্লিট PDF ফাইল",
+      "intro": "বড় PDF বই বা ডকুমেন্ট থেকে আপনার প্রয়োজনীয় পৃষ্ঠাগুলো নিমেষেই আলাদা ফাইলে রূপান্তর করুন।",
+      "howToUse": [
+        "আপনার PDF ফাইলটি সিলেক্ট করুন।",
+        "নির্দিষ্ট পৃষ্ঠা রেঞ্জ দিন (যেমন: 1-3, 5) অথবা \"প্রতিটি পৃষ্ঠা আলাদা PDF\" নির্বাচন করুন।",
+        "\"PDF স্প্লিট করুন\" বাটনে ক্লিক করে সাথে সাথে ডাউনলোড করুন।"
+      ],
+      "privacy": "সম্পূর্ণ প্রসেসিং আপনার ব্রাউজারে হয়, কোনো ডেটা সার্ভারে যায় না।",
+      "limitations": "লক করা PDF এর ক্ষেত্রে প্রথমে পাসওয়ার্ড দিয়ে আনলক করে নিতে হবে।",
+      "faq": [
+        {
+          "question": "রেঞ্জ কীভাবে লিখব?",
+          "answer": "কমা এবং ড্যাশ দিয়ে লিখুন, যেমন: ১-৩, ৫, ৭-৯।"
+        },
+        {
+          "question": "আলাদা করা ফাইলগুলোর কোয়ালিটি কি কমে যাবে?",
+          "answer": "না, মূল ফাইলের টেক্সট ও ভেক্টর কোয়ালিটি ১০০% অক্ষুণ্ণ থাকে।"
+        }
+      ],
+      "relatedSlugs": [
+        "pdf-page-extractor",
+        "merge-pdf",
+        "pdf-rotate",
+        "compress-pdf"
+      ]
+    }
+  },
+  {
+    "id": "compress-pdf",
+    "slug": "compress-pdf",
+    "category": "documents",
+    "categoryName": "Documents",
+    "en": {
+      "name": "Compress PDF",
+      "title": "Compress PDF Online — Ahadex Tools",
+      "description": "Compress PDF files online to reduce file size for email and web uploads. Real in-browser compression with before and after size stats.",
+      "h1": "Compress PDF Online",
+      "intro": "Optimize and shrink bulky PDF documents for email attachments and web upload limits without sacrificing readability or compromising confidentiality.",
+      "howToUse": [
+        "Select or drag & drop the PDF file you wish to compress.",
+        "Choose a compression profile: Extreme, Recommended, or Low.",
+        "Click \"Compress PDF\" and download the optimized file showing exact saved bytes."
+      ],
+      "privacy": "Compression executes locally via client-side canvas rasterization and PDF stream reconstruction. No documents are uploaded.",
+      "limitations": "Text-only documents with no raster images are already at minimum size and will not shrink significantly.",
+      "faq": [
+        {
+          "question": "How much can I reduce my PDF size?",
+          "answer": "Image-heavy scanned PDFs and presentations can often be compressed by 40% to 80% without noticeable quality loss."
+        },
+        {
+          "question": "Are my confidential documents safe?",
+          "answer": "Yes! Processing executes entirely inside your browser sandbox without server interaction."
+        }
+      ],
+      "relatedSlugs": [
+        "split-pdf",
+        "merge-pdf",
+        "pdf-to-jpg",
+        "image-compressor"
+      ]
+    },
+    "bn": {
+      "name": "কম্প্রেস PDF",
+      "title": "অনলাইন PDF কম্প্রেসার — Ahadex Tools",
+      "description": "ইমেইল বা ওয়েবসাইট আপলোডের জন্য PDF ফাইলের সাইজ ছোট করুন বিনামূল্যে ও শতভাগ লোকাল ব্রাউজার প্রসেসিংয়ে।",
+      "h1": "PDF ফাইলের আকার ছোট করুন",
+      "intro": "ভারী PDF ফাইলকে হালকা ও সহজে শেয়ারযোগ্য করতে নির্ভরযোগ্য ক্লায়েন্ট-সাইড অপ্টিমাইজেশন ব্যবহার করুন।",
+      "howToUse": [
+        "যে PDF ফাইলের আকার কমাতে চান সেটি আপলোড করুন।",
+        "আপনার প্রয়োজনীয় কম্প্রেশন লেভেল (সুপারিশকৃত বা সর্বোচ্চ) নির্বাচন করুন।",
+        "\"PDF কম্প্রেস করুন\" বাটনে ক্লিক করে ফলাফল দেখুন ও ডাউনলোড করুন।"
+      ],
+      "privacy": "আপনার ফাইল কোনো সার্ভারে আপলোড হয় না, আপনার ডিভাইসেই কম্প্রেস সম্পন্ন হয়।",
+      "limitations": "শুধুমাত্র টেক্সট থাকা অতি-ছোট PDF এর সাইজ বেশি কমবে না।",
+      "faq": [
+        {
+          "question": "সাইজ কতটুকু কমবে?",
+          "answer": "ছবিযুক্ত বা স্ক্যান করা ডকুমেন্টের সাইজ সাধারণত ৫০% থেকে ৮০% পর্যন্ত কমে যায়।"
+        },
+        {
+          "question": "লেখা কি অস্পষ্ট হয়ে যাবে?",
+          "answer": "প্রস্তাবিত লেভেলে টেক্সট সম্পূর্ণ পড়ার মতো স্পষ্ট ও শার্প থাকে।"
+        }
+      ],
+      "relatedSlugs": [
+        "split-pdf",
+        "merge-pdf",
+        "pdf-to-jpg",
+        "image-compressor"
+      ]
+    }
+  },
+  {
+    "id": "pdf-to-jpg",
+    "slug": "pdf-to-jpg",
+    "category": "documents",
+    "categoryName": "Documents",
+    "en": {
+      "name": "PDF to JPG",
+      "title": "PDF to JPG Converter — Ahadex Tools",
+      "description": "Convert PDF pages into high-resolution JPG images free online. Download individual pages or all pages as a ZIP archive.",
+      "h1": "PDF to JPG Converter",
+      "intro": "Render PDF pages into crisp, universally viewable JPG images suitable for presentations, social sharing, or image editors.",
+      "howToUse": [
+        "Select your PDF document from your device.",
+        "Customize resolution scale (up to 300 DPI) and JPG quality.",
+        "Convert all pages and download individual JPGs or everything as a ZIP."
+      ],
+      "privacy": "Pages are rendered onto client-side HTML5 canvas elements. Your documents never leave your browser.",
+      "limitations": "JPEG does not support transparency; transparent backgrounds are rendered as crisp white.",
+      "faq": [
+        {
+          "question": "Can I download all converted pages at once?",
+          "answer": "Yes! A single click on \"Download All as ZIP\" saves every page as a numbered JPG inside a ZIP file."
+        },
+        {
+          "question": "What resolution are the extracted JPGs?",
+          "answer": "You can choose between Standard (1x), High Quality (1.5x), or Ultra Sharp (2x/300 DPI)."
+        }
+      ],
+      "relatedSlugs": [
+        "pdf-to-png",
+        "pdf-to-text",
+        "jpg-to-pdf",
+        "merge-pdf"
+      ]
+    },
+    "bn": {
+      "name": "PDF থেকে JPG কনভার্টার",
+      "title": "অনলাইন PDF থেকে JPG কনভার্টার — Ahadex Tools",
+      "description": "PDF ফাইল থেকে প্রতিটি পেজ হাই-রেজোলিউশন JPG ছবিতে রূপান্তর করুন এবং সিঙ্গেল বা জিপ ফাইলে ডাউনলোড করুন।",
+      "h1": "PDF থেকে JPG কনভার্টার",
+      "intro": "ডকুমেন্ট, বই বা রসিদের PDF পৃষ্ঠাকে পরিষ্কার ছবিতে রূপান্তর করে সহজে দেখার উপযোগী করুন।",
+      "howToUse": [
+        "আপনার PDF ফাইলটি সিলেক্ট করুন।",
+        "প্রয়োজনে ছবির রেজোলিউশন ও কোয়ালিটি নির্বাচন করুন।",
+        "\"JPG তে রূপান্তর করুন\" বাটনে ক্লিক করে একক ছবি বা জিপ ফাইল ডাউনলোড করুন।"
+      ],
+      "privacy": "সম্পূর্ণ প্রসেসিং আপনার ব্রাউজারের ভেতর সম্পন্ন হয়।",
+      "limitations": "JPG ফরম্যাট স্বচ্ছতা সমর্থন করে না, ব্যাকগ্রাউন্ড সাদা হিসেবে তৈরি হবে।",
+      "faq": [
+        {
+          "question": "সবগুলো ছবি কি একবারে ডাউনলোড করা যাবে?",
+          "answer": "হ্যাঁ, \"সব ছবি জিপ (ZIP) আকারে ডাউনলোড\" বাটনে ক্লিক করে সব ছবি এক ক্লিকে পেয়ে যাবেন।"
+        },
+        {
+          "question": "ছবির লেখাগুলো কি পরিষ্কার থাকবে?",
+          "answer": "হ্যাঁ, ২x রেটিনা রেজোলিউশনে রেন্ডার হওয়ায় টেক্সট অতি স্পষ্ট থাকে।"
+        }
+      ],
+      "relatedSlugs": [
+        "pdf-to-png",
+        "pdf-to-text",
+        "jpg-to-pdf",
+        "merge-pdf"
+      ]
+    }
+  },
+  {
+    "id": "heic-to-jpg",
+    "slug": "heic-to-jpg",
+    "category": "images",
+    "categoryName": "Images",
+    "en": {
+      "name": "HEIC to JPG",
+      "title": "HEIC to JPG Converter — Ahadex Tools",
+      "description": "Convert Apple iPhone HEIC and HEIF photos into standard JPG images in your browser. 100% free, private, with zero server uploads.",
+      "h1": "HEIC to JPG Converter",
+      "intro": "Open and convert Apple High Efficiency Image Format (HEIC/HEIF) photos into universally supported JPEG format compatible with any device, Windows PC, or website.",
+      "howToUse": [
+        "Select or drag & drop your .heic or .heif photo.",
+        "Adjust the JPG output quality slider as desired.",
+        "Click \"Convert to JPG\" and download your converted photo."
+      ],
+      "privacy": "Decoding and JPEG encoding occur 100% within your browser thread. Photos are never uploaded to any remote server.",
+      "limitations": "Supports standard Apple HEIC and HEIF image containers up to 50 MB.",
+      "faq": [
+        {
+          "question": "Why do my iPhone photos have the .heic extension?",
+          "answer": "Apple devices use HEIC by default to save storage space, but many Windows PCs and websites require standard JPG."
+        },
+        {
+          "question": "Is my photo uploaded to your server?",
+          "answer": "No! The conversion runs completely in your browser without any network upload."
+        }
+      ],
+      "relatedSlugs": [
+        "jpg-to-png",
+        "png-to-jpg",
+        "webp-to-jpg",
+        "image-compressor"
+      ]
+    },
+    "bn": {
+      "name": "HEIC থেকে JPG কনভার্টার",
+      "title": "অনলাইন HEIC থেকে JPG কনভার্টার — Ahadex Tools",
+      "description": "অ্যাপল ডিভাইসের HEIC ছবিকে সাধারণ JPG ফরম্যাটে রূপান্তর করুন সম্পূর্ণ বিনামূল্যে ও নিরাপদে ব্রাউজারে।",
+      "h1": "HEIC থেকে JPG ছবি রূপান্তর",
+      "intro": "উইন্ডোজ কম্পিউটার বা যেকোনো ওয়েবসাইটে আইফোনের HEIC ছবি সহজে ব্যবহারের উপযোগী করতে JPG তে রূপান্তর করুন।",
+      "howToUse": [
+        "আপনার .heic বা .heif ছবি নির্বাচন করুন।",
+        "প্রয়োজনে কোয়ালিটি স্লাইডার অ্যাডজাস্ট করুন।",
+        "\"JPG ফরম্যাটে কনভার্ট করুন\" বাটনে ক্লিক করে সাথে সাথে ডাউনলোড করুন।"
+      ],
+      "privacy": "ছবি সম্পূর্ণ লোকাল ব্রাউজারে ডিকোড হয়, কোনো সার্ভার কল নেই।",
+      "limitations": "সর্বোচ্চ ৫০ মেগাবাইট পর্যন্ত ফাইল সমর্থিত।",
+      "faq": [
+        {
+          "question": "সব ডিভাইসে কি ছবি ওপেন হবে?",
+          "answer": "হ্যাঁ, তৈরি হওয়া JPG যেকোনো কম্পিউটার, ফোন বা ওয়েবসাইটে সাপোর্ট করে।"
+        },
+        {
+          "question": "কোয়ালিটি কি ঠিক থাকবে?",
+          "answer": "হ্যাঁ, মূল ছবির সম্পূর্ণ রেজোলিউশন ও রঙের গভীরতা সংরক্ষিত থাকে।"
+        }
+      ],
+      "relatedSlugs": [
+        "jpg-to-png",
+        "png-to-jpg",
+        "webp-to-jpg",
+        "image-compressor"
+      ]
+    }
+  },
+  {
+    "id": "png-to-jpg",
+    "slug": "png-to-jpg",
+    "category": "images",
+    "categoryName": "Images",
+    "en": {
+      "name": "PNG to JPG",
+      "title": "PNG to JPG Converter — Ahadex Tools",
+      "description": "Convert PNG images to standard JPG format. Choose white, black, or custom background colors for transparent areas. Free in-browser tool.",
+      "h1": "PNG to JPG Converter",
+      "intro": "Convert transparent or opaque PNG files into compact, universally compatible JPEG images with fine-tuned background color selection.",
+      "howToUse": [
+        "Select a PNG image from your device.",
+        "Choose a background color (White, Black, or Custom) to replace transparent areas.",
+        "Click \"Convert to JPG\" and download your finished image."
+      ],
+      "privacy": "Conversion executes in HTML5 canvas memory. Your graphics are never uploaded or saved on our servers.",
+      "limitations": "JPEG does not support transparency; any transparent pixels will be filled with your selected background color.",
+      "faq": [
+        {
+          "question": "What happens to the transparent background in my PNG?",
+          "answer": "You can choose to fill transparent areas with clean white, black, or any custom color of your choice."
+        },
+        {
+          "question": "Why convert PNG to JPG?",
+          "answer": "JPG files are typically 50% to 80% smaller than PNGs, making them ideal for web pages, emails, and social media."
+        }
+      ],
+      "relatedSlugs": [
+        "jpg-to-png",
+        "webp-to-jpg",
+        "heic-to-jpg",
+        "image-compressor"
+      ]
+    },
+    "bn": {
+      "name": "PNG থেকে JPG কনভার্টার",
+      "title": "অনলাইন PNG থেকে JPG কনভার্টার — Ahadex Tools",
+      "description": "PNG ছবি সহজে JPG তে রূপান্তর করুন। স্বচ্ছ অংশের জন্য সাদা বা কাস্টম ব্যাকগ্রাউন্ড সিলেক্ট করুন বিনামূল্যে।",
+      "h1": "PNG থেকে JPG রূপান্তর",
+      "intro": "ফাইলের সাইজ ছোট করতে এবং সব প্ল্যাটফর্মে সহজে শেয়ার করার জন্য PNG ছবিকে নিখুঁত JPG তে রূপান্তর করুন।",
+      "howToUse": [
+        "আপনার PNG ছবিটি নির্বাচন করুন।",
+        "স্বচ্ছ অংশের জন্য সাদা, কালো বা পছন্দের রঙ বেছে নিন।",
+        "\"JPG তে রূপান্তর করুন\" বাটনে ক্লিক করে ছবিটি ডাউনলোড করুন।"
+      ],
+      "privacy": "ছবি আপনার ব্রাউজারেই কনভার্ট হয়, কোনো সার্ভার আপলোড ছাড়া।",
+      "limitations": "JPG তে স্বচ্ছতা থাকে না, তাই ব্যাকগ্রাউন্ড রঙ অপরিহার্য।",
+      "faq": [
+        {
+          "question": "স্বচ্ছ ব্যাকগ্রাউন্ড কি কালো হয়ে যাবে?",
+          "answer": "না, আমাদের টুলে আপনি সাদা বা যেকোনো কাস্টম রঙ বেছে নিতে পারেন।"
+        },
+        {
+          "question": "ফাইলের সাইজ কি কমবে?",
+          "answer": "হ্যাঁ, JPG ফরম্যাটে ফাইল সাইজ উল্লেখযোগ্য পরিমাণে ছোট হয়ে যায়।"
+        }
+      ],
+      "relatedSlugs": [
+        "jpg-to-png",
+        "webp-to-jpg",
+        "heic-to-jpg",
+        "image-compressor"
+      ]
+    }
+  },
+  {
+    "id": "webp-to-jpg",
+    "slug": "webp-to-jpg",
+    "category": "images",
+    "categoryName": "Images",
+    "en": {
+      "name": "WebP to JPG",
+      "title": "WebP to JPG Converter — Ahadex Tools",
+      "description": "Convert WebP images downloaded from websites into standard JPG photos. Fast, free, and processed 100% in your browser.",
+      "h1": "WebP to JPG Converter",
+      "intro": "Turn modern web images (.webp) saved from online stores and websites into standard JPG images that open in any photo editor or legacy software.",
+      "howToUse": [
+        "Select or drag & drop your WebP image file.",
+        "Adjust the JPG compression quality if needed.",
+        "Click \"Convert to JPG\" and download your ready image."
+      ],
+      "privacy": "Your WebP image is rendered on a local browser canvas. Files never leave your computer or phone.",
+      "limitations": "Animated WebP files are converted using their first frame.",
+      "faq": [
+        {
+          "question": "Why do websites save images as WebP?",
+          "answer": "WebP offers high web compression, but many older programs and desktop editors cannot open it. Converting to JPG solves compatibility."
+        },
+        {
+          "question": "Does this converter cost anything?",
+          "answer": "No, it is completely free and works unlimited times with no signup."
+        }
+      ],
+      "relatedSlugs": [
+        "jpg-to-png",
+        "png-to-jpg",
+        "heic-to-jpg",
+        "image-resizer"
+      ]
+    },
+    "bn": {
+      "name": "WebP থেকে JPG কনভার্টার",
+      "title": "অনলাইন WebP থেকে JPG কনভার্টার — Ahadex Tools",
+      "description": "ওয়েবসাইটের WebP ছবিকে সাধারণ JPG তে রূপান্তর করুন মুহূর্তেই, বিনামূল্যে ও কোনো ফাইল আপলোড ছাড়াই।",
+      "h1": "WebP থেকে JPG ছবি রূপান্তর",
+      "intro": "বিভিন্ন ওয়েবসাইট ও সোশ্যাল মিডিয়ার WebP ফাইলকে সাধারণ JPG ছবিতে পরিণত করুন যাতে যেকোনো ডিভাইসে খোলা যায়।",
+      "howToUse": [
+        "আপনার WebP ছবিটি নির্বাচন করুন।",
+        "কোয়ালিটি স্লাইডার চেক করে নিন।",
+        "\"JPG তে রূপান্তর করুন\" বাটনে ক্লিক করে সাথে সাথে ডাউনলোড করুন।"
+      ],
+      "privacy": "সব প্রসেসিং আপনার ব্রাউজারে লোকাল মেমরিতে সম্পন্ন হয়।",
+      "limitations": "অ্যানিমেটেড WebP ফাইলের ক্ষেত্রে প্রথম ফ্রেমটি রূপান্তরিত হয়।",
+      "faq": [
+        {
+          "question": "কেন WebP ছবিকে JPG তে রূপান্তর করতে হয়?",
+          "answer": "অনেক ফটো এডিটর ও পুরোনো কম্পিউটার সিস্টেমে WebP সরাসরি ওপেন হয় না, JPG সব জায়গায় চলে।"
+        },
+        {
+          "question": "ছবির স্পষ্টতা কি কমবে?",
+          "answer": "না, উচ্চমানের রেজোলিউশন বজায় রেখেই JPG তৈরি হয়।"
+        }
+      ],
+      "relatedSlugs": [
+        "jpg-to-png",
+        "png-to-jpg",
+        "heic-to-jpg",
+        "image-resizer"
+      ]
+    }
+  },
+  {
+    "id": "image-to-pdf",
+    "slug": "image-to-pdf",
+    "category": "documents",
+    "categoryName": "Documents",
+    "en": {
+      "name": "Image to PDF",
+      "title": "Image to PDF Converter — Ahadex Tools",
+      "description": "Combine multiple JPG, PNG, and WebP photos into one organized PDF document. Reorder pages and customize margins free online.",
+      "h1": "Image to PDF Converter",
+      "intro": "Merge multiple mixed-format images into a professional, shareable PDF document with custom page layouts, margins, and automatic orientation detection.",
+      "howToUse": [
+        "Select or drag & drop multiple JPG, PNG, or WebP images.",
+        "Reorder photos using the arrow buttons and select your page size (A4, Letter, Fit).",
+        "Click \"Convert All to PDF\" and download your combined document."
+      ],
+      "privacy": "Images are drawn to canvas and embedded into PDF bytes directly on your device. Zero cloud uploads.",
+      "limitations": "Very large collections (100+ high-res images) may take a few seconds to compile in browser memory.",
+      "faq": [
+        {
+          "question": "Can I mix JPG and PNG files in the same PDF?",
+          "answer": "Yes! Our tool effortlessly accepts mixed JPG, PNG, and WebP pictures and combines them into one seamless PDF."
+        },
+        {
+          "question": "Will my pictures stretch or distort?",
+          "answer": "No. The converter precisely calculates original aspect ratios and centers images neatly on each page without stretching."
+        }
+      ],
+      "relatedSlugs": [
+        "jpg-to-pdf",
+        "merge-pdf",
+        "image-compressor",
+        "jpg-to-png"
+      ]
+    },
+    "bn": {
+      "name": "ছবি থেকে PDF কনভার্টার",
+      "title": "অনলাইন ছবি থেকে PDF কনভার্টার — Ahadex Tools",
+      "description": "একাধিক ছবি নির্বাচন করে পেজের মাপ ঠিক রেখে সহজে একটি গোছানো PDF ডকুমেন্ট তৈরি করুন সম্পূর্ণ বিনামূল্যে।",
+      "h1": "ছবি থেকে PDF ডকুমেন্ট তৈরি",
+      "intro": "বিভিন্ন ফরম্যাটের ছবিগুলোকে কোনো ঝামেলা ছাড়াই একটি সুশৃঙ্খল PDF ফাইলে রূপান্তর করে শেয়ার করুন।",
+      "howToUse": [
+        "আপনার প্রয়োজনীয় ছবিগুলো একসাথে নির্বাচন করুন।",
+        "ছবির ক্রম ঠিক করুন এবং পেজ সাইজ নির্ধারণ করুন।",
+        "\"PDF তৈরি করুন\" বাটনে ক্লিক করে সাথে সাথে ডাউনলোড করে নিন।"
+      ],
+      "privacy": "আপনার ছবি সম্পূর্ণ ডিভাইসের মেমরিতে প্রসেস হয়, কোনো সার্ভারে যায় না।",
+      "limitations": "যেকোনো জনপ্রিয় ইমেজ ফরম্যাট সাপোর্টেড।",
+      "faq": [
+        {
+          "question": "ছবি কি বাঁকা বা টেনে লম্বা হয়ে যাবে?",
+          "answer": "না, প্রতিটি ছবির আসল অনুপাত বজায় রেখে পেজের মাঝে নিখুঁতভাবে বসানো হয়।"
+        },
+        {
+          "question": "একাধিক ফরম্যাট একসাথে দেওয়া যাবে?",
+          "answer": "হ্যাঁ, JPG, PNG ও WebP ছবি একসাথে একই ফাইলে দেওয়া যায়।"
+        }
+      ],
+      "relatedSlugs": [
+        "jpg-to-pdf",
+        "merge-pdf",
+        "image-compressor",
+        "jpg-to-png"
+      ]
+    }
+  },
+  {
+    "id": "background-remover",
+    "slug": "background-remover",
+    "category": "images",
+    "categoryName": "Images",
+    "en": {
+      "name": "Background Remover",
+      "title": "Free Background Remover Online — Ahadex Tools",
+      "description": "Remove background from images free online. Create transparent PNGs or official passport blue backgrounds with zero server uploads.",
+      "h1": "Free Online Background Remover",
+      "intro": "Isolate subjects and cleanly remove distracting photo backgrounds to produce transparent product shots or official blue/white identification photos.",
+      "howToUse": [
+        "Upload your photo (JPG, PNG, or WebP).",
+        "Select your desired background output: Transparent, White, or Passport Blue.",
+        "Adjust the edge sensitivity if needed, click \"Remove Background\", and download your clean PNG."
+      ],
+      "privacy": "All pixel analysis and alpha masking execute locally on your browser canvas. Your private photos are never sent to external servers.",
+      "limitations": "Works best on images with clear contrast between the subject and the background.",
+      "faq": [
+        {
+          "question": "Is this background remover really 100% free without paywalls?",
+          "answer": "Yes! Unlike commercial services that charge per download, Ahadex Tools processes entirely inside your browser for free."
+        },
+        {
+          "question": "Can I create official passport photos with blue backgrounds?",
+          "answer": "Yes, simply select the \"Passport Blue\" option to instantly composite your portrait onto an official blue backdrop."
+        }
+      ],
+      "relatedSlugs": [
+        "image-compressor",
+        "png-to-jpg",
+        "image-resizer",
+        "photo-qr-code"
+      ]
+    },
+    "bn": {
+      "name": "ব্যাকগ্রাউন্ড রিমুভার",
+      "title": "অনলাইন ব্যাকগ্রাউন্ড রিমুভার — Ahadex Tools",
+      "description": "কোনো পেইড সাবস্ক্রিপশন ছাড়া সরাসরি ব্রাউজারে ছবির ব্যাকগ্রাউন্ড মুছে স্বচ্ছ বা নীল ব্যাকগ্রাউন্ড বানান বিনামূল্যে।",
+      "h1": "ছবির ব্যাকগ্রাউন্ড রিমুভার",
+      "intro": "প্রোডাক্টের ছবি বা ব্যক্তিগত ছবির ব্যাকগ্রাউন্ড সহজে পরিবর্তন করে স্বচ্ছ বা পাসপোর্ট সাইজ নীল ব্যাকগ্রাউন্ড তৈরি করুন।",
+      "howToUse": [
+        "আপনার ছবিটি আপলোড করুন।",
+        "পছন্দের ব্যাকগ্রাউন্ড (স্বচ্ছ, সাদা বা নীল) সিলেক্ট করুন।",
+        "\"ব্যাকগ্রাউন্ড সরান\" বাটনে ক্লিক করে ফলাফল দেখুন এবং PNG ডাউনলোড করুন।"
+      ],
+      "privacy": "ছবি সম্পূর্ণ লোকাল ডিভাইসে প্রসেস হয়, কোনো সার্ভারে আপলোড করা হয় না।",
+      "limitations": "সাবজেক্ট এবং ব্যাকগ্রাউন্ডের মধ্যে ভালো কনট্রাস্ট থাকলে সেরা ফলাফল পাওয়া যায়।",
+      "faq": [
+        {
+          "question": "পাসপোর্ট ছবির জন্য কি নীল ব্যাকগ্রাউন্ড দেওয়া যাবে?",
+          "answer": "হ্যাঁ, \"পাসপোর্ট সাইজ নীল\" বাটনে এক ক্লিকেই নীল ব্যাকগ্রাউন্ড পেয়ে যাবেন।"
+        },
+        {
+          "question": "ডাউনলোডের জন্য কি টাকা দিতে হবে?",
+          "answer": "না, এটি সম্পূর্ণ বিনামূল্যে ও সীমাহীন ব্যবহারযোগ্য।"
+        }
+      ],
+      "relatedSlugs": [
+        "image-compressor",
+        "png-to-jpg",
+        "image-resizer",
+        "photo-qr-code"
+      ]
+    }
+  },
+  {
+    "id": "image-to-text",
+    "slug": "image-to-text",
+    "category": "text",
+    "categoryName": "Text",
+    "en": {
+      "name": "Image to Text / OCR",
+      "title": "Image to Text Converter (OCR) — Ahadex Tools",
+      "description": "Extract readable text from photos and screenshots using in-browser OCR. Supports English, Bengali, Hindi, and 100+ languages.",
+      "h1": "Image to Text Converter (OCR)",
+      "intro": "Convert photographed documents, book pages, receipts, and screenshots into selectable, editable text with support for English, Bengali, and multiple global scripts.",
+      "howToUse": [
+        "Upload your image containing text (JPG, PNG, or WebP).",
+        "Select the primary language of the text (e.g. English, Bengali, Hindi, Spanish).",
+        "Click \"Extract Text with OCR\" and copy to clipboard or download as TXT / Word (.docx)."
+      ],
+      "privacy": "Optical Character Recognition runs client-side via WebAssembly. Your documents are never uploaded to cloud servers.",
+      "limitations": "Text recognition accuracy depends on photo clarity, lighting, and resolution. Blurry or low-resolution images may produce recognition errors.",
+      "faq": [
+        {
+          "question": "Does this OCR support Bengali text?",
+          "answer": "Yes! Tesseract OCR supports Bengali (বাংলা), English, and mixed bilingual documents with high accuracy."
+        },
+        {
+          "question": "Can I export the extracted text to Microsoft Word?",
+          "answer": "Yes! Click \"Download Word\" to receive a formatted .docx document immediately."
+        }
+      ],
+      "relatedSlugs": [
+        "pdf-to-text",
+        "word-counter",
+        "pdf-to-word",
+        "photo-qr-code"
+      ]
+    },
+    "bn": {
+      "name": "ছবি থেকে টেক্সট (OCR)",
+      "title": "অনলাইন ছবি থেকে টেক্সট কনভার্টার (OCR) — Ahadex Tools",
+      "description": "বইয়ের পাতা, রসিদ বা ডকুমেন্টের ছবি থেকে বাংলা ও ইংরেজি লেখা নিমেষেই কপি ও ওয়ার্ড ফাইলে ডাউনলোড করুন।",
+      "h1": "ছবি থেকে টেক্সট এক্সট্রাক্ট (OCR)",
+      "intro": "ছবিতে থাকা যেকোনো লেখা টাইপ করার ঝামেলা ছাড়াই স্বয়ংক্রিয় OCR প্রযুক্তির মাধ্যমে সরাসরি এডিটেবল লেখায় রূপান্তর করুন।",
+      "howToUse": [
+        "লেখা থাকা ছবিটি আপলোড করুন।",
+        "ছবির ভাষা (বাংলা, ইংরেজি ইত্যাদি) সিলেক্ট করুন।",
+        "\"টেক্সট এক্সট্রাক্ট করুন\" বাটনে ক্লিক করে লেখা কপি করুন অথবা Word (.docx) ফাইল ডাউনলোড করুন।"
+      ],
+      "privacy": "OCR ইঞ্জিন সরাসরি আপনার ব্রাউজারে চলে, ফাইল কখনো সার্ভারে যায় না।",
+      "limitations": "ছবি যত পরিষ্কার এবং স্পষ্ট হবে, লেখার নির্ভুলতা তত বেশি হবে।",
+      "faq": [
+        {
+          "question": "বাংলা বইয়ের পাতা কি স্ক্যান করা যাবে?",
+          "answer": "হ্যাঁ, বাংলা অপশন সিলেক্ট করলে পরিষ্কার বাংলা লেখা নিখুঁতভাবে শনাক্ত করে।"
+        },
+        {
+          "question": "ওয়ার্ড ফাইলে সেভ করা যাবে?",
+          "answer": "হ্যাঁ, এক ক্লিকেই .TXT অথবা .DOCX ফাইল ডাউনলোড করা যায়।"
+        }
+      ],
+      "relatedSlugs": [
+        "pdf-to-text",
+        "word-counter",
+        "pdf-to-word",
+        "photo-qr-code"
+      ]
+    }
+  },
+  {
+    "id": "pdf-page-extractor",
+    "slug": "pdf-page-extractor",
+    "category": "documents",
+    "categoryName": "Documents",
+    "en": {
+      "name": "PDF Page Extractor",
+      "title": "PDF Page Extractor — Ahadex Tools",
+      "description": "View page thumbnails and visually select specific pages from a PDF to export into a new document. 100% private in-browser tool.",
+      "h1": "PDF Page Extractor",
+      "intro": "Browse visual thumbnails of every page in your PDF document, click to select the exact pages you want, and generate a new custom PDF document in seconds.",
+      "howToUse": [
+        "Upload your PDF document.",
+        "Click on the visual page thumbnails to select or deselect pages.",
+        "Click \"Extract Selected Pages to PDF\" and download your newly created document."
+      ],
+      "privacy": "Thumbnails and extracted PDFs are compiled locally in browser memory without sending data to servers.",
+      "limitations": "For huge PDFs over 100 pages, the first 100 thumbnails are previewed visually for optimal memory performance.",
+      "faq": [
+        {
+          "question": "How is this different from Split PDF?",
+          "answer": "Split PDF requires typing page numbers (e.g. 1-3), while Page Extractor lets you see visual thumbnails and click to select pages directly."
+        },
+        {
+          "question": "Are extracted pages re-compressed or altered?",
+          "answer": "No. Original vector fidelity and fonts are preserved identically."
+        }
+      ],
+      "relatedSlugs": [
+        "split-pdf",
+        "pdf-rotate",
+        "merge-pdf",
+        "pdf-to-jpg"
+      ]
+    },
+    "bn": {
+      "name": "PDF পৃষ্ঠা এক্সট্রাক্টর",
+      "title": "অনলাইন PDF পৃষ্ঠা এক্সট্রাক্টর — Ahadex Tools",
+      "description": "থাম্বনেইল দেখে এক ক্লিকে প্রয়োজনীয় পৃষ্ঠাগুলো বেছে নিয়ে নতুন PDF তৈরি ও ডাউনলোড করুন সম্পূর্ণ বিনামূল্যে।",
+      "h1": "PDF পৃষ্ঠা এক্সট্রাক্টর",
+      "intro": "পেজ নম্বর মুখস্থ না রেখে সরাসরি প্রতিটি পৃষ্ঠার ছবি দেখে দেখে প্রয়োজনীয় পৃষ্ঠাগুলো আলাদা ফাইলে রূপান্তর করুন।",
+      "howToUse": [
+        "আপনার PDF ফাইল আপলোড করুন।",
+        "প্রদর্শিত থাম্বনেইলগুলোর ওপর ক্লিক করে কাঙ্ক্ষিত পৃষ্ঠাগুলো নির্বাচন করুন।",
+        "\"নির্বাচিত পৃষ্ঠা দিয়ে নতুন PDF বানান\" বাটনে ক্লিক করে সাথে সাথে ডাউনলোড করুন।"
+      ],
+      "privacy": "সম্পূর্ণ প্রক্রিয়াটি আপনার নিজস্ব ডিভাইসের ব্রাউজারে সম্পন্ন হয়।",
+      "limitations": "বড় ফাইলের ক্ষেত্রে মেমরি সেভ রাখতে ১০০টি পেজ পর্যন্ত থাম্বনেইল দেখানো হয়।",
+      "faq": [
+        {
+          "question": "একাধিক পেজ কীভাবে সিলেক্ট করব?",
+          "answer": "প্রতিটি পেজের ওপর ক্লিক করলেই টিক চিহ্ন উঠবে এবং সিলেক্ট হয়ে যাবে।"
+        },
+        {
+          "question": "ফাইলের কোয়ালিটি কি ঠিক থাকবে?",
+          "answer": "হ্যাঁ, মূল ফাইলের টেক্সট ও ছবি হুবহু অক্ষত থাকবে।"
+        }
+      ],
+      "relatedSlugs": [
+        "split-pdf",
+        "pdf-rotate",
+        "merge-pdf",
+        "pdf-to-jpg"
+      ]
+    }
+  },
+  {
+    "id": "pdf-rotate",
+    "slug": "pdf-rotate",
+    "category": "documents",
+    "categoryName": "Documents",
+    "en": {
+      "name": "PDF Rotate",
+      "title": "Rotate PDF Online — Ahadex Tools",
+      "description": "Rotate individual pages or all pages of a PDF document by 90, 180, or 270 degrees. Fast, free, and completely client-side.",
+      "h1": "Rotate PDF Pages Online",
+      "intro": "Fix upside down or sideways scanned documents permanently by rotating individual pages or all pages simultaneously with real-time visual feedback.",
+      "howToUse": [
+        "Select or drag & drop your PDF file.",
+        "Rotate individual pages using the +90° buttons or click \"Rotate All\" to turn the entire document.",
+        "Click \"Save Rotated PDF\" to download your permanently corrected document."
+      ],
+      "privacy": "Orientation metadata is updated directly inside your browser. No files are uploaded to any server.",
+      "limitations": "Changes are applied to the orientation tag of the PDF; original content is preserved without degradation.",
+      "faq": [
+        {
+          "question": "Will the rotation be permanent when I open the PDF on other devices?",
+          "answer": "Yes! The rotation angle is permanently embedded into the PDF structure, ensuring it displays correctly on all phones and computers."
+        },
+        {
+          "question": "Can I rotate just one upside-down page?",
+          "answer": "Yes! Every page has its own individual rotate button so you can rotate only the specific pages that need fixing."
+        }
+      ],
+      "relatedSlugs": [
+        "pdf-page-extractor",
+        "split-pdf",
+        "merge-pdf",
+        "compress-pdf"
+      ]
+    },
+    "bn": {
+      "name": "রোটেট PDF",
+      "title": "অনলাইন রোটেট PDF — Ahadex Tools",
+      "description": "PDF ডকুমেন্টের একক পেজ বা সব পেজ ঘুরিয়ে স্থায়ীভাবে সোজা করুন সম্পূর্ণ বিনামূল্যে ও নিরাপদে।",
+      "h1": "PDF পৃষ্ঠা ঘোরান ও সোজা করুন",
+      "intro": "স্ক্যান করার সময় উল্টো হওয়া ডকুমেন্টকে এক ক্লিকে ঘুরিয়ে স্থায়ীভাবে সোজা করে সেভ করুন।",
+      "howToUse": [
+        "আপনার PDF ফাইলটি সিলেক্ট করুন।",
+        "নির্দিষ্ট পৃষ্ঠার নিচে থাকা বাটন দিয়ে অথবা \"সবগুলো ঘুরান\" বাটন দিয়ে সোজা করুন।",
+        "\"ঘোরানো PDF সেভ করুন\" বাটনে ক্লিক করে ফাইলটি ডাউনলোড করে নিন।"
+      ],
+      "privacy": "সব প্রসেসিং আপনার ব্রাউজারে হয়, কোনো ক্লাউড সার্ভারে যায় না।",
+      "limitations": "মূল ডকুমেন্টের ভেতরের কোনো লেখা বা ছবির মান পরিবর্তন হয় না।",
+      "faq": [
+        {
+          "question": "অন্য ডিভাইসে ওপেন করলেও কি সোজা দেখাবে?",
+          "answer": "হ্যাঁ, নতুন ফাইলে অ্যাঙ্গেল স্থায়ীভাবে সেট হয়ে যায়, তাই সব ডিভাইসেই সোজা থাকবে।"
+        },
+        {
+          "question": "শুধু ১টি পেজ ঘোরানো যাবে?",
+          "answer": "হ্যাঁ, যেকোনো একক পৃষ্ঠা আলাদাভাবে ঘোরানো যায়।"
+        }
+      ],
+      "relatedSlugs": [
+        "pdf-page-extractor",
+        "split-pdf",
+        "merge-pdf",
+        "compress-pdf"
+      ]
+    }
+  },
+  {
+    "id": "pdf-to-png",
+    "slug": "pdf-to-png",
+    "category": "documents",
+    "categoryName": "Documents",
+    "en": {
+      "name": "PDF to PNG",
+      "title": "PDF to PNG Converter — Ahadex Tools",
+      "description": "Convert PDF document pages to high-resolution, lossless PNG images. Download individual pages or all pages as a ZIP archive.",
+      "h1": "PDF to PNG Converter",
+      "intro": "Convert PDF pages into ultra-crisp, lossless PNG images preserving sharp vector typography, lines, diagrams, and transparent layers.",
+      "howToUse": [
+        "Upload your PDF file.",
+        "Select resolution quality (Standard, Retina 2x, or 300 DPI Ultra).",
+        "Click \"Convert All Pages to PNG\" and download individual PNGs or all as a ZIP."
+      ],
+      "privacy": "Pages are rendered locally using PDF.js and Canvas APIs with zero server latency or data sharing.",
+      "limitations": "Lossless PNG images are larger in file size than lossy JPGs because they preserve perfect pixel-level clarity.",
+      "faq": [
+        {
+          "question": "Why choose PNG instead of JPG for PDF conversion?",
+          "answer": "PNG uses lossless compression, meaning text, diagrams, and logos remain razor-sharp without JPEG compression artifacts."
+        },
+        {
+          "question": "Can I download all pages as a single ZIP file?",
+          "answer": "Yes! Click \"Download All as ZIP\" to get every page neatly packaged and numbered."
+        }
+      ],
+      "relatedSlugs": [
+        "pdf-to-jpg",
+        "pdf-to-text",
+        "jpg-to-pdf",
+        "merge-pdf"
+      ]
+    },
+    "bn": {
+      "name": "PDF থেকে PNG কনভার্টার",
+      "title": "অনলাইন PDF থেকে PNG কনভার্টার — Ahadex Tools",
+      "description": "ডকুমেন্ট ও ডায়াগ্রামের শার্পনেস অক্ষুণ্ণ রেখে PDF থেকে হাই-কোয়ালিটি PNG ছবি তৈরি ও ডাউনলোড করুন।",
+      "h1": "PDF থেকে PNG কনভার্টার",
+      "intro": "ডকুমেন্টের চার্ট, ডায়াগ্রাম ও টেক্সটকে বিন্দুমাত্র কোয়ালিটি লস ছাড়া ঝকঝকে PNG ছবিতে রূপান্তর করুন।",
+      "howToUse": [
+        "আপনার PDF ফাইল আপলোড করুন।",
+        "প্রয়োজনে রেজোলিউশন (স্ট্যান্ডার্ড বা রেটিনা ২x) নির্ধারণ করুন।",
+        "\"PNG ছবিতে রূপান্তর করুন\" বাটনে ক্লিক করে একক বা জিপ ফাইল ডাউনলোড করুন।"
+      ],
+      "privacy": "সম্পূর্ণ কনভার্শন আপনার ব্রাউজার মেমরিতে স্থানীয়ভাবে সম্পন্ন হয়।",
+      "limitations": "লসলেস কোয়ালিটি হওয়ায় PNG ছবির ফাইলের আকার JPG-এর চেয়ে কিছুটা বড় হতে পারে।",
+      "faq": [
+        {
+          "question": "লেখা ও লাইনগুলো কি স্পষ্ট থাকবে?",
+          "answer": "হ্যাঁ, PNG ফরম্যাটে কোনো আর্টফ্যাক্ট তৈরি হয় না, তাই টেক্সট অতি স্পষ্ট থাকে।"
+        },
+        {
+          "question": "সবগুলো পেজ একসাথে জিপে পাওয়া যাবে?",
+          "answer": "হ্যাঁ, এক ক্লিকেই সব পেজ জিপ ফাইলে ডাউনলোড করা সম্ভব।"
+        }
+      ],
+      "relatedSlugs": [
+        "pdf-to-jpg",
+        "pdf-to-text",
+        "jpg-to-pdf",
+        "merge-pdf"
+      ]
+    }
+  },
+  {
+    "id": "password-generator",
+    "slug": "password-generator",
+    "category": "developer",
+    "categoryName": "Developer",
+    "en": {
+      "name": "Password Generator",
+      "title": "Strong Password Generator — Ahadex Tools",
+      "description": "Generate strong, cryptographically secure random passwords in your browser. 100% local using Web Crypto API with strength meter.",
+      "h1": "Strong Password Generator",
+      "intro": "Create uncrackable, cryptographically secure random passwords using your browser's native Web Crypto API with customizable length, symbols, and batch generation.",
+      "howToUse": [
+        "Adjust the password length slider (6 to 64 characters).",
+        "Toggle desired character sets (Uppercase, Lowercase, Numbers, Symbols).",
+        "Click the copy button to copy the password instantly to your clipboard."
+      ],
+      "privacy": "Passwords are generated exclusively in your browser using crypto.getRandomValues(). No passwords are ever stored or sent over the internet.",
+      "limitations": "Never share your master passwords or write them in unprotected plaintext documents.",
+      "faq": [
+        {
+          "question": "How secure are the generated passwords?",
+          "answer": "Extremely secure. They use the browser's cryptographically secure pseudo-random number generator (CSPRNG), not weak Math.random()."
+        },
+        {
+          "question": "Can I generate multiple passwords at once?",
+          "answer": "Yes! Choose the Batch Quantity option (up to 10) to generate multiple passwords simultaneously."
+        }
+      ],
+      "relatedSlugs": [
+        "color-picker",
+        "json-formatter",
+        "word-counter"
+      ]
+    },
+    "bn": {
+      "name": "পাসওয়ার্ড জেনারেটর",
+      "title": "অনলাইন শক্তিশালী পাসওয়ার্ড জেনারেটর — Ahadex Tools",
+      "description": "সম্পূর্ণ নিরাপদ ও হ্যাক-প্রুফ র‍্যান্ডম পাসওয়ার্ড তৈরি করুন ওয়েব ক্রিপ্টো এপিআই দিয়ে শতভাগ গোপনে।",
+      "h1": "নিরাপদ পাসওয়ার্ড জেনারেটর",
+      "intro": "সোশ্যাল মিডিয়া, ইমেইল ও ব্যাংকিং অ্যাকাউন্টের সুরক্ষায় অত্যন্ত শক্তিশালী ও অনুমান-অসম্ভব পাসওয়ার্ড তৈরি করুন।",
+      "howToUse": [
+        "পাসওয়ার্ডের দৈর্ঘ্য (যেমন ১৬ বা ২০ অক্ষর) নির্ধারণ করুন।",
+        "প্রতীক, সংখ্যা ও বড় হাতের অক্ষরের রুলস সিলেক্ট করুন।",
+        "কপি বাটনে ক্লিক করে সাথে সাথে নিরাপদ পাসওয়ার্ড ব্যবহার করুন।"
+      ],
+      "privacy": "পাসওয়ার্ড আপনার ব্রাউজারের ক্রিপ্টো ইঞ্জিনে তৈরি হয়, কোনো সার্ভার এটি দেখতে পায় না।",
+      "limitations": "গুরুত্বপূর্ণ পাসওয়ার্ড সুরক্ষিত পাসওয়ার্ড ম্যানেজারে সংরক্ষণ করুন।",
+      "faq": [
+        {
+          "question": "এই পাসওয়ার্ডগুলো কি সত্যিই নিরাপদ?",
+          "answer": "হ্যাঁ, এতে ক্রিপ্টোগ্রাফিক CSPRNG অ্যালগরিদম ব্যবহৃত হয় যা সাধারণ পদ্ধতিতে ক্র্যাক করা অসম্ভব।"
+        },
+        {
+          "question": "একসাথে একাধিক পাসওয়ার্ড তৈরি করা যাবে?",
+          "answer": "হ্যাঁ, একসাথে সর্বোচ্চ ১০টি পর্যন্ত পাসওয়ার্ড তৈরি করে তালিকা থেকে পছন্দ করতে পারেন।"
+        }
+      ],
+      "relatedSlugs": [
+        "color-picker",
+        "json-formatter",
+        "word-counter"
+      ]
+    }
+  }
 ];
 
 export const staticPages = {

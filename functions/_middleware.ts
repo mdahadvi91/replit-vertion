@@ -10,6 +10,21 @@ const VALID_TOOL_SLUGS = new Set([
   'jpg-to-png',
   'image-resizer',
   'photo-qr-code',
+  'pdf-to-word',
+  'jpg-to-pdf',
+  'split-pdf',
+  'compress-pdf',
+  'pdf-to-jpg',
+  'heic-to-jpg',
+  'png-to-jpg',
+  'webp-to-jpg',
+  'image-to-pdf',
+  'background-remover',
+  'image-to-text',
+  'pdf-page-extractor',
+  'pdf-rotate',
+  'pdf-to-png',
+  'password-generator',
 ]);
 
 const VALID_CATEGORIES = new Set(['images', 'documents', 'text', 'developer']);

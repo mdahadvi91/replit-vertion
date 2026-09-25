@@ -86,7 +86,7 @@ const prerenderDataFile = path.join(rootDir, 'scripts', 'prerender-data.mjs');
 if (fs.existsSync(prerenderDataFile)) {
   const prerenderDataContent = fs.readFileSync(prerenderDataFile, 'utf8');
   for (const slug of seenSlugs) {
-    const slugInPrerenderRegex = new RegExp(`slug:\\s*['"]${slug}['"]`);
+    const slugInPrerenderRegex = new RegExp(`["']?slug["']?\\s*:\\s*['"]${slug}['"]`);
     if (!slugInPrerenderRegex.test(prerenderDataContent)) {
       errors.push(`scripts/prerender-data.mjs missing prerender data for slug: "${slug}"`);
     }

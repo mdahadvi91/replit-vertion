@@ -6,6 +6,35 @@ import { trackEvent } from '@/lib/analytics';
 import { getLocalizedTool, type ToolDefinition } from '@/registry/tool-registry';
 import type { CSSProperties } from 'react';
 
+function renderWaveText(text: string, lang: string) {
+  let segments: string[] = [];
+  if (typeof Intl !== 'undefined' && 'Segmenter' in Intl) {
+    try {
+      const segmenter = new Intl.Segmenter(lang === 'bn' ? 'bn' : 'en', { granularity: 'grapheme' });
+      segments = [...segmenter.segment(text)].map((s) => s.segment);
+    } catch {
+      segments = [...text];
+    }
+  } else {
+    segments = [...text];
+  }
+
+  return (
+    <span className="wave-text-wrapper" aria-label={text}>
+      {segments.map((seg, i) => (
+        <span
+          key={i}
+          className={`wave-char ${seg === ' ' ? 'wave-space' : ''}`}
+          style={{ '--char-idx': i } as CSSProperties}
+          aria-hidden="true"
+        >
+          {seg === ' ' ? '\u00A0' : seg}
+        </span>
+      ))}
+    </span>
+  );
+}
+
 export default function ToolCard({ tool: rawTool, index }: { tool: ToolDefinition; index: number }) {
   const { copy, language, getLocalizedPath } = useI18n();
   const tool = getLocalizedTool(rawTool, language);
@@ -37,8 +66,8 @@ export default function ToolCard({ tool: rawTool, index }: { tool: ToolDefinitio
           <span className="tool-icon" style={{ '--tool-color': tool.color, margin: 0 } as CSSProperties}><Icon size={21} /></span>
           {favButton}
         </div>
-        <h3>{tool.name}</h3>
-        <p>{tool.description}</p>
+        <h3 className="tool-card-title">{renderWaveText(tool.name, language)}</h3>
+        <p className="tool-card-desc">{tool.description}</p>
       </div>
       <div className="tool-card-foot"><span>{tool.status === 'live' ? copy.liveNow : copy.planned}</span><ArrowRight size={16} /></div>
     </>

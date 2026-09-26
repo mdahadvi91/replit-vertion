@@ -76,8 +76,23 @@ assert(zipBlob.length > 100, 'ZIP archive should be valid');
 console.log(`   ✓ ZIP packaging engine passed (${zipBlob.length} bytes)`);
 passedTests++;
 
-// Test 5: Multilingual Search Accuracy (English & Bengali)
-console.log('5. Testing Multilingual Search Engine accuracy across all 24 tools...');
+// Test 5: PDF Structural Stream Optimization (compress-pdf lossless mode)
+console.log('5. Testing PDF Structural Stream Clean-up engine (compress-pdf lossless mode)...');
+const optPdf = await PDFDocument.load(sampleBytes);
+optPdf.setTitle('');
+optPdf.setAuthor('');
+optPdf.setProducer('Ahadex Tools In-Browser Optimizer');
+const optBytes = await optPdf.save({ useObjectStreams: true });
+assert(optBytes.length > 0, 'Optimized PDF bytes should be valid non-empty');
+assert(
+  String.fromCharCode(optBytes[0], optBytes[1], optBytes[2], optBytes[3], optBytes[4]) === '%PDF-',
+  'Optimized PDF header signature must be valid'
+);
+console.log(`   ✓ PDF stream clean-up passed (${optBytes.length} bytes produced)`);
+passedTests++;
+
+// Test 6: Multilingual Search Accuracy (English & Bengali)
+console.log('6. Testing Multilingual Search Engine accuracy across all 24 tools...');
 const searchTestCases = [
   { query: 'PDF to Word', expectedSlug: 'pdf-to-word' },
   { query: 'পিডিএফ থেকে ওয়ার্ড', expectedSlug: 'pdf-to-word' },

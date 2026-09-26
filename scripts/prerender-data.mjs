@@ -626,11 +626,15 @@ export const toolsData = [
         "Click \"Convert to Word (.DOCX)\" and download your editable document."
       ],
       "privacy": "Your PDF is parsed entirely in your browser using client-side JavaScript. Confidential documents are never transmitted across the network.",
-      "limitations": "Scanned image-only PDFs with no embedded text streams require OCR extraction. Very complex multi-column brochure layouts are exported as clean editable text paragraphs.",
+      "limitations": "Extracts real readable text streams, headings, and paragraphs into editable Microsoft Word (.docx) format. Note: Multi-column magazine layouts, complex nested tables, background graphics, and scanned non-OCR images are rendered as clean flowing editable text paragraphs rather than rigid absolute coordinate overlays.",
       "faq": [
         {
           "question": "Is this PDF to Word converter completely free?",
           "answer": "Yes! You can convert as many PDF files as you need without accounts, paywalls, or limits."
+        },
+        {
+          "question": "Does it preserve complex magazine layouts and table grids perfectly?",
+          "answer": "The converter extracts all textual content, headings, and paragraphs into clean editable text in Word (.docx). Intricate desktop-publishing designs (multi-column flyers or overlapping graphical tables) are structured into clean editable paragraphs for effortless editing rather than absolute-coordinate visual clones."
         },
         {
           "question": "Are my private PDF documents uploaded to your server?",
@@ -656,8 +660,12 @@ export const toolsData = [
         "\"Word (.docx) ফরম্যাটে রূপান্তর করুন\" বাটনে ক্লিক করে ফাইলটি ডাউনলোড করুন।"
       ],
       "privacy": "আপনার ফাইল সম্পূর্ণ স্থানীয়ভাবে ব্রাউজার মেমরিতে প্রসেস হয়। কোনো রিমোট সার্ভারে পাঠানো হয় না।",
-      "limitations": "শুধুমাত্র স্ক্যান করা ছবির PDF-এর ক্ষেত্রে টেক্সট রিকগনিশন প্রয়োজন হতে পারে। সাধারণ টেক্সট PDF পুরোপুরি এডিটেবল হয়।",
+      "limitations": "PDF থেকে এডিটেবল টেক্সট, শিরোনাম ও প্যারাগ্রাফ বের করে Word (.docx) ফাইলে রূপান্তর করা হয়। তবে জটিল টেবিলের গ্রিড, ব্যাকগ্রাউন্ড ছবি বা একাধিক কলামের ম্যাগাজিন লেআউটের ক্ষেত্রে হুবহু ফিক্সড পিক্সেল ডিজাইনের বদলে সহজে সম্পাদনযোগ্য ফ্লোয়িং টেক্সট তৈরি হয়।",
       "faq": [
+        {
+          "question": "জটিল টেবিল বা একাধিক কলামের লেআউট কি হুবহু একই থাকবে?",
+          "answer": "এই টুলটির মূল উদ্দেশ্য হলো PDF-এর লেখাকে সম্পূর্ণরূপে সম্পাদনযোগ্য (Editable) Word ফাইলে পরিণত করা। সাধারণ ডকুমেন্ট নিখুঁত হলেও অত্যন্ত জটিল কলাম বা গ্রাফিকাল টেবিলগুলো সম্পাদনাযোগ্য প্যারাগ্রাফ হিসেবে সংরক্ষিত হয়, হুবহু ভিজ্যুয়াল রেপ্লিকা হিসেবে নয়।"
+        },
         {
           "question": "এটি কি মাইক্রোসফট ওয়ার্ড এবং গুগল ডকসে সাপোর্ট করবে?",
           "answer": "হ্যাঁ, তৈরি হওয়া .docx ফাইলটি MS Word, Google Docs এবং LibreOffice-এ স্বাচ্ছন্দ্যে এডিট করা যায়।"
@@ -824,11 +832,19 @@ export const toolsData = [
         "Click \"Compress PDF\" and download the optimized file showing exact saved bytes."
       ],
       "privacy": "Compression executes locally via client-side canvas rasterization and PDF stream reconstruction. No documents are uploaded.",
-      "limitations": "Text-only documents with no raster images are already at minimum size and will not shrink significantly.",
+      "limitations": "Provides two modes: Structural Stream Clean-up (lossless, keeps vector text selectable) and Visual Canvas Compression (for scans/photos). If an original PDF is already heavily optimized, recompression will honestly notify you if size reduction is not possible.",
       "faq": [
         {
           "question": "How much can I reduce my PDF size?",
           "answer": "Image-heavy scanned PDFs and presentations can often be compressed by 40% to 80% without noticeable quality loss."
+        },
+        {
+          "question": "Will text remain selectable and vector-sharp?",
+          "answer": "Yes! If you select the \"Structural Stream Clean-up\" mode, all vector text, fonts, and hyperlinks remain 100% selectable. In \"Visual Canvas Compression\" mode, pages are converted into sharp high-resolution images for maximum file-weight reduction."
+        },
+        {
+          "question": "Why did my PDF size not decrease?",
+          "answer": "If a PDF was already created with maximum stream compression, re-encoding cannot make it smaller. Our tool performs byte-by-byte verification and will honestly inform you if keeping the original file is the best choice."
         },
         {
           "question": "Are my confidential documents safe?",
@@ -850,12 +866,20 @@ export const toolsData = [
       "intro": "ভারী PDF ফাইলকে হালকা ও সহজে শেয়ারযোগ্য করতে নির্ভরযোগ্য ক্লায়েন্ট-সাইড অপ্টিমাইজেশন ব্যবহার করুন।",
       "howToUse": [
         "যে PDF ফাইলের আকার কমাতে চান সেটি আপলোড করুন।",
-        "আপনার প্রয়োজনীয় কম্প্রেশন লেভেল (সুপারিশকৃত বা সর্বোচ্চ) নির্বাচন করুন।",
+        "আপনার প্রয়োজনীয় কম্প্রেশন মোড (ভিজ্যুয়াল ক্যানভাস অথবা স্ট্রাকচারাল লসলেস) নির্বাচন করুন।",
         "\"PDF কম্প্রেস করুন\" বাটনে ক্লিক করে ফলাফল দেখুন ও ডাউনলোড করুন।"
       ],
       "privacy": "আপনার ফাইল কোনো সার্ভারে আপলোড হয় না, আপনার ডিভাইসেই কম্প্রেস সম্পন্ন হয়।",
-      "limitations": "শুধুমাত্র টেক্সট থাকা অতি-ছোট PDF এর সাইজ বেশি কমবে না।",
+      "limitations": "দুটি মোড বিদ্যমান: স্ট্রাকচারাল মোডে টেক্সট ও সিলেকশন অক্ষুণ্ণ থাকে। কোনো ফাইল আগে থেকেই সর্বোচ্চ কম্প্রেসড থাকলে টুলটি স্বচ্ছভাবে তা জানিয়ে মূল ফাইলটি রাখার পরামর্শ দেয়।",
       "faq": [
+        {
+          "question": "কম্প্রেস করার পর কি টেক্সট সিলেক্ট ও কপি করা যাবে?",
+          "answer": "হ্যাঁ! আপনি যদি \"স্ট্রাকচারাল অপ্টিমাইজেশন\" মোড নির্বাচন করেন, তবে সব টেক্সট ১০০% সিলেক্টেবল ও ভেক্টর কোয়ালিটিতে অক্ষুণ্ণ থাকবে। আর স্ক্যান করা ডকুমেন্টের ক্ষেত্রে \"ভিজ্যুয়াল ক্যানভাস\" মোড সাইজ কমাতে সবচেয়ে কার্যকর।"
+        },
+        {
+          "question": "আমার PDF এর সাইজ কেন কমল না?",
+          "answer": "কিছু PDF ফাইল আগে থেকেই সর্বোচ্চ মাত্রায় সংকুচিত থাকে। ফলে অতিরিক্ত প্রসেসিংয়ে সাইজ হ্রাস সম্ভব না হলে আমাদের টুলটি কোনো মিথ্যা তথ্য না দিয়ে আপনাকে স্বচ্ছভাবে মূল ফাইলটি রাখার পরামর্শ দেয়।"
+        },
         {
           "question": "সাইজ কতটুকু কমবে?",
           "answer": "ছবিযুক্ত বা স্ক্যান করা ডকুমেন্টের সাইজ সাধারণত ৫০% থেকে ৮০% পর্যন্ত কমে যায়।"

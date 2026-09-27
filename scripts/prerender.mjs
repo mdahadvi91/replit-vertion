@@ -74,7 +74,7 @@ function renderFooter(lang) {
             <span>Ahadex <span style="color: #14b8a6;">Tools</span></span>
           </a>
           <p style="line-height: 1.6; margin-bottom: 16px; color: #64748b;">
-            ${isBn ? 'ছবি, ডকুমেন্ট, টেক্সট এবং ডেভেলপারদের জন্য দ্রুত ও নির্ভরযোগ্য অনলাইন ব্রাউজার টুলস। কোনো সার্ভার আপলোড ছাড়া শতভাগ নিরাপদ।' : 'Fast, private, in-browser digital tools for everyday tasks. Zero accounts, no tracking, and 100% client-side privacy.'}
+            ${isBn ? 'ছবি, ডকুমেন্ট, টেক্সট এবং ডেভেলপারদের জন্য দ্রুত ও নির্ভরযোগ্য অনলাইন ব্রাউজার টুলস। কোনো সার্ভার আপলোড ছাড়া লোকাল ডিভাইসে প্রসেস হয়।' : 'Fast, private, in-browser digital tools for everyday tasks. Zero accounts, no tracking, and client-side processing without server uploads.'}
           </p>
         </div>
         <div>
@@ -102,7 +102,7 @@ function renderFooter(lang) {
         </div>
       </div>
       <div style="max-width: 1200px; margin: 40px auto 0; padding-top: 24px; border-top: 1px solid rgba(255, 255, 255, 0.06); text-align: center; color: #64748b; font-size: 0.85rem;">
-        &copy; ${new Date().getFullYear()} Ahadex Tools. ${isBn ? 'সর্বস্বত্ব সংরক্ষিত। লোকাল প্রসেসিং দ্বারা সুরক্ষিত।' : 'All rights reserved. 100% in-browser processing.'}
+        &copy; ${new Date().getFullYear()} Ahadex Tools. ${isBn ? 'সর্বস্বত্ব সংরক্ষিত। লোকাল ব্রাউজার মেমরিতে প্রসেস হয়।' : 'All rights reserved. Processed locally in your browser.'}
       </div>
     </footer>
   `;
@@ -205,6 +205,184 @@ function writePage(relPath, content) {
   const targetPath = path.join(distDir, relPath);
   fs.mkdirSync(path.dirname(targetPath), { recursive: true });
   fs.writeFileSync(targetPath, content, 'utf8');
+
+  // Also write clean .html file for hosting platforms that look for clean URLs directly
+  if (relPath.endsWith('/index.html') && relPath !== 'index.html' && relPath !== 'bn/index.html') {
+    const cleanRelPath = relPath.replace(/\/index\.html$/, '.html');
+    const cleanTargetPath = path.join(distDir, cleanRelPath);
+    fs.mkdirSync(path.dirname(cleanTargetPath), { recursive: true });
+    fs.writeFileSync(cleanTargetPath, content, 'utf8');
+  } else if (relPath === 'bn/index.html') {
+    const cleanTargetPath = path.join(distDir, 'bn.html');
+    fs.writeFileSync(cleanTargetPath, content, 'utf8');
+  }
+}
+
+function renderEditorialSections(tool, lang) {
+  const isBn = lang === 'bn';
+  const isPdf = tool.category === 'documents' || (tool.slug && tool.slug.includes('pdf'));
+  const isImg = tool.category === 'images' || (tool.slug && (tool.slug.includes('image') || tool.slug.includes('jpg') || tool.slug.includes('png') || tool.slug.includes('heic') || tool.slug.includes('webp')));
+
+  const proTips = isPdf
+    ? [
+        isBn ? 'স্ক্যান করা নথির জন্য কমপক্ষে ৩০০ DPI রেজোলিউশন নিশ্চিত করুন যাতে টেক্সট ও স্বাক্ষর পরিষ্কার থাকে।' : 'Ensure scanned paper documents are scanned at 300 DPI or higher to guarantee crisp OCR and text fidelity.',
+        isBn ? 'পাসওয়ার্ড দিয়ে লক করা PDF থাকলে তা আগে আনলক করে নিন যাতে স্ট্রাকচারাল স্ট্রিম প্রসেস হতে পারে।' : 'Remove passwords or restrictions prior to processing to allow native stream reorganization.',
+        isBn ? 'শতাধিক পৃষ্ঠার বইয়ের ক্ষেত্রে ব্রাউজারের অন্যান্য অপ্রয়োজনীয় ট্যাব বন্ধ রাখলে কাজ দ্রুত হবে।' : 'Close unnecessary background browser tabs when handling 100+ page documents to maximize available RAM.',
+      ]
+    : isImg
+    ? [
+        isBn ? 'ওয়েবসাইটের জন্য আধুনিক WebP ফরম্যাট বেছে নিন, যা কোয়ালিটি না কমিয়ে প্রায় ৩০-৫০% সাইজ সাশ্রয় করে।' : 'Use WebP format for web publishing to achieve up to 50% smaller files without perceptual degradation.',
+        isBn ? 'পোর্ট্রেট বা প্রাকৃতিক দৃশ্যের ছবির জন্য ব্যালেন্সড প্রোফাইল ব্যবহার করুন যাতে কালার গ্রাডিয়েন্ট মসৃণ থাকে।' : 'Choose the Balanced compression profile for portraits and photography to preserve natural facial tones.',
+        isBn ? 'লোগো, আইকন বা স্বচ্ছ ব্যাকগ্রাউন্ডের ছবির ক্ষেত্রে PNG ফরম্যাট বজায় রাখা শ্রেয়।' : 'Retain transparent PNG format for brand logos, vector line diagrams, and interface assets.',
+      ]
+    : [
+        isBn ? 'গোপনীয় কোড বা ডেটা নিশ্চিন্তে প্রসেস করুন, কারণ কোনো ডেটা নেটওয়ার্কে পাঠানো হয় না।' : 'Safely process proprietary code or confidential tokens without fear of network transmission.',
+        isBn ? 'বাংলা যুক্তাক্ষর এবং ইউনিকোড স্ক্রিপ্টের জন্য নির্ভুল পরিসংখ্যান পাবেন।' : 'Full support for complex Unicode conjuncts, multi-byte international scripts, and accurate lexical metrics.',
+      ];
+
+  const useCases = isPdf
+    ? [
+        {
+          role: isBn ? 'চাকরিপ্রার্থী ও পেশাজীবী' : 'Job Applicants & Career Portals',
+          desc: isBn ? 'বিভিন্ন চাকরির পোর্টালে ২ মেগাবাইট বা নির্দিষ্ট সীমার মধ্যে সিভি ও সনদপত্র আপলোড করা।' : 'Formatting CVs, portfolios, and diplomas to conform to strict recruitment portal upload constraints.',
+          benefit: isBn ? 'ব্যক্তিগত ঠিকানা ও ফোন নম্বর কখনো কোনো তৃতীয় পক্ষ সার্ভারে ফাঁস হয় না।' : 'Zero exposure of home addresses, phone numbers, or private credentials to third-party databases.',
+        },
+        {
+          role: isBn ? 'কর্পোরেট ও আইনি দল' : 'Legal & Corporate Auditing',
+          desc: isBn ? 'গোপনীয় অডিট রিপোর্ট, হিসাবের খাতা ও চুক্তিপত্র তৈরি ও সংকলন করা।' : 'Managing confidential non-disclosure contracts, tax declarations, and financial balance sheets.',
+          benefit: isBn ? 'আন্তর্জাতিক GDPR ও ডেটা প্রাইভেসি নীতিমালা সম্পূর্ণভাবে বজায় থাকে।' : 'Complete compliance with internal security guidelines and international privacy standards.',
+        },
+        {
+          role: isBn ? 'শিক্ষার্থী ও গবেষক' : 'Academic Theses & Research',
+          desc: isBn ? 'বড় গবেষণা পত্র, জার্নাল ও লেকচার নোট একত্রিত বা পৃষ্ঠাক্রম অনুযায়ী সাজানো।' : 'Consolidating academic citations, merging thesis chapters, and organizing course handouts.',
+          benefit: isBn ? 'কোনো মাসিক সাবস্ক্রিপশন বা পেইড লিমিটেশন ছাড়া সম্পূর্ণ ফ্রি।' : 'Fast batch workflows with zero subscription paywalls or artificial daily task throttling.',
+        },
+      ]
+    : isImg
+    ? [
+        {
+          role: isBn ? 'ওয়েব ডেভেলপার ও এসইও বিশেষজ্ঞ' : 'Web Developers & Performance Engineers',
+          desc: isBn ? 'ওয়েবসাইটের স্পিড বাড়াতে এবং Core Web Vitals স্কোর উন্নত করতে ছবির সাইজ কমানো।' : 'Optimizing hero graphics, banners, and thumbnails to score 95+ on Google PageSpeed Insights.',
+          benefit: isBn ? 'ওয়েবসাইট দ্রুত লোড হয়, বাউন্স রেট কমে এবং গুগল র‍্যাংকিং বাড়ে।' : 'Drastically lowered LCP load times, reduced mobile data usage, and elevated search ranking.',
+        },
+        {
+          role: isBn ? 'ই-কমার্স বিক্রেতা ও মার্চেন্ট' : 'E-Commerce Sellers & Product Managers',
+          desc: isBn ? 'অনলাইন শপে পণ্যের ক্যাটালগ দ্রুত আপলোড করার জন্য সঠিক সাইজে ছবি রূপান্তর।' : 'Batch preparing catalog images for Amazon, Shopify, Daraz, and social commerce platforms.',
+          benefit: isBn ? 'মার্কেটপ্লেসের সাইজ নিয়মে ছবি রিজেক্ট হয় না।' : 'Strict adherence to marketplace file ceilings without fuzzy compression artifacts.',
+        },
+        {
+          role: isBn ? 'ফটোগ্রাফার ও সাধারণ ব্যবহারকারী' : 'Photographers & Daily Users',
+          desc: isBn ? 'স্মার্টফোনে তোলা ২০+ মেগাবাইটের ভারী ছবি হোয়াটসঅ্যাপ বা ইমেইলে পাঠানো।' : 'Compressing 20+ megapixel smartphone photos for fast email attachments and chat messaging.',
+          benefit: isBn ? 'মোবাইল ইন্টারনেট ডাটা সাশ্রয় হয় এবং নিমিষেই পাঠানো যায়।' : 'Instant transfers without chewing through mobile data bundles.',
+        },
+      ]
+    : [
+        {
+          role: isBn ? 'সফটওয়্যার ইঞ্জিনিয়ার' : 'Software Engineers & QA Teams',
+          desc: isBn ? 'এপিআই রেসপন্স ফরম্যাটিং, ডাটা ভ্যালিডেশন এবং নিরাপদ পাসওয়ার্ড জেনারেশন।' : 'Validating complex JSON payloads, inspecting CSS variables, and generating secure keys.',
+          benefit: isBn ? 'ক্লায়েন্ট বা প্রডাকশন ক্রেডেনশিয়াল কখনো সার্ভার লগে জমা হয় না।' : 'Zero network telemetry or leak of sensitive production tokens and keys.',
+        },
+        {
+          role: isBn ? 'লেখক ও অনুবাদক' : 'Authors, Editors & Translators',
+          desc: isBn ? 'আর্টিকেল বা পাণ্ডুলিপির শব্দ সংখ্যা, পড়ার সময় ও প্যারাগ্রাফ বিশ্লেষণ।' : 'Calculating reading times, syllable distribution, and exact word counts across chapters.',
+          benefit: isBn ? 'ইউনিকোড ও জটিল যুক্তাক্ষরের সঠিক গণনা নিশ্চিত করে।' : 'Precision tokenization tailored to non-Latin and complex script nuances.',
+        },
+      ];
+
+  const comparisonRows = isPdf
+    ? [
+        {
+          f: isBn ? 'ফাইলের নিরাপত্তা' : 'Data Privacy & Security',
+          local: isBn ? '১০০% ব্রাউজারেই সীমাবদ্ধ। কোনো ফাইল সার্ভারে যায় না।' : '100% In-Browser. File bytes never traverse the network.',
+          cloud: isBn ? 'রিমোট ক্লাউড সার্ভারে আপলোড ও সাময়িক জমা থাকে।' : 'Uploaded to remote cloud instances with retention risks.',
+        },
+        {
+          f: isBn ? 'প্রসেসিং স্পিড' : 'Processing Speed',
+          local: isBn ? 'তাত্ক্ষণিক লোকাল সিপিইউ/জিপিইউ (জিরো আপলোড ডিলে)।' : 'Near-instant client-side processing; zero upload delay.',
+          cloud: isBn ? 'ইন্টারনেট স্পিডের ওপর নির্ভর করে আপলোড ও ডাউনলোডে দেরি হয়।' : 'Bound by internet bandwidth, upload queues, and server latency.',
+        },
+        {
+          f: isBn ? 'খরচ ও ওয়াটারমার্ক' : 'Cost & Watermarking',
+          local: isBn ? 'কোনো ওয়াটারমার্ক নেই, ১০০% ফ্রি ও আনলিমিটেড।' : 'Zero watermarks, completely free, unlimited usage.',
+          cloud: isBn ? 'দিনে ২-৩ বারের পর পেইড সাবস্ক্রিপশন বা ক্রেডিট চায়।' : 'Often gated by daily quota limits and aggressive upsells.',
+        },
+      ]
+    : [
+        {
+          f: isBn ? 'ছবির ব্যক্তিগত অধিকার' : 'Photo Rights & Privacy',
+          local: isBn ? 'ডিভাইসের বাইরে যায় না; কোনো এআই ট্রেনিং বা স্টোরেজ নেই।' : 'Never leaves your browser; never mined or stored for AI training.',
+          cloud: isBn ? 'থার্ড-পার্টি স্টোরেজে সংরক্ষিত থাকে এবং ফাঁসের ঝুঁকি থাকে।' : 'Stored on remote cloud hosting with ambiguous data retention.',
+        },
+        {
+          f: isBn ? 'এক্সিকিউশন লেটেন্সি' : 'Execution Latency',
+          local: isBn ? '১ সেকেন্ডেরও কম সময়ে লোকাল প্রসেস হয়।' : 'Sub-second local hardware-accelerated processing.',
+          cloud: isBn ? 'সার্ভার সারিতে অপেক্ষা করতে হয়।' : 'Laggy server roundtrips and conversion queues.',
+        },
+        {
+          f: isBn ? 'হিডেন চার্জ বা সাবস্ক্রিপশন' : 'Subscription & Caps',
+          local: isBn ? 'সম্পূর্ণ উন্মুক্ত, কোনো সাইন-আপ বা ক্রেডিট কার্ড লাগে না।' : '100% free with no accounts, logins, or hidden fees.',
+          cloud: isBn ? 'অনেক সময় প্রিমিয়াম লাইসেন্স ছাড়া ফুল রেজোলিউশন দেয় না।' : 'Caps maximum resolution unless premium plan is unlocked.',
+        },
+      ];
+
+  return `
+    <!-- Editorial: Pro Tips & Best Practices -->
+    <section style="background: rgba(20, 184, 166, 0.04); border: 1px solid rgba(20, 184, 166, 0.15); border-radius: 16px; padding: 28px; margin-bottom: 40px;">
+      <h3 style="font-size: 1.25rem; font-weight: 800; color: #14b8a6; margin-bottom: 14px;">
+        💡 ${isBn ? 'সেরা ফলাফলের জন্য প্র্যাকটিক্যাল টিপস' : 'Pro Tips for Optimal Results'}
+      </h3>
+      <ul style="margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 10px; color: #cbd5e1; font-size: 0.95rem; line-height: 1.6;">
+        ${proTips.map((tip) => '<li>' + tip + '</li>').join('')}
+      </ul>
+    </section>
+
+    <!-- Editorial: Real-World Use Cases -->
+    <section style="margin-bottom: 44px;">
+      <h3 style="font-size: 1.35rem; font-weight: 800; color: #f1f5f9; margin-bottom: 18px;">
+        💼 ${isBn ? 'বাস্তব জীবনের জনপ্রিয় ব্যবহার ক্ষেত্র' : 'Real-World Practical Scenarios'}
+      </h3>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 18px;">
+        ${useCases.map((uc) => `
+          <div style="background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.06); border-radius: 14px; padding: 22px;">
+            <span style="font-size: 0.75rem; text-transform: uppercase; font-weight: 800; color: #14b8a6; letter-spacing: 0.05em; display: block; margin-bottom: 8px;">
+              ${uc.role}
+            </span>
+            <p style="font-size: 0.92rem; line-height: 1.6; color: #f1f5f9; margin: 0 0 10px; font-weight: 500;">
+              ${uc.desc}
+            </p>
+            <p style="font-size: 0.85rem; color: #94a3b8; margin: 0;">
+              ✓ ${uc.benefit}
+            </p>
+          </div>
+        `).join('')}
+      </div>
+    </section>
+
+    <!-- Editorial: Comparison Matrix Table -->
+    <section style="margin-bottom: 44px; overflow-x: auto;">
+      <h3 style="font-size: 1.35rem; font-weight: 800; color: #f1f5f9; margin-bottom: 18px;">
+        ⚖️ ${isBn ? 'Ahadex লোকাল টুল বনাম সাধারণ ক্লাউড কনভার্টার' : 'Ahadex In-Browser vs. Legacy Cloud Upload Converters'}
+      </h3>
+      <table style="width: 100%; border-collapse: collapse; font-size: 0.9rem; text-align: left; border-radius: 12px; overflow: hidden; border: 1px solid rgba(255, 255, 255, 0.08);">
+        <thead>
+          <tr style="background: rgba(255, 255, 255, 0.04); border-bottom: 1px solid rgba(255, 255, 255, 0.08);">
+            <th style="padding: 14px 18px; color: #f8fafc; font-weight: 700;">${isBn ? 'বৈশিষ্ট্য' : 'Feature'}</th>
+            <th style="padding: 14px 18px; color: #14b8a6; font-weight: 700;">Ahadex Tools (In-Browser)</th>
+            <th style="padding: 14px 18px; color: #94a3b8; font-weight: 700;">${isBn ? 'সাধারণ ক্লাউড কনভার্টার' : 'Legacy Cloud Upload Converters'}</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${comparisonRows.map((r, i) => `
+            <tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.04); background: ${i % 2 === 0 ? 'transparent' : 'rgba(255, 255, 255, 0.015)'};">
+              <td style="padding: 14px 18px; font-weight: 600; color: #f1f5f9;">${r.f}</td>
+              <td style="padding: 14px 18px; color: #cbd5e1;">✓ ${r.local}</td>
+              <td style="padding: 14px 18px; color: #64748b;">✗ ${r.cloud}</td>
+            </tr>
+          `).join('')}
+        </tbody>
+      </table>
+    </section>
+  `;
 }
 
 console.log('[prerender] Starting high-fidelity static HTML generation for all routes...');
@@ -320,7 +498,7 @@ for (const rawTool of toolsData) {
             <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
               <span style="color: #14b8a6; font-size: 1rem;">✓</span>
               <strong style="font-size: 0.85rem; color: #14b8a6;">
-                ${isBn ? '১০০% ক্লায়েন্ট-সাইড নিরাপদ' : '100% Client-Side Private'}
+                ${isBn ? 'ক্লায়েন্ট-সাইড প্রসেসিং' : 'Client-Side Private Processing'}
               </strong>
             </div>
             <p style="font-size: 0.78rem; color: #94a3b8; line-height: 1.45; margin: 0;">
@@ -362,7 +540,7 @@ for (const rawTool of toolsData) {
               ${categoryTitle}
             </span>
             <span style="font-size: 0.75rem; font-weight: 700; color: #94a3b8; background: rgba(255, 255, 255, 0.05); padding: 4px 10px; border-radius: 999px;">
-              ${isBn ? '১০০% ফ্রি অনলাইন' : '100% Free Online'}
+              ${isBn ? 'ফ্রি অনলাইন টুল' : 'Free Online Utility'}
             </span>
             <span style="font-size: 0.75rem; font-weight: 700; color: #94a3b8; background: rgba(255, 255, 255, 0.05); padding: 4px 10px; border-radius: 999px;">
               ${isBn ? 'কোনো সার্ভার আপলোড নেই' : 'Zero Server Uploads'}
@@ -423,6 +601,9 @@ for (const rawTool of toolsData) {
             </p>
           </div>
         </section>
+
+        <!-- Rich Editorial & Educational Sections (Technical Architecture, Pro Tips, Use Cases, Comparison Matrix) -->
+        ${renderEditorialSections(tool, lang)}
 
         <!-- Related Tools -->
         ${tool.relatedSlugs && tool.relatedSlugs.length > 0 ? `
@@ -610,7 +791,7 @@ for (const [key, pageData] of Object.entries(staticPages)) {
             <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 16px; padding: 22px; display: flex; flex-direction: column;">
               <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
                 <span style="font-size: 0.72rem; text-transform: uppercase; font-weight: 800; color: #14b8a6; background: rgba(20, 184, 166, 0.12); padding: 4px 8px; border-radius: 6px;">${t.categoryName}</span>
-                <span style="font-size: 0.75rem; color: #64748b;">${isBn ? '১০০% ফ্রি' : '100% Free'}</span>
+                <span style="font-size: 0.75rem; color: #64748b;">${isBn ? 'ফ্রি টুল' : 'Free Tool'}</span>
               </div>
               <h3 style="font-size: 1.15rem; font-weight: 700; color: #f8fafc; margin-bottom: 8px;">
                 <a href="${link}" style="color: inherit; text-decoration: none;">${tData.name}</a>
@@ -657,7 +838,7 @@ for (const [key, pageData] of Object.entries(staticPages)) {
             <div style="background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.06); border-radius: 16px; padding: 24px;">
               <div style="font-size: 24px; margin-bottom: 12px;">🔒</div>
               <h3 style="font-size: 1.1rem; font-weight: 700; color: #f1f5f9; margin-bottom: 8px;">
-                ${isBn ? 'শতভাগ লোকাল প্রসেসিং' : '100% Client-Side Privacy'}
+                ${isBn ? 'লোকাল ব্রাউজার প্রসেসিং' : 'Client-Side In-Browser Privacy'}
               </h3>
               <p style="font-size: 0.88rem; color: #94a3b8; line-height: 1.5; margin: 0;">
                 ${isBn ? 'আপনার ফাইল ও ডকুমেন্ট আপনার ব্রাউজার মেমরিতেই প্রসেস হয়, কোনো সার্ভারে আপলোড হয় না।' : 'Files are processed in your browser memory without uploading to unknown cloud queues.'}

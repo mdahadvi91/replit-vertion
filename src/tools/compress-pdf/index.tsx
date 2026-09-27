@@ -182,6 +182,14 @@ export function CompressPdfTool({ tool }: { tool: ToolDefinition }) {
         resultBlob = new Blob([compressedBytes as unknown as BlobPart], { type: 'application/pdf' });
       }
 
+      // Integrity Verification: Verify that the produced PDF is valid and readable
+      setProgress(95);
+      const verifyBytes = await resultBlob.arrayBuffer();
+      const verifyPdf = await PDFDocument.load(verifyBytes, { ignoreEncryption: true });
+      if (verifyPdf.getPageCount() === 0) {
+        throw new Error('Produced PDF is corrupted or has 0 pages.');
+      }
+
       const origSize = file.size;
       const compSize = resultBlob.size;
       const sizeIncreased = compSize >= origSize;
@@ -359,13 +367,13 @@ export function CompressPdfTool({ tool }: { tool: ToolDefinition }) {
                   <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
                     <FileCheck size={18} style={{ color: 'hsl(var(--primary))' }} />
                     <strong style={{ fontSize: 14 }}>
-                      {isBn ? 'স্ট্রাকচারাল অপ্টিমাইজেশন (Lossless Vector)' : 'Structural Stream Clean-up'}
+                      {isBn ? 'স্ট্রাকচারাল স্ট্রিম অপ্টিমাইজেশন (Stream Clean-up)' : 'Structural Stream Clean-up'}
                     </strong>
                   </div>
                   <span style={{ fontSize: 12, color: 'hsl(var(--muted-foreground))', lineHeight: 1.4, display: 'block' }}>
                     {isBn
-                      ? 'অরিজিনাল ভেক্টর টেক্সট ও সিলেকশন অক্ষুণ্ণ রেখে মেটাডাটা ও অবজেক্ট স্ট্রিম অপ্টিমাইজ করে। টেক্সটের কোনো কোয়ালিটি নষ্ট হয় না।'
-                      : 'Keeps 100% vector fonts, selectable text & links intact while stripping redundant stream overhead.'}
+                      ? 'অপ্রয়োজনীয় মেটাডাটা ও অবজেক্ট স্ট্রিম রিঅর্গানাইজ করে ভেক্টর টেক্সট ধরে রাখে। নোট: ডিজিটাল স্বাক্ষর বা ফর্ম ফিল্ড এতে পরিবর্তিত হতে পারে।'
+                      : 'Reorganizes object streams and removes redundant metadata while keeping vector text sharp. Note: digital signatures or form widgets may be flattened.'}
                   </span>
                 </div>
               </div>

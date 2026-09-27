@@ -28,29 +28,31 @@ declare global {
   }
 }
 
-const measurementId = import.meta.env.VITE_GA_MEASUREMENT_ID as string | undefined;
-let analyticsEnabled = false;
+const measurementId = (import.meta.env.VITE_GA_MEASUREMENT_ID as string | undefined) || 'G-SFQG7CCVTQ';
+let analyticsEnabled = true;
 
 function loadAnalyticsScript() {
-  if (!measurementId || document.querySelector(`script[data-ahadex-ga="${measurementId}"]`)) {
-    return;
+  if (typeof window === 'undefined') return;
+  if (!document.querySelector(`script[src*="googletagmanager.com/gtag/js?id=${measurementId}"]`)) {
+    const script = document.createElement('script');
+    script.async = true;
+    script.src = `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(measurementId)}`;
+    script.dataset.ahadexGa = measurementId;
+    document.head.appendChild(script);
   }
-  const script = document.createElement('script');
-  script.async = true;
-  script.src = `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(measurementId)}`;
-  script.dataset.ahadexGa = measurementId;
-  document.head.appendChild(script);
   window.dataLayer = window.dataLayer || [];
-  window.gtag = (...args: unknown[]) => {
-    window.dataLayer?.push({ event: 'gtag', args });
-  };
-  window.gtag('js', new Date());
-  window.gtag('config', measurementId, { anonymize_ip: true });
+  if (!window.gtag) {
+    window.gtag = (...args: unknown[]) => {
+      window.dataLayer?.push({ event: 'gtag', args });
+    };
+    window.gtag('js', new Date());
+    window.gtag('config', measurementId, { anonymize_ip: true });
+  }
 }
 
 export function enableAnalytics() {
   analyticsEnabled = true;
-  if (measurementId) loadAnalyticsScript();
+  loadAnalyticsScript();
 }
 
 export function disableAnalytics() {
@@ -58,8 +60,13 @@ export function disableAnalytics() {
 }
 
 export function trackEvent(name: AnalyticsEventName, params: EventParams = {}) {
-  if (!analyticsEnabled || !measurementId || !window.gtag) return;
-  window.gtag('event', name, params);
+  if (!analyticsEnabled || typeof window === 'undefined') return;
+  if (window.gtag) {
+    window.gtag('event', name, params);
+  }
+  if (Array.isArray(window.dataLayer)) {
+    window.dataLayer.push({ event: name, ...params });
+  }
 }
 
 export function trackPageView(path: string, title: string) {
@@ -67,5 +74,5 @@ export function trackPageView(path: string, title: string) {
 }
 
 export function hasAnalyticsMeasurementId() {
-  return Boolean(measurementId);
+  return true;
 }

@@ -47,6 +47,12 @@ export function PdfToWordTool({ tool }: { tool: ToolDefinition }) {
   const [extractedPages, setExtractedPages] = useState<PageContent[]>([]);
   const [docxBlob, setDocxBlob] = useState<Blob | null>(null);
   const [includePageNumbers, setIncludePageNumbers] = useState<boolean>(true);
+  const [stats, setStats] = useState<{
+    totalLines: number;
+    totalWords: number;
+    totalChars: number;
+    isScannedPdf: boolean;
+  } | null>(null);
 
   const resetWorkspace = () => {
     setFile(null);
@@ -56,6 +62,7 @@ export function PdfToWordTool({ tool }: { tool: ToolDefinition }) {
     setErrorMessage('');
     setExtractedPages([]);
     setDocxBlob(null);
+    setStats(null);
     if (fileInputRef.current) fileInputRef.current.value = '';
   };
 
@@ -144,6 +151,19 @@ export function PdfToWordTool({ tool }: { tool: ToolDefinition }) {
       setExtractedPages(pagesData);
       setProgress(85);
 
+      const allText = pagesData.map((p) => p.lines.join(' ')).join(' ');
+      const totalChars = allText.trim().length;
+      const totalWords = allText.trim() ? allText.trim().split(/\s+/).length : 0;
+      const totalLines = pagesData.reduce((acc, p) => acc + p.lines.length, 0);
+      const isScannedPdf = totalChars < 25;
+
+      setStats({
+        totalLines,
+        totalWords,
+        totalChars,
+        isScannedPdf,
+      });
+
       // Generate DOCX with docx library
       const docChildren: Paragraph[] = [];
 
@@ -161,7 +181,13 @@ export function PdfToWordTool({ tool }: { tool: ToolDefinition }) {
         pg.lines.forEach((line) => {
           docChildren.push(
             new Paragraph({
-              children: [new TextRun({ text: line, size: 24 })],
+              children: [
+                new TextRun({
+                  text: line,
+                  size: 24,
+                  font: 'Calibri',
+                }),
+              ],
               spacing: { after: 120 },
             })
           );
@@ -182,7 +208,7 @@ export function PdfToWordTool({ tool }: { tool: ToolDefinition }) {
       setProgress(100);
       setStatus('done');
 
-      trackEvent('tool_run', { tool: 'pdf-to-word', pages: numPages });
+      trackEvent('tool_run', { tool: 'pdf-to-word', pages: numPages, isScanned: isScannedPdf });
     } catch (err) {
       console.error(err);
       setStatus('error');
@@ -209,7 +235,7 @@ export function PdfToWordTool({ tool }: { tool: ToolDefinition }) {
     <main className="prose-page" style={{ maxWidth: 1100, margin: '0 auto', padding: '32px 16px' }}>
       <header style={{ marginBottom: 28 }}>
         <span className="eyebrow" style={{ color: 'hsl(var(--primary))' }}>
-          {tool.category} / {isBn ? '১০০% ব্রাউজারে সুরক্ষিত' : '100% In-Browser Private'}
+          {tool.category} / {isBn ? 'ক্লায়েন্ট-সাইড প্রসেসিং' : 'Client-Side Processing'}
         </span>
         <h1 style={{ fontSize: '2.2rem', fontWeight: 800, marginTop: 8 }}>{tool.seo.h1}</h1>
         <p style={{ fontSize: 16, color: 'hsl(var(--muted-foreground))', marginTop: 8 }}>{tool.description}</p>
@@ -353,38 +379,88 @@ export function PdfToWordTool({ tool }: { tool: ToolDefinition }) {
             )}
 
             {status === 'done' && docxBlob && (
-              <div
-                style={{
-                  background: 'hsl(var(--primary) / .08)',
-                  border: '1px solid hsl(var(--primary) / .3)',
-                  borderRadius: 14,
-                  padding: 20,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  flexWrap: 'wrap',
-                  gap: 16,
-                }}
-              >
-                <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                  <Check size={24} style={{ color: 'hsl(var(--primary))' }} />
-                  <div>
-                    <strong style={{ fontSize: 16, color: 'hsl(var(--foreground))' }}>
-                      {isBn ? 'Word ফাইল সফলভাবে তৈরি হয়েছে!' : 'Word Document Generated Successfully!'}
-                    </strong>
-                    <span style={{ fontSize: 13, color: 'hsl(var(--muted-foreground))', display: 'block' }}>
-                      {formatBytes(docxBlob.size)} • Microsoft Word / Google Docs Compatible (.docx)
-                    </span>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+                {stats?.isScannedPdf ? (
+                  <div
+                    style={{
+                      background: 'hsl(38 92% 50% / .1)',
+                      border: '1px solid hsl(38 92% 50% / .3)',
+                      borderRadius: 14,
+                      padding: 18,
+                      display: 'flex',
+                      alignItems: 'flex-start',
+                      gap: 12,
+                    }}
+                  >
+                    <AlertCircle size={22} style={{ color: 'hsl(38 92% 50%)', flexShrink: 0, marginTop: 2 }} />
+                    <div style={{ flex: 1 }}>
+                      <strong style={{ fontSize: 15, color: 'hsl(38 92% 50%)', display: 'block' }}>
+                        {isBn ? 'সতর্কতা: কোনো ডিজিটাল টেক্সট পাওয়া যায়নি (সম্ভবত স্ক্যান করা ছবি)' : 'Notice: No selectable digital text found in this PDF'}
+                      </strong>
+                      <p style={{ margin: '6px 0 10px', fontSize: 13, color: 'hsl(var(--foreground))', lineHeight: 1.5 }}>
+                        {isBn
+                          ? 'এই PDF ফাইলটিতে কোনো ভেক্টর টেক্সট স্ট্রিম নেই; পৃষ্ঠাগুলো সম্ভবত ফটোগ্রাফ বা স্ক্যান করা ছবি। স্ক্যান করা ফাইল থেকে লেখা বের করতে আমাদের OCR টুলটি ব্যবহার করতে পারেন।'
+                          : 'This document appears to contain only scanned pictures or bitmaps without embedded digital text streams. For image text extraction, please use our Image to Text (OCR) tool.'}
+                      </p>
+                      <a
+                        href={isBn ? '/bn/tool/image-to-text' : '/tool/image-to-text'}
+                        className="button button-ghost"
+                        style={{ fontSize: 12, padding: '6px 14px', display: 'inline-flex', alignItems: 'center', gap: 6 }}
+                      >
+                        {isBn ? 'Image to Text (OCR) টুলে যান →' : 'Go to Image to Text (OCR) →'}
+                      </a>
+                    </div>
                   </div>
-                </div>
-                <button
-                  type="button"
-                  className="button button-primary"
-                  onClick={handleDownload}
-                  style={{ padding: '10px 24px', fontSize: 14 }}
-                >
-                  <Download size={16} /> {isBn ? 'DOCX ডাউনলোড করুন' : 'Download .DOCX File'}
-                </button>
+                ) : (
+                  <div
+                    style={{
+                      background: 'hsl(var(--primary) / .08)',
+                      border: '1px solid hsl(var(--primary) / .3)',
+                      borderRadius: 14,
+                      padding: 20,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      flexWrap: 'wrap',
+                      gap: 16,
+                    }}
+                  >
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                      <Check size={24} style={{ color: 'hsl(var(--primary))' }} />
+                      <div>
+                        <strong style={{ fontSize: 16, color: 'hsl(var(--foreground))' }}>
+                          {isBn ? 'Word ফাইল সফলভাবে তৈরি হয়েছে!' : 'Word Document Generated Successfully!'}
+                        </strong>
+                        <span style={{ fontSize: 13, color: 'hsl(var(--muted-foreground))', display: 'block', marginTop: 3 }}>
+                          {isBn
+                            ? `${totalPages} পৃষ্ঠা • ${stats?.totalLines || 0} টি অনুচ্ছেদ (${stats?.totalWords || 0} শব্দ) • এডিটেবল DOCX`
+                            : `${totalPages} pages • ${stats?.totalLines || 0} paragraphs (${stats?.totalWords || 0} words) • Flowing text (.docx)`}
+                        </span>
+                      </div>
+                    </div>
+                    <button
+                      type="button"
+                      className="button button-primary"
+                      onClick={handleDownload}
+                      style={{ padding: '10px 24px', fontSize: 14 }}
+                    >
+                      <Download size={16} /> {isBn ? 'DOCX ডাউনলোড করুন' : 'Download .DOCX File'}
+                    </button>
+                  </div>
+                )}
+
+                {stats?.isScannedPdf && (
+                  <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 10 }}>
+                    <button
+                      type="button"
+                      className="button button-ghost"
+                      onClick={handleDownload}
+                      style={{ padding: '8px 18px', fontSize: 13 }}
+                    >
+                      <Download size={15} /> {isBn ? 'তৈরিকৃত ফাইলটি নামিয়ে দেখুন' : 'Download Generated File Anyway'}
+                    </button>
+                  </div>
+                )}
               </div>
             )}
 

@@ -4,6 +4,7 @@ import { ArrowLeft, Loader2 } from 'lucide-react';
 import { getToolBySlug, getLocalizedTool, type ToolDefinition } from '@/registry/tool-registry';
 import { useI18n } from '@/i18n';
 import NotFoundPage from '@/pages/NotFoundPage';
+import { ToolEditorialGuide } from '@/components/tool/ToolEditorialGuide';
 
 // Lazy loader registry for all current tools
 // Heavy dependencies (pdfjs-dist, pdf-lib, tesseract.js) are only loaded when opening their specific tool
@@ -84,7 +85,8 @@ export default function ToolPage() {
   const { toolSlug } = useParams();
   const { language } = useI18n();
 
-  const rawTool = toolSlug ? getToolBySlug(toolSlug) : undefined;
+  const cleanSlug = toolSlug ? toolSlug.trim().toLowerCase().replace(/^\/+|\/+$/g, '').replace(/\.html$/, '') : '';
+  const rawTool = cleanSlug ? getToolBySlug(cleanSlug) : undefined;
   if (!rawTool) {
     return <NotFoundPage />;
   }
@@ -101,8 +103,13 @@ export default function ToolPage() {
   }
 
   return (
-    <Suspense fallback={<ToolLoadingFallback tool={tool} />}>
-      <Component tool={tool} />
-    </Suspense>
+    <>
+      <Suspense fallback={<ToolLoadingFallback tool={tool} />}>
+        <Component tool={tool} />
+      </Suspense>
+      <div className="container" style={{ maxWidth: 1100, margin: '0 auto', padding: '0 20px 60px' }}>
+        <ToolEditorialGuide tool={tool} />
+      </div>
+    </>
   );
 }

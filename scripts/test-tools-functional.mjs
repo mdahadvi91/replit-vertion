@@ -1,9 +1,10 @@
 import assert from 'node:assert';
+import fs from 'node:fs';
 import { Document, Paragraph, TextRun, Packer } from 'docx';
 import { PDFDocument, degrees } from 'pdf-lib';
 import QRCode from 'qrcode';
 import JSZip from 'jszip';
-import { tools, getLocalizedTool } from '../src/registry/tool-registry.js';
+import { tools, getLocalizedTool, getToolBySlug } from '../src/registry/tool-registry.js';
 import { matchToolQuery, calculateToolScore } from '../src/lib/search/toolSearch.js';
 
 console.log('[test-functional] Starting automated functional test suite for Ahadex Tools...\n');
@@ -76,8 +77,8 @@ assert(zipBlob.length > 100, 'ZIP archive should be valid');
 console.log(`   ✓ ZIP packaging engine passed (${zipBlob.length} bytes)`);
 passedTests++;
 
-// Test 5: PDF Structural Stream Optimization (compress-pdf lossless mode)
-console.log('5. Testing PDF Structural Stream Clean-up engine (compress-pdf lossless mode)...');
+// Test 5: PDF Structural Stream Clean-up (compress-pdf stream mode)
+console.log('5. Testing PDF Structural Stream Clean-up engine (compress-pdf stream mode)...');
 const optPdf = await PDFDocument.load(sampleBytes);
 optPdf.setTitle('');
 optPdf.setAuthor('');
@@ -88,7 +89,10 @@ assert(
   String.fromCharCode(optBytes[0], optBytes[1], optBytes[2], optBytes[3], optBytes[4]) === '%PDF-',
   'Optimized PDF header signature must be valid'
 );
-console.log(`   ✓ PDF stream clean-up passed (${optBytes.length} bytes produced)`);
+// Integrity re-opening check
+const reloaded = await PDFDocument.load(optBytes);
+assert(reloaded.getPageCount() === 2, 'Verified reloaded PDF must have 2 pages');
+console.log(`   ✓ PDF stream clean-up & integrity verification passed (${optBytes.length} bytes produced)`);
 passedTests++;
 
 // Test 6: Multilingual Search Accuracy (English & Bengali)
@@ -129,6 +133,44 @@ for (const testCase of searchTestCases) {
   );
   console.log(`   ✓ Search "${testCase.query}" -> ${topMatch} (Score: ${ranked[0].score})`);
 }
+passedTests++;
+
+console.log(`\n7. Testing SEO Indexing & Slug Resolution Integrity across all 24 tools...`);
+for (const tool of tools) {
+  // Test slug resolution resilience
+  assert(getToolBySlug(tool.slug), `Slug "${tool.slug}" must resolve`);
+  assert(getToolBySlug(`${tool.slug}/`), `Slug with trailing slash "${tool.slug}/" must resolve`);
+  assert(getToolBySlug(`${tool.slug}.html`), `Slug with .html "${tool.slug}.html" must resolve`);
+  assert(getToolBySlug(tool.slug.toUpperCase()), `Uppercase slug "${tool.slug.toUpperCase()}" must resolve`);
+
+  // Test SEO canonical & metadata
+  assert(tool.seo.canonical.startsWith('/tool/'), `Canonical path for ${tool.slug} must start with /tool/`);
+  assert(tool.seo.title.length > 10, `SEO title for ${tool.slug} must be meaningful`);
+  assert(tool.seo.description.length > 30, `SEO description for ${tool.slug} must be informative`);
+
+  // Test localized BN SEO
+  const bn = getLocalizedTool(tool, 'bn');
+  assert(bn.seo.title.length > 5, `BN SEO title for ${tool.slug} must exist`);
+  assert(bn.seo.description.length > 20, `BN SEO description for ${tool.slug} must exist`);
+}
+console.log(`   ✓ All 24 tools verified: resilient slug resolution, canonical URLs, and bilingual SEO metadata`);
+passedTests++;
+
+console.log(`\n8. Testing Google Analytics, Tag Manager, AdSense & Cloudflare Pages Configuration...`);
+const indexHtmlContent = fs.readFileSync('index.html', 'utf8');
+const adsTxtContent = fs.readFileSync('public/ads.txt', 'utf8');
+const redirectsContent = fs.readFileSync('public/_redirects', 'utf8');
+
+assert(indexHtmlContent.includes('ca-pub-5216241068377334'), 'index.html must include AdSense client ID');
+assert(indexHtmlContent.includes('G-SFQG7CCVTQ'), 'index.html must include Google Analytics tag G-SFQG7CCVTQ');
+assert(indexHtmlContent.includes('GTM-56SHPW93'), 'index.html must include Google Tag Manager GTM-56SHPW93');
+assert(indexHtmlContent.indexOf('GTM-56SHPW93') < indexHtmlContent.indexOf('<title>'), 'GTM script must be at top of head before <title>');
+assert(indexHtmlContent.indexOf('ns.html?id=GTM-56SHPW93') > indexHtmlContent.indexOf('<body>'), 'GTM noscript must be immediately after <body>');
+assert(adsTxtContent.includes('pub-5216241068377334'), 'ads.txt must include pub-5216241068377334');
+assert(redirectsContent.includes('/* /index.html 200'), '_redirects must include Cloudflare Pages SPA rewrite rule');
+assert(fs.existsSync('.nvmrc'), '.nvmrc must exist for Cloudflare Pages build environment');
+
+console.log('   ✓ All tracking tags (G-SFQG7CCVTQ, GTM-56SHPW93, ca-pub-5216241068377334) & Cloudflare Pages files verified');
 passedTests++;
 
 console.log(`\n🎉 All ${passedTests} automated functional tests passed successfully!\n`);

@@ -10,15 +10,15 @@ export const categories = {
     slug: 'images',
     en: {
       title: 'Free Image Tools Online — Ahadex Tools',
-      description: 'Compress, convert, resize, and add QR watermarks to images directly in your browser. 100% private, client-side image processing.',
+      description: 'Compress, convert, resize, and add QR watermarks to images directly in your browser. Client-side, in-browser image processing.',
       h1: 'Online Image Processing Tools',
-      intro: 'A complete suite of fast, privacy-focused image tools. Optimize photo dimensions, reduce file size without quality loss, convert formats, or overlay scannable QR code badges—all running locally in your browser memory without uploading pictures to remote servers.',
+      intro: 'A complete suite of fast, privacy-focused image tools. Optimize photo dimensions, reduce file size while balancing visual quality, convert formats, or overlay scannable QR code badges—all running locally in your browser memory without uploading pictures to remote servers.',
     },
     bn: {
       title: 'অনলাইন ছবি ও ইমেজ টুলস — Ahadex Tools',
-      description: 'ব্রাউজারেই ছবির সাইজ কমান, ফরম্যাট পরিবর্তন করুন, রিসাইজ করুন এবং কিউআর কোড ব্যাজ যুক্ত করুন সম্পূর্ণ বিনামূল্যে ও নিরাপদে।',
+      description: 'ব্রাউজারেই ছবির সাইজ কমান, ফরম্যাট পরিবর্তন করুন, রিসাইজ করুন এবং কিউআর কোড ব্যাজ যুক্ত করুন বিনামূল্যে সরাসরি ডিভাইসে।',
       h1: 'অনলাইন ইমেজ প্রসেসিং টুলস',
-      intro: 'ছবির সাইজ অপ্টিমাইজেশন, জেপিজি থেকে পিএনজি কনভার্শন, সঠিক মাপে রিসাইজ এবং কিউআর কোড ওয়াটারমার্ক ব্যাজ তৈরির জন্য সম্পূর্ণ প্রাইভেট টুলস। কোনো সার্ভারে ছবি আপলোড না করেই আপনার ডিভাইসের মেমরিতে নিমিষেই কাজ সম্পন্ন হয়।',
+      intro: 'ছবির সাইজ অপ্টিমাইজেশন, জেপিজি থেকে পিএনজি কনভার্শন, সঠিক মাপে রিসাইজ এবং কিউআর কোড ওয়াটারমার্ক ব্যাজ তৈরির জন্য প্রাইভেট টুলস। কোনো সার্ভারে ছবি আপলোড না করেই আপনার ডিভাইসের মেমরিতে কাজ সম্পন্ন হয়।',
     },
   },
   documents: {
@@ -27,7 +27,7 @@ export const categories = {
     slug: 'documents',
     en: {
       title: 'Free PDF & Document Tools Online — Ahadex Tools',
-      description: 'Extract text from PDFs, combine multiple PDF documents, and organize files in your browser. Zero uploads, 100% secure.',
+      description: 'Extract text from PDFs, combine multiple PDF documents, and organize files in your browser. Zero uploads, client-side processing.',
       h1: 'PDF & Document Processing Tools',
       intro: 'Handle confidential contracts, research papers, reports, and books without uploading document bytes to unknown cloud servers. Everything processes inside your browser memory with client-side WebAssembly and PDF engines.',
     },
@@ -35,7 +35,7 @@ export const categories = {
       title: 'অনলাইন পিডিএফ ও ডকুমেন্ট টুলস — Ahadex Tools',
       description: 'পিডিএফ থেকে টেক্সট বের করুন এবং একাধিক পিডিএফ একত্রিত করুন বিনামূল্যে কোনো সার্ভার আপলোড ছাড়াই।',
       h1: 'পিডিএফ ও ডকুমেন্ট প্রসেসিং টুলস',
-      intro: 'আপনার ব্যক্তিগত ও অফিসের গুরুত্বপূর্ণ নথিপত্র সম্পূর্ণ নিরাপদে প্রসেস করুন। কোনো সার্ভারে ফাইল পাঠানো ছাড়া ব্রাউজারেই সরাসরি পিডিএফ মার্জ এবং টেক্সট এক্সট্রাক্ট করুন।',
+      intro: 'আপনার ব্যক্তিগত ও অফিসের গুরুত্বপূর্ণ নথিপত্র নিরাপদে প্রসেস করুন। কোনো সার্ভারে ফাইল পাঠানো ছাড়া ব্রাউজারেই সরাসরি পিডিএফ মার্জ এবং টেক্সট এক্সট্রাক্ট করুন।',
     },
   },
   text: {
@@ -50,7 +50,7 @@ export const categories = {
     },
     bn: {
       title: 'অনলাইন টেক্সট ও লেখার টুলস — Ahadex Tools',
-      description: 'রিয়েল-টাইমে শব্দ, অক্ষর, বাক্য ও পড়ার সময় গণনা করুন। বাংলা ও ইংরেজি উভয়ের জন্য শতভাগ সঠিক ফলাফল।',
+      description: 'রিয়েল-টাইমে শব্দ, অক্ষর, বাক্য ও পড়ার সময় গণনা করুন। বাংলা ও ইংরেজি উভয়ের জন্য নির্ভুল ফলাফল।',
       h1: 'টেক্সট ও লেখার ইউটিলিটি টুলস',
       intro: 'লেখক, শিক্ষার্থী ও সাংবাদিকদের জন্য দ্রুত ও নির্ভুল লেখার পরিসংখ্যান। আপনার কনটেন্ট কোনো ডাটাবেজে সংরক্ষণ না করে রিয়েল-টাইমে গণনা প্রদর্শন করে।',
     },
@@ -147,7 +147,7 @@ export const toolsData = [
     en: {
       name: 'PDF to Text',
       title: 'PDF to Text Converter — Ahadex Tools',
-      description: 'Extract readable text and paragraphs from PDF documents in your browser. Fast, private, and 100% free.',
+      description: 'Extract readable text and paragraphs from PDF documents in your browser. Fast, private, and runs entirely in client memory.',
       h1: 'PDF to Text Converter',
       intro: 'Extract clean, copyable text from PDF files directly in your browser without uploading your documents to remote servers. Pull clean, copyable text from a PDF in a few quiet seconds.',
       howToUse: [
@@ -256,7 +256,7 @@ export const toolsData = [
       faq: [
         {
           question: 'আমার সংবেদনশীল কোড কি গোপন থাকবে?',
-          answer: 'হ্যাঁ! কোনো সার্ভার রিকোয়েস্ট ছাড়া সম্পূর্ণ ব্রাউজারে কাজ করায় আপনার ডেটা শতভাগ গোপন থাকে।',
+          answer: 'হ্যাঁ! কোনো বহিরাগত সার্ভার রিকোয়েস্ট ছাড়া সম্পূর্ণ ব্রাউজার মেমরিতে কাজ করায় আপনার ডেটা আপনার ডিভাইসেই সীমাবদ্ধ থাকে।',
         },
         {
           question: 'সিনট্যাক্স ত্রুটি কীভাবে চিহ্নিত হয়?',
@@ -594,7 +594,7 @@ export const toolsData = [
         'আপনার লিঙ্ক বা তথ্য প্রদান করুন এবং ব্যাজের পজিশন ও সাইজ পছন্দ করুন।',
         'লাইভ প্রিভিউ দেখে চূড়ান্ত ছবিটি সরাসরি ডাউনলোড করুন।',
       ],
-      privacy: 'ছবি ও তথ্য কখনোই আপনার ব্রাউজারের বাইরে যাবে না। ১০০% স্থানীয় ডিভাইসে তৈরি হয়।',
+      privacy: 'ছবি ও তথ্য কখনোই আপনার ব্রাউজারের বাইরে যাবে না। সম্পূর্ণ স্থানীয় ডিভাইসে প্রক্রিয়াজাত হয়।',
       limitations: 'সোশ্যাল মিডিয়া কম্প্রেশনেও যাতে সহজে স্ক্যান করা যায় সেজন্য ব্যাজটি পর্যাপ্ত সাইজের রাখুন।',
       faq: [
         {
@@ -617,7 +617,7 @@ export const toolsData = [
     "en": {
       "name": "PDF to Word",
       "title": "PDF to Word Converter — Ahadex Tools",
-      "description": "Convert PDF documents to editable Microsoft Word (.docx) files free online in your browser. 100% private client-side processing.",
+      "description": "Convert PDF documents to editable Microsoft Word (.docx) files free online in your browser. Client-side in-browser processing without server uploads.",
       "h1": "PDF to Word Converter",
       "intro": "Extract formatted text and paragraphs from your PDF documents and export directly as clean, editable Word (.docx) files without uploading to external servers.",
       "howToUse": [
@@ -638,7 +638,7 @@ export const toolsData = [
         },
         {
           "question": "Are my private PDF documents uploaded to your server?",
-          "answer": "No. All parsing and DOCX assembly execute 100% locally within your browser memory."
+          "answer": "No. All parsing and DOCX assembly execute locally within your browser sandbox memory."
         }
       ],
       "relatedSlugs": [

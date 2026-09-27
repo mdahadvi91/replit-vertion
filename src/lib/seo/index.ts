@@ -14,31 +14,35 @@ export interface DocumentMetaOptions {
 
 function setMetaTag(nameOrProperty: 'name' | 'property', key: string, value?: string) {
   if (!value) return;
-  let element = document.querySelector<HTMLMetaElement>(`meta[${nameOrProperty}="${key}"]`);
-  if (!element) {
-    element = document.createElement('meta');
+  const elements = document.querySelectorAll<HTMLMetaElement>(`meta[${nameOrProperty}="${key}"]`);
+  if (elements.length > 0) {
+    elements.forEach((el) => el.setAttribute('content', value));
+  } else {
+    const element = document.createElement('meta');
     element.setAttribute(nameOrProperty, key);
+    element.setAttribute('content', value);
     document.head.appendChild(element);
   }
-  element.setAttribute('content', value);
 }
 
 function setLinkTag(rel: string, href?: string, hreflang?: string) {
   const selector = hreflang
     ? `link[rel="${rel}"][hreflang="${hreflang}"]`
     : `link[rel="${rel}"]:not([hreflang])`;
-  let element = document.querySelector<HTMLLinkElement>(selector);
+  const elements = document.querySelectorAll<HTMLLinkElement>(selector);
   if (!href) {
-    if (element) element.remove();
+    elements.forEach((el) => el.remove());
     return;
   }
-  if (!element) {
-    element = document.createElement('link');
+  if (elements.length > 0) {
+    elements.forEach((el) => el.setAttribute('href', href));
+  } else {
+    const element = document.createElement('link');
     element.setAttribute('rel', rel);
     if (hreflang) element.setAttribute('hreflang', hreflang);
+    element.setAttribute('href', href);
     document.head.appendChild(element);
   }
-  element.setAttribute('href', href);
 }
 
 export function updateDocumentMeta(options: DocumentMetaOptions | string, legacyDescription?: string) {

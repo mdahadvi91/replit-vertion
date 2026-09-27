@@ -136,7 +136,12 @@ function usePageMeta(pathname: string) {
   const { language, setLanguage } = useI18n();
 
   useEffect(() => {
-    const isBn = pathname === '/bn' || pathname.startsWith('/bn/');
+    // Strip query string and hash, trim whitespace
+    const cleanPath = pathname.split('?')[0].split('#')[0].trim();
+    // Normalize trailing slash (keep root '/' intact)
+    const normalizedNoSlash = cleanPath.replace(/\/+$/, '') || '/';
+
+    const isBn = normalizedNoSlash === '/bn' || normalizedNoSlash.startsWith('/bn/');
     const currentLang: Language = isBn ? 'bn' : 'en';
 
     // Synchronize language state if URL does not match current state
@@ -144,17 +149,30 @@ function usePageMeta(pathname: string) {
       setLanguage(currentLang);
     }
 
-    // Determine normalized logical path without /bn prefix
-    const normalizedPath = isBn ? (pathname.slice(3) || '/') : pathname;
+    // Determine normalized logical path without /bn prefix, in lowercase and no trailing slash or .html
+    let normalizedPath = isBn ? (normalizedNoSlash.slice(3) || '/') : normalizedNoSlash;
+    normalizedPath = (normalizedPath.replace(/\/+$/, '') || '/').toLowerCase().replace(/\.html$/, '');
+
+    // Canonical redirect aliases mapping
+    if (normalizedPath === '/tools/image-compressor') normalizedPath = '/tool/image-compressor';
+    if (normalizedPath === '/privacy') normalizedPath = '/privacy-policy';
+    if (normalizedPath.startsWith('/tools/')) {
+      const potentialSlug = normalizedPath.replace('/tools/', '');
+      if (getToolBySlug(potentialSlug)) {
+        normalizedPath = `/tool/${potentialSlug}`;
+      }
+    }
 
     const toolSlug = normalizedPath.startsWith('/tool/') ? normalizedPath.replace('/tool/', '') : '';
     const rawTool = toolSlug ? getToolBySlug(toolSlug) : undefined;
     const tool = rawTool ? getLocalizedTool(rawTool, currentLang) : undefined;
 
     const categorySlug = normalizedPath.startsWith('/category/') ? normalizedPath.replace('/category/', '') : '';
-    const category = categoryList.find(
-      (candidate) => candidate.toLowerCase() === categorySlug.toLowerCase() && candidate !== 'All'
-    );
+    const category = categorySlug
+      ? categoryList.find(
+          (candidate) => candidate.toLowerCase() === categorySlug.toLowerCase() && candidate !== 'All'
+        )
+      : undefined;
 
     const localizedMap = metaByLang[currentLang] ?? metaByLang.en;
     const is404 = !tool && !category && !localizedMap[normalizedPath];
@@ -181,7 +199,11 @@ function usePageMeta(pathname: string) {
             }
           : localizedMap[normalizedPath];
 
-    const canonicalLogicalPath = tool?.seo.canonical ?? normalizedPath;
+    const canonicalLogicalPath = tool
+      ? `/tool/${tool.slug}`
+      : category
+        ? `/category/${category.toLowerCase()}`
+        : normalizedPath;
     const canonicalUrl = `${SITE_URL}${isBn ? '/bn' : ''}${canonicalLogicalPath === '/' ? '' : canonicalLogicalPath}`;
     const alternateEnUrl = `${SITE_URL}${canonicalLogicalPath === '/' ? '' : canonicalLogicalPath}`;
     const alternateBnUrl = `${SITE_URL}/bn${canonicalLogicalPath === '/' ? '' : canonicalLogicalPath}`;

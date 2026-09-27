@@ -117,7 +117,7 @@ export const tools: ToolDefinition[] = [
     keywords: ['extract pdf text', 'pdf converter', 'copy pdf', 'pdf to txt'],
     seo: {
       title: 'PDF to Text Converter — Ahadex Tools',
-      description: 'Extract readable text and paragraphs from PDF documents in your browser. Fast, private, and 100% free.',
+      description: 'Extract readable text and paragraphs from PDF documents in your browser. Fast, private, and runs entirely in client-side memory.',
       h1: 'PDF to Text Converter',
       canonical: '/tool/pdf-to-text',
     },
@@ -239,7 +239,7 @@ export const tools: ToolDefinition[] = [
           faq: [
             {
               question: 'আমার সংবেদনশীল কোড কি গোপন থাকবে?',
-              answer: 'হ্যাঁ! কোনো সার্ভার রিকোয়েস্ট ছাড়া সম্পূর্ণ ব্রাউজারে কাজ করায় আপনার ডেটা শতভাগ গোপন থাকে।',
+              answer: 'হ্যাঁ! কোনো বহিরাগত সার্ভার রিকোয়েস্ট ছাড়া সম্পূর্ণ ব্রাউজার মেমরিতে কাজ করায় আপনার ডেটা আপনার ডিভাইসেই সীমাবদ্ধ থাকে।',
             },
             {
               question: 'সিনট্যাক্স ত্রুটি কীভাবে চিহ্নিত হয়?',
@@ -685,7 +685,7 @@ export const tools: ToolDefinition[] = [
             'আপনার লিঙ্ক বা তথ্য প্রদান করুন এবং ব্যাজের পজিশন ও সাইজ পছন্দ করুন।',
             'লাইভ প্রিভিউ দেখে চূড়ান্ত ছবিটি সরাসরি ডাউনলোড করুন।',
           ],
-          privacy: 'ছবি ও তথ্য কখনোই আপনার ব্রাউজারের বাইরে যাবে না। ১০০% স্থানীয় ডিভাইসে তৈরি হয়।',
+          privacy: 'ছবি ও তথ্য কখনোই আপনার ব্রাউজারের বাইরে যাবে না। সম্পূর্ণ স্থানীয় ডিভাইসে প্রক্রিয়াজাত হয়।',
           limitations: 'সোশ্যাল মিডিয়া কম্প্রেশনেও যাতে সহজে স্ক্যান করা যায় সেজন্য ব্যাজটি পর্যাপ্ত সাইজের রাখুন।',
           faq: [
             {
@@ -716,7 +716,7 @@ export const tools: ToolDefinition[] = [
     keywords: ['pdf to word', 'pdf to docx', 'convert pdf to editable word', 'free pdf to word converter'],
     seo: {
       title: 'PDF to Word Converter — Ahadex Tools',
-      description: 'Convert PDF documents to editable Microsoft Word (.docx) files free online in your browser. 100% private client-side processing.',
+      description: 'Convert PDF documents to editable Microsoft Word (.docx) files free online in your browser. Client-side in-browser processing without server uploads.',
       h1: 'PDF to Word Converter',
       canonical: '/tool/pdf-to-word',
     },
@@ -740,14 +740,14 @@ export const tools: ToolDefinition[] = [
         },
         {
           question: 'Are my private PDF documents uploaded to your server?',
-          answer: 'No. All parsing and DOCX assembly execute 100% locally within your browser memory.',
+          answer: 'No. All parsing and DOCX assembly execute locally within your browser sandbox memory.',
         },
       ],
     },
     localized: {
       bn: {
         name: 'PDF থেকে Word কনভার্টার',
-        description: 'PDF ফাইল থেকে লেখা ও অনুচ্ছেদগুলো বের করে এডিটেবল মাইক্রোসফট ওয়ার্ড (.docx) ফাইলে রূপান্তর করুন শতভাগ নিরাপদে।',
+        description: 'PDF ফাইল থেকে লেখা ও অনুচ্ছেদগুলো বের করে এডিটেবল মাইক্রোসফট ওয়ার্ড (.docx) ফাইলে রূপান্তর করুন সরাসরি ব্রাউজারে।',
         keywords: ["পিডিএফ টু ওয়ার্ড","পিডিএফ থেকে ওয়ার্ড","পিডিএফ ওয়ার্ডে রূপান্তর","পিডিএফ কনভার্টার","pdf word converter","ওয়ার্ড ফাইল","docx কনভার্টার","পিডিএফ ডক রূপান্তর","pdf to word bangla"],
         seo: {
           title: 'অনলাইন PDF থেকে Word কনভার্টার — Ahadex Tools',
@@ -868,7 +868,7 @@ export const tools: ToolDefinition[] = [
     keywords: ['split pdf', 'separate pdf pages', 'extract pdf range', 'split pdf online free'],
     seo: {
       title: 'Split PDF Online — Ahadex Tools',
-      description: 'Split PDF files into individual pages or custom ranges (e.g., 1-3, 5). Fast, free, and 100% private in-browser tool.',
+      description: 'Split PDF files into individual pages or custom ranges (e.g., 1-3, 5). Fast, free, client-side in-browser tool.',
       h1: 'Split PDF Files Online',
       canonical: '/tool/split-pdf',
     },
@@ -918,7 +918,7 @@ export const tools: ToolDefinition[] = [
             },
             {
               question: 'আলাদা করা ফাইলগুলোর কোয়ালিটি কি কমে যাবে?',
-              answer: 'না, মূল ফাইলের টেক্সট ও ভেক্টর কোয়ালিটি ১০০% অক্ষুণ্ণ থাকে।',
+              answer: 'না, মূল ফাইলের টেক্সট ও ভেক্টর রেজোলিউশন মূল ফাইলের মতোই বজায় থাকে।',
             },
           ],
         },
@@ -948,19 +948,19 @@ export const tools: ToolDefinition[] = [
       intro: 'Optimize and shrink bulky PDF documents for email attachments and web upload limits without sacrificing readability or compromising confidentiality.',
       howToUse: [
         'Select or drag & drop the PDF file you wish to compress.',
-        'Choose a compression profile: Extreme, Recommended, or Low.',
+        'Choose an optimization method: Structural Stream Clean-up or Visual Canvas Recompression.',
         'Click "Compress PDF" and download the optimized file showing exact saved bytes.',
       ],
       privacy: 'Compression executes locally via client-side canvas rasterization and PDF stream reconstruction. No documents are uploaded.',
-      limitations: 'Provides two modes: Structural Stream Clean-up (lossless, keeps vector text selectable) and Visual Canvas Compression (for scans/photos). If an original PDF is already heavily optimized, recompression will honestly notify you if size reduction is not possible.',
+      limitations: 'Provides two modes: Structural Stream Clean-up (reorganizes streams, keeps vector text selectable) and Visual Canvas Compression (for scans/photos). If an original PDF is already heavily optimized, recompression will honestly notify you if size reduction is not possible. Form fields and digital certificates may be flattened.',
       faq: [
         {
           question: 'How much can I reduce my PDF size?',
-          answer: 'Image-heavy scanned PDFs and presentations can often be compressed by 40% to 80% without noticeable quality loss.',
+          answer: 'Image-heavy scanned PDFs and presentations can often see significant reductions without noticeable quality degradation.',
         },
         {
           question: 'Will text remain selectable and vector-sharp?',
-          answer: 'Yes! If you select the "Structural Stream Clean-up" mode, all vector text, fonts, and hyperlinks remain 100% selectable. In "Visual Canvas Compression" mode, pages are converted into sharp high-resolution images for maximum file-weight reduction.',
+          answer: 'Yes! If you select the "Structural Stream Clean-up" mode, vector text and fonts remain selectable. In "Visual Canvas Compression" mode, pages are converted into high-resolution images for maximum file-weight reduction.',
         },
         {
           question: 'Why did my PDF size not decrease?',
@@ -975,26 +975,26 @@ export const tools: ToolDefinition[] = [
     localized: {
       bn: {
         name: 'কম্প্রেস PDF',
-        description: 'ডকুমেন্টের স্পষ্টতা বজায় রেখে PDF ফাইলের সাইজ কমান। ভিজ্যুয়াল বা লসলেস অপ্টিমাইজেশন সাপোর্ট।',
+        description: 'ডকুমেন্টের স্পষ্টতা বজায় রেখে PDF ফাইলের সাইজ কমান। ভিজ্যুয়াল বা স্ট্রাকচারাল অপ্টিমাইজেশন সাপোর্ট।',
         keywords: ["পিডিএফ সাইজ কমান","পিডিএফ কম্প্রেস","পিডিএফ ছোট করুন","pdf compress bangla","পিডিএফ এর আকার ছোট","পিডিএফ এমবি কমান"],
         seo: {
           title: 'অনলাইন PDF কম্প্রেসার — Ahadex Tools',
-          description: 'ইমেইল বা ওয়েবসাইট আপলোডের জন্য PDF ফাইলের সাইজ ছোট করুন বিনামূল্যে ও শতভাগ লোকাল ব্রাউজার প্রসেসিংয়ে।',
+          description: 'ইমেইল বা ওয়েবসাইট আপলোডের জন্য PDF ফাইলের সাইজ ছোট করুন বিনামূল্যে সরাসরি লোকাল ব্রাউজার প্রসেসিংয়ে।',
           h1: 'PDF ফাইলের আকার ছোট করুন',
         },
         content: {
           intro: 'ভারী PDF ফাইলকে হালকা ও সহজে শেয়ারযোগ্য করতে নির্ভরযোগ্য ক্লায়েন্ট-সাইড অপ্টিমাইজেশন ব্যবহার করুন।',
           howToUse: [
             'যে PDF ফাইলের আকার কমাতে চান সেটি আপলোড করুন।',
-            'আপনার প্রয়োজনীয় কম্প্রেশন মোড (ভিজ্যুয়াল ক্যানভাস অথবা স্ট্রাকচারাল লসলেস) নির্বাচন করুন।',
+            'আপনার প্রয়োজনীয় কম্প্রেশন মোড (ভিজ্যুয়াল ক্যানভাস অথবা স্ট্রাকচারাল স্ট্রিম) নির্বাচন করুন।',
             '"PDF কম্প্রেস করুন" বাটনে ক্লিক করে ফলাফল দেখুন ও ডাউনলোড করুন।',
           ],
           privacy: 'আপনার ফাইল কোনো সার্ভারে আপলোড হয় না, আপনার ডিভাইসেই কম্প্রেস সম্পন্ন হয়।',
-          limitations: 'দুটি মোড বিদ্যমান: স্ট্রাকচারাল মোডে টেক্সট ও সিলেকশন অক্ষুণ্ণ থাকে। কোনো ফাইল আগে থেকেই সর্বোচ্চ কম্প্রেসড থাকলে টুলটি স্বচ্ছভাবে তা জানিয়ে মূল ফাইলটি রাখার পরামর্শ দেয়।',
+          limitations: 'দুটি মোড বিদ্যমান: স্ট্রাকচারাল মোডে টেক্সট ও সিলেকশন অক্ষুণ্ণ থাকে। কোনো ফাইল আগে থেকেই সর্বোচ্চ কম্প্রেসড থাকলে টুলটি স্বচ্ছভাবে তা জানিয়ে মূল ফাইলটি রাখার পরামর্শ দেয়। ডিজিটাল স্বাক্ষর বা ফর্ম ফিল্ড এতে পরিবর্তিত হতে পারে।',
           faq: [
             {
               question: 'কম্প্রেস করার পর কি টেক্সট সিলেক্ট ও কপি করা যাবে?',
-              answer: 'হ্যাঁ! আপনি যদি "স্ট্রাকচারাল অপ্টিমাইজেশন" মোড নির্বাচন করেন, তবে সব টেক্সট ১০০% সিলেক্টেবল ও ভেক্টর কোয়ালিটিতে অক্ষুণ্ণ থাকবে। আর স্ক্যান করা ডকুমেন্টের ক্ষেত্রে "ভিজ্যুয়াল ক্যানভাস" মোড সাইজ কমাতে সবচেয়ে কার্যকর।',
+              answer: 'হ্যাঁ! আপনি যদি "স্ট্রাকচারাল অপ্টিমাইজেশন" মোড নির্বাচন করেন, তবে অধিকাংশ টেক্সট সিলেক্টেবল ও স্পষ্ট থাকবে। আর স্ক্যান করা ডকুমেন্টের ক্ষেত্রে "ভিজ্যুয়াল ক্যানভাস" মোড সাইজ কমাতে সবচেয়ে কার্যকর।',
             },
             {
               question: 'আমার PDF এর সাইজ কেন কমল না?',
@@ -1096,7 +1096,7 @@ export const tools: ToolDefinition[] = [
     keywords: ['heic to jpg', 'heic to jpeg', 'convert heic', 'iphone photo converter'],
     seo: {
       title: 'HEIC to JPG Converter — Ahadex Tools',
-      description: 'Convert Apple iPhone HEIC and HEIF photos into standard JPG images in your browser. 100% free, private, with zero server uploads.',
+      description: 'Convert Apple iPhone HEIC and HEIF photos into standard JPG images in your browser. Client-side processing with zero server uploads.',
       h1: 'HEIC to JPG Converter',
       canonical: '/tool/heic-to-jpg',
     },
@@ -1107,7 +1107,7 @@ export const tools: ToolDefinition[] = [
         'Adjust the JPG output quality slider as desired.',
         'Click "Convert to JPG" and download your converted photo.',
       ],
-      privacy: 'Decoding and JPEG encoding occur 100% within your browser thread. Photos are never uploaded to any remote server.',
+      privacy: 'Decoding and JPEG encoding occur locally within your browser sandbox thread. Photos are never uploaded to any remote server.',
       limitations: 'Supports standard Apple HEIC and HEIF image containers up to 50 MB.',
       faq: [
         {
@@ -1240,7 +1240,7 @@ export const tools: ToolDefinition[] = [
     keywords: ['webp to jpg', 'webp to jpeg', 'convert webp', 'save webp as jpg'],
     seo: {
       title: 'WebP to JPG Converter — Ahadex Tools',
-      description: 'Convert WebP images downloaded from websites into standard JPG photos. Fast, free, and processed 100% in your browser.',
+      description: 'Convert WebP images downloaded from websites into standard JPG photos. Fast, free, and processed directly in your browser without uploads.',
       h1: 'WebP to JPG Converter',
       canonical: '/tool/webp-to-jpg',
     },
@@ -1399,7 +1399,7 @@ export const tools: ToolDefinition[] = [
       limitations: 'Works best on images with clear contrast between the subject and the background.',
       faq: [
         {
-          question: 'Is this background remover really 100% free without paywalls?',
+          question: 'Is this background remover completely free without paywalls?',
           answer: 'Yes! Unlike commercial services that charge per download, Ahadex Tools processes entirely inside your browser for free.',
         },
         {
@@ -1528,7 +1528,7 @@ export const tools: ToolDefinition[] = [
     keywords: ['pdf page extractor', 'extract pages from pdf', 'select pdf pages', 'save specific pdf pages'],
     seo: {
       title: 'PDF Page Extractor — Ahadex Tools',
-      description: 'View page thumbnails and visually select specific pages from a PDF to export into a new document. 100% private in-browser tool.',
+      description: 'View page thumbnails and visually select specific pages from a PDF to export into a new document. Client-side in-browser tool with zero server uploads.',
       h1: 'PDF Page Extractor',
       canonical: '/tool/pdf-page-extractor',
     },
@@ -1744,7 +1744,7 @@ export const tools: ToolDefinition[] = [
     keywords: ['password generator', 'strong password maker', 'secure password generator', 'random password'],
     seo: {
       title: 'Strong Password Generator — Ahadex Tools',
-      description: 'Generate strong, cryptographically secure random passwords in your browser. 100% local using Web Crypto API with strength meter.',
+      description: 'Generate strong, cryptographically secure random passwords in your browser locally using Web Crypto API with strength meter.',
       h1: 'Strong Password Generator',
       canonical: '/tool/password-generator',
     },
@@ -1775,7 +1775,7 @@ export const tools: ToolDefinition[] = [
         keywords: ["পাসওয়ার্ড জেনারেটর","শক্তিশালী পাসওয়ার্ড তৈরি","পাসওয়ার্ড বানান","র‍্যান্ডম পাসওয়ার্ড","স্ট্রং পাসওয়ার্ড","পাসওয়ার্ড তৈরির সফটওয়্যার"],
         seo: {
           title: 'অনলাইন শক্তিশালী পাসওয়ার্ড জেনারেটর — Ahadex Tools',
-          description: 'সম্পূর্ণ নিরাপদ ও হ্যাক-প্রুফ র‍্যান্ডম পাসওয়ার্ড তৈরি করুন ওয়েব ক্রিপ্টো এপিআই দিয়ে শতভাগ গোপনে।',
+          description: 'নিরাপদ ও শক্তিশালী র‍্যান্ডম পাসওয়ার্ড তৈরি করুন ব্রাউজারের ওয়েব ক্রিপ্টো এপিআই দিয়ে সম্পূর্ণ অফলাইনে।',
           h1: 'নিরাপদ পাসওয়ার্ড জেনারেটর',
         },
         content: {
@@ -1805,7 +1805,9 @@ export const tools: ToolDefinition[] = [
 ];
 
 export function getToolBySlug(slug: string): ToolDefinition | undefined {
-  return tools.find((tool) => tool.slug === slug);
+  if (!slug) return undefined;
+  const cleanSlug = slug.trim().toLowerCase().replace(/^\/+|\/+$/g, '').replace(/\.html$/, '');
+  return tools.find((tool) => tool.slug.toLowerCase() === cleanSlug || tool.id.toLowerCase() === cleanSlug);
 }
 
 export function getLocalizedTool(tool: ToolDefinition, language: 'en' | 'bn'): ToolDefinition {

@@ -3,3 +3,7 @@
 /privacy /privacy-policy 301
 /bn/tools/image-compressor /bn/tool/image-compressor 301
 /bn/privacy /bn/privacy-policy 301
+
+# SPA fallback rule for Netlify and Cloudflare Pages
+/* /index.html 200
+

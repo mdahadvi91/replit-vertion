@@ -310,6 +310,7 @@ const english: Copy = {
       sections: [
         ['Browser processing', 'When a tool says it processes a file in your browser, the current implementation uses browser APIs and does not upload that file to an Ahadex server. Each tool page describes its own behavior.'],
         ['Optional measurement', 'Google Analytics is not loaded until you choose the optional analytics setting. When enabled, Ahadex sends limited page and tool interaction events, never file contents, document text, passwords or tokens.'],
+        ['Google AdSense & Advertising Cookies', 'Third-party vendors, including Google, use cookies to serve ads based on a user’s prior visits to Ahadex Tools or other websites. Google’s use of advertising cookies enables it and its partners to serve ads to users based on their visits to this site and/or other sites across the Internet. You may opt out of personalized advertising at any time by visiting Google Ads Settings (https://www.google.com/settings/ads) or via www.aboutads.info. All tools remain completely free and functional regardless of your advertising choice.'],
         ['Contact messages', 'Contact messages are sent directly to our team to assist you and are never shared with third parties.'],
       ],
     },
@@ -532,6 +533,7 @@ const bangla: Copy = {
       sections: [
         ['ব্রাউজার প্রসেসিং', 'যেসব টুল ব্রাউজারে কাজ করে, সেগুলো কোনো ফাইল আমাদের সার্ভারে আপলোড করে না। পেজ বন্ধ করলে সাময়িক ফাইলগুলো নিজে থেকেই নষ্ট হয়ে যায়।'],
         ['ঐচ্ছিক পরিমাপ', 'আপনি অনুমতি না দেওয়া পর্যন্ত Google Analytics চালু হয় না। অনুমতি দিলে শুধুমাত্র পেজ ভিউ এবং টুলের ব্যবহার ডেটা নেওয়া হয়, কোনো ফাইল বা পাসওয়ার্ড কখনই নয়।'],
+        ['গুগল অ্যাডসেন্স ও বিজ্ঞাপন কুকি পলিসি', 'গুগল (Google) সহ তৃতীয় পক্ষের বিজ্ঞাপন পার্টনাররা ব্যবহারকারীদের পূর্ববর্তী ভিজিটের ওপর ভিত্তি করে প্রাসঙ্গিক বিজ্ঞাপন পরিবেশনের জন্য কুকি (Cookie) ব্যবহার করতে পারে। গুগলের বিজ্ঞাপন কুকি ব্যবহারের ফলে ব্যবহারকারীরা তাদের ইন্টারনেট ব্রাউজিং অভিজ্ঞতার সাথে প্রাসঙ্গিক বিজ্ঞাপন দেখতে পান। ব্যবহারকারীরা চাইলে গুগল অ্যাড সেটিংস (https://www.google.com/settings/ads) অথবা www.aboutads.info ভিজিট করে পারসোনালাইজড বিজ্ঞাপন বন্ধ (Opt-out) করতে পারেন। বিজ্ঞাপন বন্ধ করলেও সাইটের সকল টুলস সম্পূর্ণ বিনামূল্যে ব্যবহার করা যায়।'],
         ['যোগাযোগ বার্তা', 'আমাদের কাছে পাঠানো আপনার নাম ও ইমেইল শুধুমাত্র আপনাকে সহায়তা করার কাজে ব্যবহৃত হয় এবং কোনো তৃতীয় পক্ষের কাছে দেওয়া হয় না।'],
       ],
     },
